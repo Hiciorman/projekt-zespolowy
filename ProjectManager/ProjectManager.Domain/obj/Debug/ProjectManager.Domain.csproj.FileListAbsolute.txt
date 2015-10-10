@@ -1,0 +1,14 @@
+C:\Users\szymo\Documents\GitHubVisualStudio\projekt-zespolowy\ProjectManager\ProjectManager.Domain\bin\Debug\ProjectManager.Domain.dll.config
+C:\Users\szymo\Documents\GitHubVisualStudio\projekt-zespolowy\ProjectManager\ProjectManager.Domain\bin\Debug\ProjectManager.Domain.dll
+C:\Users\szymo\Documents\GitHubVisualStudio\projekt-zespolowy\ProjectManager\ProjectManager.Domain\bin\Debug\ProjectManager.Domain.pdb
+C:\Users\szymo\Documents\GitHubVisualStudio\projekt-zespolowy\ProjectManager\ProjectManager.Domain\bin\Debug\EntityFramework.dll
+C:\Users\szymo\Documents\GitHubVisualStudio\projekt-zespolowy\ProjectManager\ProjectManager.Domain\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\szymo\Documents\GitHubVisualStudio\projekt-zespolowy\ProjectManager\ProjectManager.Domain\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+C:\Users\szymo\Documents\GitHubVisualStudio\projekt-zespolowy\ProjectManager\ProjectManager.Domain\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\Users\szymo\Documents\GitHubVisualStudio\projekt-zespolowy\ProjectManager\ProjectManager.Domain\bin\Debug\EntityFramework.xml
+C:\Users\szymo\Documents\GitHubVisualStudio\projekt-zespolowy\ProjectManager\ProjectManager.Domain\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\szymo\Documents\GitHubVisualStudio\projekt-zespolowy\ProjectManager\ProjectManager.Domain\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+C:\Users\szymo\Documents\GitHubVisualStudio\projekt-zespolowy\ProjectManager\ProjectManager.Domain\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\Users\szymo\Documents\GitHubVisualStudio\projekt-zespolowy\ProjectManager\ProjectManager.Domain\obj\Debug\ProjectManager.Domain.csprojResolveAssemblyReference.cache
+C:\Users\szymo\Documents\GitHubVisualStudio\projekt-zespolowy\ProjectManager\ProjectManager.Domain\obj\Debug\ProjectManager.Domain.dll
+C:\Users\szymo\Documents\GitHubVisualStudio\projekt-zespolowy\ProjectManager\ProjectManager.Domain\obj\Debug\ProjectManager.Domain.pdb

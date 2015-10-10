@@ -1,0 +1,18 @@
+﻿@model ProjectManager.WebApp.Models.TestViewModel
+
+<div class="con">
+    @foreach (var project in Model.Projects)
+    {
+        foreach (var assingment in project.Assignemnts)
+        {
+            <div class="row">
+                <div class="col-md-4">
+                    @assingment.Name
+                </div>
+                <div class="col-md-8">
+                    @assingment.Description
+                </div>
+            </div>
+        }
+    }
+</div>
