@@ -1,3 +1,8 @@
+using ProjectManager.Repositories;
+using ProjectManager.Repositories.Interfaces;
+using ProjectManager.Services;
+using ProjectManager.Services.Interfaces;
+
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(ProjectManager.WebApp.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(ProjectManager.WebApp.App_Start.NinjectWebCommon), "Stop")]
 
@@ -10,11 +15,6 @@ namespace ProjectManager.WebApp.App_Start
 
     using Ninject;
     using Ninject.Web.Common;
-    using Domain;
-    using Repositories.Interfaces;
-    using Services.Interfaces;
-    using Services;
-    using Repositories;
 
     public static class NinjectWebCommon 
     {
@@ -50,6 +50,12 @@ namespace ProjectManager.WebApp.App_Start
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
+                //repositories
+                kernel.Bind<IProjectRepository>().To<ProjectRepository>();
+
+                //services
+                kernel.Bind<IProjectService>().To<ProjectService>();
+
                 RegisterServices(kernel);
                 return kernel;
             }
@@ -66,9 +72,6 @@ namespace ProjectManager.WebApp.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<AppContext>().ToSelf().InRequestScope();
-            kernel.Bind<IProjectRepository>().To<ProjectRepository>();
-            kernel.Bind<IProjectService>().To<ProjectService>();
         }        
     }
 }
