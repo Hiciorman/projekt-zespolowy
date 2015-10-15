@@ -7,6 +7,16 @@ namespace ProjectManager.Domain.Seed
     {
         protected override void Seed(AppContext context)
         {
+            #region Statuses
+            context.Statuses.Add(new Status() { Type = StatusType.Backlog, Description = "Backlog" });
+            context.Statuses.Add(new Status() { Type = StatusType.Todo, Description = "Todo" });
+            context.Statuses.Add(new Status() { Type = StatusType.InProgress, Description = "In progress" });
+            context.Statuses.Add(new Status() { Type = StatusType.ReadyForReview, Description = "Ready to review" });
+            context.Statuses.Add(new Status() { Type = StatusType.Done, Description = "Done" });
+
+            context.SaveChanges();
+            #endregion
+
             #region Users
             User user = new User
             {
@@ -38,7 +48,8 @@ namespace ProjectManager.Domain.Seed
                     Name = "Task " + i,
                     Description = "Opis taska " + i,
                     OwnerId = context.Users.FirstOrDefault().Id,
-                    ProjectId = context.Projects.FirstOrDefault().Id
+                    ProjectId = context.Projects.FirstOrDefault().Id,
+                    StatusId = context.Statuses.FirstOrDefault().Id
                 };
 
                 context.Assignments.Add(assignment);

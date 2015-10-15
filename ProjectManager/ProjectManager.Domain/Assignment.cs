@@ -11,6 +11,7 @@ namespace ProjectManager.Domain
         public Guid? ProjectId { get; set; }
         public string OwnerId { get; set; }
         public string AssignedToId { get; set; }
+        public int StatusId { get; set; }
 
         [ForeignKey("ProjectId")]
         public Project Project { get; set; }
@@ -21,6 +22,9 @@ namespace ProjectManager.Domain
         [ForeignKey("AssignedToId")]
         public User AssignedTo { get; set; }
 
-        //TODO: Add Category, Priority and Status
+        //TODO: Add Category and Status
+
+        [ForeignKey("StatusId")]
+        public Status Status { get; set; }
     }
 }

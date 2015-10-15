@@ -62,6 +62,8 @@
     <Compile Include="Entity.cs" />
     <Compile Include="GuidEntity.cs" />
     <Compile Include="IntEntity.cs" />
+    <Compile Include="Status.cs" />
+    <Compile Include="StatusType.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Seed\AppContextSeedInitializer.cs" />
     <Compile Include="User.cs" />
