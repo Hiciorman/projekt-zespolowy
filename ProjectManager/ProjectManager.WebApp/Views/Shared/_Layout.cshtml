@@ -8,7 +8,10 @@
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
 </head>
 <body>
-    @RenderBody()
+    @Html.Partial("_NavbarMain")
+    <div class="container">
+        @RenderBody()
+    </div>
 
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
