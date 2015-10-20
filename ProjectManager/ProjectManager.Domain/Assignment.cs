@@ -24,8 +24,6 @@ namespace ProjectManager.Domain
         [ForeignKey("AssignedToId")]
         public User AssignedTo { get; set; }
 
-        //TODO: Add Category and Status
-
         [ForeignKey("StatusId")]
         public Status Status { get; set; }
 
