@@ -17,6 +17,14 @@ namespace ProjectManager.Domain.Seed
             context.SaveChanges();
             #endregion
 
+            #region Priorities
+            context.Priorities.Add(new Priority() { Type = PriorityType.Criticial, Description = "Critical" });
+            context.Priorities.Add(new Priority() { Type = PriorityType.High, Description = "High" });
+            context.Priorities.Add(new Priority() { Type = PriorityType.Low, Description = "Low" });
+            context.Priorities.Add(new Priority() { Type = PriorityType.Minor, Description = "Minor" });
+            context.Priorities.Add(new Priority() { Type = PriorityType.Normal, Description = "Normal" });
+            context.SaveChanges();
+            #endregion
             #region Users
             User user = new User
             {
@@ -49,7 +57,8 @@ namespace ProjectManager.Domain.Seed
                     Description = "Opis taska " + i,
                     OwnerId = context.Users.FirstOrDefault().Id,
                     ProjectId = context.Projects.FirstOrDefault().Id,
-                    StatusId = context.Statuses.FirstOrDefault().Id
+                    StatusId = context.Statuses.FirstOrDefault().Id,
+                    PriorityId = context.Priorities.FirstOrDefault().Id
                 };
 
                 context.Assignments.Add(assignment);

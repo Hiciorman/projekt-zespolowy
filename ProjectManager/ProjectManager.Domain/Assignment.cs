@@ -12,6 +12,7 @@ namespace ProjectManager.Domain
         public string OwnerId { get; set; }
         public string AssignedToId { get; set; }
         public int StatusId { get; set; }
+        public int PriorityId { get; set; }
 
         [ForeignKey("ProjectId")]
         public Project Project { get; set; }
@@ -26,5 +27,8 @@ namespace ProjectManager.Domain
 
         [ForeignKey("StatusId")]
         public Status Status { get; set; }
+
+        [ForeignKey("PriorityId")]
+        public Priority Priority { get; set; }
     }
 }

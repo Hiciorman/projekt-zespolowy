@@ -1,1 +1,6 @@
-﻿
+﻿@model ProjectManager.WebApp.Models.TestViewModel
+    
+@foreach (var project in Model.Projects)
+{
+    @project.Name
+}
