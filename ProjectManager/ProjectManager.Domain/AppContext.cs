@@ -15,7 +15,9 @@ namespace ProjectManager.Domain
         public DbSet<Project> Projects { get; set; }
         public DbSet<Assignment> Assignments { get; set; }
         public DbSet<Status> Statuses { get; set; }
-        public DbSet<Priority> Priorities { get; set; }       
+        public DbSet<Priority> Priorities { get; set; }
+
+        public DbSet<Category> Categories { get; set; }
 
         public static AppContext Create()
         {

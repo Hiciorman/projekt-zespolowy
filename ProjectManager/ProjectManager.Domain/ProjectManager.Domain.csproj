@@ -59,6 +59,8 @@
   <ItemGroup>
     <Compile Include="AppContext.cs" />
     <Compile Include="Assignment.cs" />
+    <Compile Include="Category.cs" />
+    <Compile Include="CategoryType.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="GuidEntity.cs" />
     <Compile Include="IntEntity.cs" />

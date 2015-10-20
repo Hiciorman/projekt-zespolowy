@@ -25,6 +25,15 @@ namespace ProjectManager.Domain.Seed
             context.Priorities.Add(new Priority() { Type = PriorityType.Normal, Description = "Normal" });
             context.SaveChanges();
             #endregion
+
+            #region Categories
+
+            context.Categories.Add(new Category() {Type = CategoryType.Bug, Description = "Bug"});
+            context.Categories.Add(new Category() {Type = CategoryType.Improvment, Description = "Improvment"});
+            context.Categories.Add(new Category() {Type = CategoryType.Task, Description = "Task"});
+            context.SaveChanges();
+            #endregion
+
             #region Users
             User user = new User
             {
@@ -58,7 +67,8 @@ namespace ProjectManager.Domain.Seed
                     OwnerId = context.Users.FirstOrDefault().Id,
                     ProjectId = context.Projects.FirstOrDefault().Id,
                     StatusId = context.Statuses.FirstOrDefault().Id,
-                    PriorityId = context.Priorities.FirstOrDefault().Id
+                    PriorityId = context.Priorities.FirstOrDefault().Id,
+                    CategoryId = context.Categories.FirstOrDefault().Id
                 };
 
                 context.Assignments.Add(assignment);

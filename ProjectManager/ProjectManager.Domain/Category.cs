@@ -1,9 +1,8 @@
 ﻿namespace ProjectManager.Domain
 {
-    public class Status : IntEntity
+    public class Category : IntEntity
     {
         public string Description { get; set; }
-        public StatusType Type { get; set; }
-
+        public CategoryType Type { get; set; }
     }
 }
