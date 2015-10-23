@@ -1,0 +1,88 @@
+﻿@model ProjectManager.Domain.Assignment
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Assignment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AssignedTo.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AssignedTo.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Category.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Owner.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Owner.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Priority.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Priority.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Project.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Project.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

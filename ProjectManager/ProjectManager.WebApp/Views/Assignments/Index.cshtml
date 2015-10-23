@@ -1,0 +1,75 @@
+﻿@model IEnumerable<ProjectManager.Domain.Assignment>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.AssignedTo.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Category.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Owner.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Priority.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Project.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.AssignedTo.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Owner.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Priority.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Project.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
