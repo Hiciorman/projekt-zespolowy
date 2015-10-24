@@ -1,33 +1,26 @@
 ﻿@model ProjectManager.Domain.Project
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Details "  +Model.Name;
 }
 
 <h2>Details</h2>
 
 <div>
-    <h4>Project</h4>
+    <h4>@Html.DisplayFor(model => model.Name)</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Owner.Email)
+           Owner
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Owner.Email)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
+        Description
         </dt>
 
         <dd>
@@ -43,7 +36,67 @@
         </dd>
 
     </dl>
-</div>
+    <h5>Assignments under this project:</h5>
+    <table class="table">
+        <tr>
+            <th>
+                Programist
+            </th>
+            <th>
+                Category
+            </th>
+            <th>
+                Owner
+            </th>
+            <th>
+                Priority
+            </th>
+            <th>
+                Project
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Assignment name
+            </th>
+            <th>
+                Assignment description
+            </th>
+            
+        </tr>
+
+        @foreach (var item in Model.Assignemnts)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AssignedTo.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Owner.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Priority.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Project.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+            </tr>
+        }
+    </table>
+   @Html.RouteLink("Add assignment",new RouteValueDictionary( new { controller = "Assignments", action = "CreateFromProject", id=Model.Id }))
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")

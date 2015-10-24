@@ -33,6 +33,9 @@ namespace ProjectManager.WebApp.Controllers
             {
                 return HttpNotFound();
             }
+
+            db.Entry(project).Reference(b => b.Owner).Load();
+            db.Entry(project).Collection(b => b.Assignemnts).Load();
             return View(project);
         }
 
@@ -107,6 +110,7 @@ namespace ProjectManager.WebApp.Controllers
             {
                 return HttpNotFound();
             }
+            db.Entry(project).Reference(b => b.Owner).Load();
             return View(project);
         }
 

@@ -1,17 +1,17 @@
 ﻿@model ProjectManager.Domain.Assignment
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Details "+Model.Name;
 }
 
 <h2>Details</h2>
 
 <div>
-    <h4>Assignment</h4>
+    <h4>@Html.DisplayFor(model => model.Name)</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.AssignedTo.Email)
+            Programist
         </dt>
 
         <dd>
@@ -19,7 +19,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Category.Description)
+            Assignment kind
         </dt>
 
         <dd>
@@ -27,7 +27,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Owner.Email)
+           Owner
         </dt>
 
         <dd>
@@ -35,7 +35,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Priority.Description)
+            Priority
         </dt>
 
         <dd>
@@ -43,7 +43,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Project.Name)
+           Project
         </dt>
 
         <dd>
@@ -51,7 +51,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Status.Description)
+            Status
         </dt>
 
         <dd>
@@ -59,15 +59,9 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
+       
+         <dt>
+        Description
         </dt>
 
         <dd>

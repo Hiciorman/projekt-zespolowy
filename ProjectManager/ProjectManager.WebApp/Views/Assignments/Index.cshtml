@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<ProjectManager.Domain.Assignment>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Assignments";
 }
 
-<h2>Index</h2>
+<h2>Assignments</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -12,28 +12,28 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.AssignedTo.Email)
+            Programist
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Category.Description)
+            Category
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Owner.Email)
+            Owner
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Priority.Description)
+            Priority
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Project.Name)
+          Project
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Status.Description)
+           Status
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+           Assignment name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Description)
+            Assignment description
         </th>
         <th></th>
     </tr>

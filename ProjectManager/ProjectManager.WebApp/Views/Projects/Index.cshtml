@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<ProjectManager.Domain.Project>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Projects";
 }
 
-<h2>Index</h2>
+<h2>Projects</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -12,13 +12,13 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Owner.Email)
+            Owner
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+           Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Description)
+           Description
         </th>
         <th>
             @Html.DisplayNameFor(model => model.MyProperty)

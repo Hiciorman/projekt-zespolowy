@@ -30,17 +30,17 @@ namespace ProjectManager.WebApp.Controllers
             }
             Assignment assignment = db.Assignments.Find(id);
 
-            //TODO BOŻE CZEMU TYLE LOADÓW
-            db.Entry(assignment).Reference(b => b.AssignedTo ).Load();
+            
+            if (assignment == null)
+            {
+                return HttpNotFound();
+            }
+            db.Entry(assignment).Reference(b => b.AssignedTo).Load();
             db.Entry(assignment).Reference(b => b.Project).Load();
             db.Entry(assignment).Reference(b => b.Owner).Load();
             db.Entry(assignment).Reference(b => b.Priority).Load();
             db.Entry(assignment).Reference(b => b.Status).Load();
             db.Entry(assignment).Reference(b => b.Category).Load();
-            if (assignment == null)
-            {
-                return HttpNotFound();
-            }
             return View(assignment);
         }
 
@@ -54,6 +54,17 @@ namespace ProjectManager.WebApp.Controllers
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name");
             ViewBag.StatusId = new SelectList(db.Statuses, "Id", "Description");
             return View();
+        }
+        // GET: Assignments/CreateFromProject/5
+        public ActionResult CreateFromProject(Guid? id)
+        {
+            ViewBag.AssignedToId = new SelectList(db.Users, "Id", "Email");
+            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Description");
+            ViewBag.OwnerId = new SelectList(db.Users, "Id", "Email");
+            ViewBag.PriorityId = new SelectList(db.Priorities, "Id", "Description");
+            ViewBag.ProjectId = db.Projects.Where(project => project.Id == id).FirstOrDefault().Name;
+            ViewBag.StatusId = new SelectList(db.Statuses, "Id", "Description");
+            return View("Create");
         }
 
         // POST: Assignments/Create
@@ -135,6 +146,13 @@ namespace ProjectManager.WebApp.Controllers
             {
                 return HttpNotFound();
             }
+
+            db.Entry(assignment).Reference(b => b.AssignedTo).Load();
+            db.Entry(assignment).Reference(b => b.Project).Load();
+            db.Entry(assignment).Reference(b => b.Owner).Load();
+            db.Entry(assignment).Reference(b => b.Priority).Load();
+            db.Entry(assignment).Reference(b => b.Status).Load();
+            db.Entry(assignment).Reference(b => b.Category).Load();
             return View(assignment);
         }
 
