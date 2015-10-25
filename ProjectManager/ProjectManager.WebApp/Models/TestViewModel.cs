@@ -9,5 +9,6 @@ namespace ProjectManager.WebApp.Models
     public class TestViewModel
     {
         public List<Project> Projects { get; set; }
+        
     }
 }

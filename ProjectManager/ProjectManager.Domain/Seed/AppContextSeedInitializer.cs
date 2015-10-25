@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Data.Entity;
+using System.Collections.Generic;
 
 namespace ProjectManager.Domain.Seed
 {
@@ -28,9 +29,9 @@ namespace ProjectManager.Domain.Seed
 
             #region Categories
 
-            context.Categories.Add(new Category() {Type = CategoryType.Bug, Description = "Bug"});
-            context.Categories.Add(new Category() {Type = CategoryType.Improvment, Description = "Improvment"});
-            context.Categories.Add(new Category() {Type = CategoryType.Task, Description = "Task"});
+            context.Categories.Add(new Category() { Type = CategoryType.Bug, Description = "Bug" });
+            context.Categories.Add(new Category() { Type = CategoryType.Improvment, Description = "Improvment" });
+            context.Categories.Add(new Category() { Type = CategoryType.Task, Description = "Task" });
             context.SaveChanges();
             #endregion
 
@@ -50,7 +51,9 @@ namespace ProjectManager.Domain.Seed
             {
                 Name = "Test",
                 Description = "Projekt testowy",
-                OwnerId = context.Users.FirstOrDefault().Id
+                OwnerId = context.Users.FirstOrDefault().Id,
+                Members = new List<User>() { user}
+                
             };
 
             context.Projects.Add(project);

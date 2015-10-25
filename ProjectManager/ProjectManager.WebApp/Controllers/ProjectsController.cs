@@ -29,6 +29,7 @@ namespace ProjectManager.WebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Project project = db.Projects.Find(id);
+            List<User> x = db.Users.ToList();
             if (project == null)
             {
                 return HttpNotFound();
@@ -36,6 +37,14 @@ namespace ProjectManager.WebApp.Controllers
 
             db.Entry(project).Reference(b => b.Owner).Load();
             db.Entry(project).Collection(b => b.Assignemnts).Load();
+            db.Entry(project).Collection(b => b.Members).Load();
+            foreach (Assignment assignment in project.Assignemnts)
+            {
+                db.Entry(assignment).Reference(b => b.Category).Load();
+                db.Entry(assignment).Reference(b => b.Priority).Load();
+                db.Entry(assignment).Reference(b => b.Status).Load();
+            }
+
             return View(project);
         }
 

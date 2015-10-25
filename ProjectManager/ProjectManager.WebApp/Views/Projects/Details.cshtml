@@ -36,6 +36,14 @@
         </dd>
 
     </dl>
+    <h5>Members under this project</h5>
+    <div>
+        @foreach (var member in Model.Members)
+        {
+            @member.UserName
+        }
+
+    </div>
     <h5>Assignments under this project:</h5>
     <table class="table">
         <tr>
@@ -101,3 +109,4 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+    </div>

@@ -36,9 +36,10 @@
              
             <div class="col-md-10">
                 @{  
-                    if (ViewBag.ProjectId is string)
+                    if (ViewBag.ProjectId is Guid)
                     {
-                        @ViewBag.ProjectId
+                        @Html.Hidden("ProjectId", (Guid)ViewBag.ProjectId, htmlAttributes: new { @class = "form-control" });
+                        @ViewBag.ProjectName;
                     }
                     else
                     {

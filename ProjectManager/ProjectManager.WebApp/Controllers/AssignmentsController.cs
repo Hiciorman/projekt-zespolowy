@@ -62,7 +62,8 @@ namespace ProjectManager.WebApp.Controllers
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Description");
             ViewBag.OwnerId = new SelectList(db.Users, "Id", "Email");
             ViewBag.PriorityId = new SelectList(db.Priorities, "Id", "Description");
-            ViewBag.ProjectId = db.Projects.Where(project => project.Id == id).FirstOrDefault().Name;
+            ViewBag.ProjectId = id;
+            ViewBag.ProjectName= db.Projects.Where(project => project.Id == id).FirstOrDefault().Name;
             ViewBag.StatusId = new SelectList(db.Statuses, "Id", "Description");
             return View("Create");
         }
@@ -74,12 +75,34 @@ namespace ProjectManager.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Description,ProjectId,OwnerId,AssignedToId,StatusId,PriorityId,CategoryId")] Assignment assignment)
         {
+            
             if (ModelState.IsValid)
             {
                 assignment.Id = Guid.NewGuid();
                 db.Assignments.Add(assignment);
                 db.SaveChanges();
                 return RedirectToAction("Index");
+            }
+
+            ViewBag.AssignedToId = new SelectList(db.Users, "Id", "Email", assignment.AssignedToId);
+            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Description", assignment.CategoryId);
+            ViewBag.OwnerId = new SelectList(db.Users, "Id", "Email", assignment.OwnerId);
+            ViewBag.PriorityId = new SelectList(db.Priorities, "Id", "Description", assignment.PriorityId);
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", assignment.ProjectId);
+            ViewBag.StatusId = new SelectList(db.Statuses, "Id", "Description", assignment.StatusId);
+            return View(assignment);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateFromProject([Bind(Include = "Id,Name,Description,ProjectId,OwnerId,AssignedToId,StatusId,PriorityId,CategoryId")] Assignment assignment)
+        {
+            if (ModelState.IsValid)
+            {
+                assignment.Id = Guid.NewGuid();
+                db.Assignments.Add(assignment);
+                db.SaveChanges();
+                return RedirectToAction("Details","Projects",new { id = assignment.ProjectId });
             }
 
             ViewBag.AssignedToId = new SelectList(db.Users, "Id", "Email", assignment.AssignedToId);
