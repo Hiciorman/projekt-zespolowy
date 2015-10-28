@@ -2,6 +2,8 @@ using ProjectManager.Repositories;
 using ProjectManager.Repositories.Interfaces;
 using ProjectManager.Services;
 using ProjectManager.Services.Interfaces;
+using DictionaryRepository = ProjectManager.Services.DictionaryRepository;
+using IDictionaryRepository = ProjectManager.Services.Interfaces.IDictionaryRepository;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(ProjectManager.WebApp.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(ProjectManager.WebApp.App_Start.NinjectWebCommon), "Stop")]
@@ -52,9 +54,11 @@ namespace ProjectManager.WebApp.App_Start
 
                 //repositories
                 kernel.Bind<IProjectRepository>().To<ProjectRepository>();
+                kernel.Bind<Repositories.Interfaces.IDictionaryRepository>().To<Repositories.Interfaces.IDictionaryRepository>();
 
                 //services
                 kernel.Bind<IProjectService>().To<ProjectService>();
+                kernel.Bind<IDictionaryRepository>().To<DictionaryRepository>();
 
                 RegisterServices(kernel);
                 return kernel;

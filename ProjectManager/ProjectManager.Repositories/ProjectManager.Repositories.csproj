@@ -53,6 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DictionaryRepository.cs" />
+    <Compile Include="Interfaces\IDictionaryRepository.cs" />
     <Compile Include="Interfaces\IProjectRepository.cs" />
     <Compile Include="ProjectRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

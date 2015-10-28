@@ -8,9 +8,10 @@ namespace ProjectManager.WebApp.Controllers
     public class ProjectsController : Controller
     {
         private readonly IProjectService _projectService;
-
-        public ProjectsController(IProjectService projectService)
+        private readonly IDictionaryRepository _dictionaryService;
+        public ProjectsController(IProjectService projectService, IDictionaryRepository dictionaryRepository)
         {
+            this._dictionaryService = dictionaryRepository;
             _projectService = projectService;
         }
 
@@ -18,6 +19,9 @@ namespace ProjectManager.WebApp.Controllers
         public ActionResult Index()
         {
             var projects = _projectService.GetAll();
+            var statuses = _dictionaryService.GetStatuses();
+            var priorities = _dictionaryService.GetPriorities();
+            var categories = _dictionaryService.GetCategories();
             return View(projects);
         }
 
