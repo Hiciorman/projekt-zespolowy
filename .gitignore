@@ -6,3 +6,5 @@
 *.user
 *.[Cc]ache
 .vs/
+*.exe
+*.dll
