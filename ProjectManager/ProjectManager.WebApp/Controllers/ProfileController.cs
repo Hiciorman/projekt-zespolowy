@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -51,6 +52,40 @@ namespace ProjectManager.WebApp.Controllers
             {
                 return HttpContext.GetOwinContext().Authentication;
             }
+        }
+
+        [HttpGet]
+        public ActionResult Details()
+        {
+            var model = new ProfileDetailsViewModel();
+
+            var user = UserManager.FindById(User.Identity.GetUserId());
+
+            if (user == null) return RedirectToAction("Start", "Main");
+
+            model.Username = user.UserName;
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.CurrentPassword, model.NewPassword);
+
+            if (result.Succeeded)
+            {
+                //notification
+                return RedirectToAction("Details", "Profile");
+            }
+
+            return View(model);
         }
 
         [HttpGet]
@@ -110,7 +145,7 @@ namespace ProjectManager.WebApp.Controllers
 
             return View(model);
         }
-        
+
         public ActionResult Logout()
         {
             AuthenticationManager.SignOut();
