@@ -1,9 +1,9 @@
 ﻿@model ProjectManager.WebApp.Models.RegisterViewModel
 
-@using (Html.BeginForm("Register", "Profile", FormMethod.Get, new { @class = "form-center" }))
+@using (Html.BeginForm("Register", "Profile", FormMethod.Post, new { @class = "form-center" }))
 {
     <h2>Register</h2>
-    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", placeholder = "Email" })
+    @Html.TextBoxFor(model => model.Username, new { @class = "form-control", placeholder = "Username" })
     @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = "Password" })
     @Html.PasswordFor(model => model.PasswordAgain, new { @class = "form-control", placeholder = "Password again" })
     <input type="submit" name="submitButton" value="Register" class="btn btn-lg btn-primary btn-block margin-top-10px" />

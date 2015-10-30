@@ -1,3 +1,8 @@
+using System.Net;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Owin.Security;
+using ProjectManager.Domain;
 using ProjectManager.Repositories;
 using ProjectManager.Repositories.Interfaces;
 using ProjectManager.Services;
@@ -16,20 +21,20 @@ namespace ProjectManager.WebApp.App_Start
     using Ninject;
     using Ninject.Web.Common;
 
-    public static class NinjectWebCommon 
+    public static class NinjectWebCommon
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
 
         /// <summary>
         /// Starts the application
         /// </summary>
-        public static void Start() 
+        public static void Start()
         {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             bootstrapper.Initialize(CreateKernel);
         }
-        
+
         /// <summary>
         /// Stops the application.
         /// </summary>
@@ -37,7 +42,7 @@ namespace ProjectManager.WebApp.App_Start
         {
             bootstrapper.ShutDown();
         }
-        
+
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>
@@ -56,7 +61,14 @@ namespace ProjectManager.WebApp.App_Start
                 //services
                 kernel.Bind<IProjectService>().To<ProjectService>();
 
-                RegisterServices(kernel);
+                //user
+                kernel.Bind<IUserStore<User>>().To<AppUserStore>();
+                kernel.Bind<UserManager<User>>().ToSelf();
+                kernel.Bind<IAuthenticationManager>().ToMethod(
+                    c =>
+                        HttpContext.Current.GetOwinContext().Authentication).InRequestScope();
+
+
                 return kernel;
             }
             catch
@@ -65,13 +77,5 @@ namespace ProjectManager.WebApp.App_Start
                 throw;
             }
         }
-
-        /// <summary>
-        /// Load your modules or register your services here!
-        /// </summary>
-        /// <param name="kernel">The kernel.</param>
-        private static void RegisterServices(IKernel kernel)
-        {
-        }        
     }
 }
