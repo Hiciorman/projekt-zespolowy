@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DictionaryService.cs" />
+    <Compile Include="Interfaces\IDictionaryService.cs" />
     <Compile Include="ProjectService.cs" />
     <Compile Include="Interfaces\IProjectService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

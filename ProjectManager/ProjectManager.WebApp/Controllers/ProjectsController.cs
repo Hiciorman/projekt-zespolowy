@@ -1,146 +1,108 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using ProjectManager.Domain;
+using ProjectManager.Repositories.Interfaces;
+using ProjectManager.Services.Interfaces;
 
 namespace ProjectManager.WebApp.Controllers
 {
     public class ProjectsController : Controller
     {
-        private AppContext db = new AppContext();
-
-        // GET: Projects
-        public ActionResult Index()
+        private readonly IProjectService _projectService;
+        private readonly IDictionaryService _dictionaryService;
+        public ProjectsController(IProjectService projectService, IDictionaryService dictionaryService)
         {
-            var projects = db.Projects.Include(p => p.Owner);
-            return View(projects.ToList());
+            this._dictionaryService = dictionaryService;
+            _projectService = projectService;
         }
 
-        // GET: Projects/Details/5
-        public ActionResult Details(Guid? id)
+        [HttpGet]
+        public ActionResult Index()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Project project = db.Projects.Find(id);
-            List<User> x = db.Users.ToList();
+            var projects = _projectService.GetAll();
+            var statuses = _dictionaryService.GetStatuses();
+            var priorities = _dictionaryService.GetPriorities();
+            var categories = _dictionaryService.GetCategories();
+            return View(projects);
+        }
+
+        [HttpGet]
+        public ActionResult Details(Guid id)
+        {
+            Project project = _projectService.FindById(id);
             if (project == null)
             {
                 return HttpNotFound();
             }
 
-            db.Entry(project).Reference(b => b.Owner).Load();
-            db.Entry(project).Collection(b => b.Assignemnts).Load();
-            db.Entry(project).Collection(b => b.Members).Load();
-            foreach (Assignment assignment in project.Assignemnts)
-            {
-                db.Entry(assignment).Reference(b => b.Category).Load();
-                db.Entry(assignment).Reference(b => b.Priority).Load();
-                db.Entry(assignment).Reference(b => b.Status).Load();
-            }
-
             return View(project);
         }
 
-        // GET: Projects/Create
+        [HttpGet]
         public ActionResult Create()
         {
-            ViewBag.OwnerId = new SelectList(db.Users, "Id", "Email");
+            //Można wziąć po Identity.User cośtam - wskazuje aktualnie zalogowanego usera,
+            //wtedy będzie można wyciągnąć jakieś dodatkowe rzeczy 
             return View();
         }
 
-        // POST: Projects/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,OwnerId,MyProperty")] Project project)
+        public ActionResult Create(Project project)
         {
             if (ModelState.IsValid)
             {
-                project.Id = Guid.NewGuid();
-                db.Projects.Add(project);
-                db.SaveChanges();
+                _projectService.Add(project);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.OwnerId = new SelectList(db.Users, "Id", "Email", project.OwnerId);
             return View(project);
         }
 
-        // GET: Projects/Edit/5
-        public ActionResult Edit(Guid? id)
+        public ActionResult Edit(Guid id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Project project = db.Projects.Find(id);
+            Project project = _projectService.FindById(id);
             if (project == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.OwnerId = new SelectList(db.Users, "Id", "Email", project.OwnerId);
+
             return View(project);
         }
 
-        // POST: Projects/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,OwnerId,MyProperty")] Project project)
+        public ActionResult Edit(Project project)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(project).State = EntityState.Modified;
-                db.SaveChanges();
+               _projectService.Update(project);
                 return RedirectToAction("Index");
             }
-            ViewBag.OwnerId = new SelectList(db.Users, "Id", "Email", project.OwnerId);
+
             return View(project);
         }
 
-        // GET: Projects/Delete/5
-        public ActionResult Delete(Guid? id)
+        [HttpGet]
+        public ActionResult Delete(Guid id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Project project = db.Projects.Find(id);
+            Project project = _projectService.FindById(id);
             if (project == null)
             {
                 return HttpNotFound();
             }
-            db.Entry(project).Reference(b => b.Owner).Load();
+
             return View(project);
         }
 
-        // POST: Projects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            Project project = db.Projects.Find(id);
-            db.Projects.Remove(project);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+            _projectService.Remove(id);
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            return RedirectToAction("Index");
         }
     }
 }
