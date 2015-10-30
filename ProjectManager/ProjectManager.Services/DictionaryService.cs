@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ProjectManager.Domain;
+using ProjectManager.Repositories.Interfaces;
 using ProjectManager.Services.Interfaces;
 
 namespace ProjectManager.Services
 {
-    public class DictionaryRepository : IDictionaryRepository
+    public class DictionaryService : IDictionaryService
     {
         private readonly IDictionaryRepository _dictionaryRepository;
-        public DictionaryRepository(IDictionaryRepository dictionaryRepository)
+        public DictionaryService(IDictionaryRepository dictionaryRepository)
         {
             this._dictionaryRepository = dictionaryRepository;
         }
@@ -22,12 +24,12 @@ namespace ProjectManager.Services
 
         public IList<Status> GetStatuses()
         {
-            return _dictionaryRepository.GetStatuses().ToList();
+            return _dictionaryRepository.GetStatus().ToList();
         }
 
         public IList<Category> GetCategories()
         {
-            return _dictionaryRepository.GetCategories().ToList();
+            return _dictionaryRepository.GetCategory().ToList();
         }
     }
 }

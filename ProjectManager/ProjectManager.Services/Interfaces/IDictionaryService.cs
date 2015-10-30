@@ -3,7 +3,7 @@ using ProjectManager.Domain;
 
 namespace ProjectManager.Services.Interfaces
 {
-    public interface IDictionaryRepository
+    public interface IDictionaryService
     {
         IList<Priority> GetPriorities();
         IList<Status> GetStatuses();

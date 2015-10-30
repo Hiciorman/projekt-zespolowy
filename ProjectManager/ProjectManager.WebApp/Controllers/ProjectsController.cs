@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using ProjectManager.Domain;
+using ProjectManager.Repositories.Interfaces;
 using ProjectManager.Services.Interfaces;
 
 namespace ProjectManager.WebApp.Controllers
@@ -8,10 +9,10 @@ namespace ProjectManager.WebApp.Controllers
     public class ProjectsController : Controller
     {
         private readonly IProjectService _projectService;
-        private readonly IDictionaryRepository _dictionaryService;
-        public ProjectsController(IProjectService projectService, IDictionaryRepository dictionaryRepository)
+        private readonly IDictionaryService _dictionaryService;
+        public ProjectsController(IProjectService projectService, IDictionaryService dictionaryService)
         {
-            this._dictionaryService = dictionaryRepository;
+            this._dictionaryService = dictionaryService;
             _projectService = projectService;
         }
 
