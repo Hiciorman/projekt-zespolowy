@@ -1,14 +1,10 @@
-using System.Net;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using ProjectManager.Domain;
 using ProjectManager.Repositories;
 using ProjectManager.Repositories.Interfaces;
 using ProjectManager.Services;
 using ProjectManager.Services.Interfaces;
-using DictionaryService = ProjectManager.Services.DictionaryService;
-using IDictionaryService = ProjectManager.Services.Interfaces.IDictionaryService;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(ProjectManager.WebApp.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(ProjectManager.WebApp.App_Start.NinjectWebCommon), "Stop")]
@@ -59,7 +55,7 @@ namespace ProjectManager.WebApp.App_Start
 
                 //repositories
                 kernel.Bind<IProjectRepository>().To<ProjectRepository>();
-                kernel.Bind<Repositories.Interfaces.IDictionaryRepository>().To<DictionaryRepository>();
+                kernel.Bind<IDictionaryRepository>().To<DictionaryRepository>();
 
                 //services
                 kernel.Bind<IProjectService>().To<ProjectService>();
