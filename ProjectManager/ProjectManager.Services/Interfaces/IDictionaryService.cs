@@ -8,5 +8,6 @@ namespace ProjectManager.Services.Interfaces
         IList<Priority> GetPriorities();
         IList<Status> GetStatuses();
         IList<Category> GetCategories();
+        IList<User> GetUsers();
     }
 }

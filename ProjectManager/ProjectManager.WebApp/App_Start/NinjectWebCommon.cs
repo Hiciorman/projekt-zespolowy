@@ -56,10 +56,12 @@ namespace ProjectManager.WebApp.App_Start
                 //repositories
                 kernel.Bind<IProjectRepository>().To<ProjectRepository>();
                 kernel.Bind<IDictionaryRepository>().To<DictionaryRepository>();
+                kernel.Bind<IAssignmentRepository>().To<AssignmentRepository>();
 
                 //services
                 kernel.Bind<IProjectService>().To<ProjectService>();
                 kernel.Bind<IDictionaryService>().To<DictionaryService>();
+                kernel.Bind<IAssignmentService>().To<AssignmentService>();
 
                 //user
                 kernel.Bind<IUserStore<User>>().To<AppUserStore>();

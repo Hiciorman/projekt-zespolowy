@@ -15,5 +15,7 @@ namespace ProjectManager.Repositories.Interfaces
         IEnumerable<Status> GetStatus();
 
         IEnumerable<Category> GetCategory();
+
+        IEnumerable<User> GetUser();
     }
 }
