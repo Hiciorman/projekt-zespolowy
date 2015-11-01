@@ -30,5 +30,10 @@ namespace ProjectManager.Repositories
         {
             return _context.Categories;
         }
+
+        public IEnumerable<User> GetUser()
+        {
+            return _context.Users;
+        }
     }
 }

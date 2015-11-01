@@ -53,7 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssignmentRepository.cs" />
     <Compile Include="DictionaryRepository.cs" />
+    <Compile Include="Interfaces\IAssignmentRepository.cs" />
     <Compile Include="Interfaces\IDictionaryRepository.cs" />
     <Compile Include="Interfaces\IProjectRepository.cs" />
     <Compile Include="ProjectRepository.cs" />

@@ -31,5 +31,10 @@ namespace ProjectManager.Services
         {
             return _dictionaryRepository.GetCategory().ToList();
         }
+
+        public IList<User> GetUsers()
+        {
+            return _dictionaryRepository.GetUser().ToList();
+        }
     }
 }
