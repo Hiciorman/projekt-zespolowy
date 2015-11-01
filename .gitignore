@@ -5,6 +5,6 @@
 *.suo
 *.user
 *.[Cc]ache
-.vs/
+.vs
 *.exe
 *.dll
