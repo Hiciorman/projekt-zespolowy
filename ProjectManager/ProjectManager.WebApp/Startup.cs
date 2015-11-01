@@ -1,7 +1,7 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(ProjectManager.WebApp.Startup))]
+[assembly: OwinStartup(typeof(ProjectManager.WebApp.Startup))]
 namespace ProjectManager.WebApp
 {
     public partial class Startup

@@ -1,11 +1,7 @@
-﻿using System.Net;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Threading.Tasks;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
 using ProjectManager.Domain;
 using ProjectManager.WebApp.Models;
 
@@ -13,45 +9,13 @@ namespace ProjectManager.WebApp.Controllers
 {
     public class ProfileController : Controller
     {
-        private ApplicationUserManager userManager;
-        private ApplicationSignInManager signInManager;
+        private readonly ApplicationUserManager _userManager;
+        private readonly ApplicationSignInManager _signInManager;
 
         public ProfileController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-        }
-
-        public ApplicationSignInManager SignInManager
-        {
-            get
-            {
-                return signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set
-            {
-                signInManager = value;
-            }
-        }
-
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                userManager = value;
-            }
-        }
-
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
+            this._userManager = userManager;
+            this._signInManager = signInManager;
         }
 
         [HttpGet]
@@ -59,7 +23,7 @@ namespace ProjectManager.WebApp.Controllers
         {
             var model = new ProfileDetailsViewModel();
 
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var user = _userManager.FindById(User.Identity.GetUserId());
 
             if (user == null) return RedirectToAction("Start", "Main");
 
@@ -77,7 +41,7 @@ namespace ProjectManager.WebApp.Controllers
         [HttpPost]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.CurrentPassword, model.NewPassword);
+            var result = await _userManager.ChangePasswordAsync(User.Identity.GetUserId(), model.CurrentPassword, model.NewPassword);
 
             if (result.Succeeded)
             {
@@ -104,7 +68,7 @@ namespace ProjectManager.WebApp.Controllers
             }
 
             var result =
-                await SignInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
+                await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
 
             switch (result)
             {
@@ -131,16 +95,16 @@ namespace ProjectManager.WebApp.Controllers
             }
 
             var user = new User() { UserName = model.Username };
-            var result = await UserManager.CreateAsync(user, model.Password);
+            var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
-                await SignInManager.SignInAsync(user, true, true);
+                await _signInManager.SignInAsync(user, true, true);
                 return RedirectToAction("Start", "Main");
             }
             else
             {
-                ModelState.AddModelError("", "Registration failed");
+                ModelState.AddModelError("failed", "Registration failed");
             }
 
             return View(model);
@@ -148,7 +112,7 @@ namespace ProjectManager.WebApp.Controllers
 
         public ActionResult Logout()
         {
-            AuthenticationManager.SignOut();
+            _signInManager.AuthenticationManager.SignOut();
 
             return RedirectToAction("Start", "Main");
         }

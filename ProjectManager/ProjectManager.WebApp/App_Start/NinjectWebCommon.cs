@@ -63,7 +63,7 @@ namespace ProjectManager.WebApp.App_Start
 
                 //user
                 kernel.Bind<IUserStore<User>>().To<AppUserStore>();
-                kernel.Bind<UserManager<User>>().ToSelf();
+                //kernel.Bind<ApplicationUserManager>().ToSelf();
                 kernel.Bind<IAuthenticationManager>().ToMethod(
                     c =>
                         HttpContext.Current.GetOwinContext().Authentication).InRequestScope();
