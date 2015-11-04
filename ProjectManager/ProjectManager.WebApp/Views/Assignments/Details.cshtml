@@ -1,7 +1,7 @@
 ﻿@model ProjectManager.Domain.Assignment
 
 @{
-    ViewBag.Title = "Details "+Model.Name;
+    ViewBag.Title = "Details " + Model.Name;
 }
 
 <h2>Details</h2>
@@ -10,6 +10,12 @@
     <h4>@Html.DisplayFor(model => model.Name)</h4>
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            DueDate
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DueDate)
+        </dd>
         <dt>
             Programist
         </dt>
@@ -27,7 +33,7 @@
         </dd>
 
         <dt>
-           Owner
+            Owner
         </dt>
 
         <dd>
@@ -43,7 +49,7 @@
         </dd>
 
         <dt>
-           Project
+            Project
         </dt>
 
         <dd>
@@ -59,9 +65,9 @@
         </dd>
 
         <dt>
-       
-         <dt>
-        Description
+
+        <dt>
+            Description
         </dt>
 
         <dd>

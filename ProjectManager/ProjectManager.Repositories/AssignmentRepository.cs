@@ -31,9 +31,27 @@ namespace ProjectManager.Repositories
             return _context.Assignments.Where(x => x.AssignedToId == id).LoadRelatedEntities(); ;
         }
 
+        public IEnumerable<Assignment> GetAllByDate(int year = 0, int month = 0, int day = 0)
+        {
+            var result = _context.Assignments.Where(x => x.DueDate != null);
+            if (year != 0)
+            {
+                result = result.Where(x => x.DueDate.GetValueOrDefault().Year == year);
+            }
+            if (month != 0)
+            {
+                result = result.Where(x => x.DueDate.GetValueOrDefault().Month == month);
+            }
+            if (day != 0)
+            {
+                result = result.Where(x => x.DueDate.GetValueOrDefault().Day == day);
+            }
+            return result.LoadRelatedEntities();
+        }
+
         public Assignment FindById(Guid id)
         {
-            var assignment =  _context.Assignments.FirstOrDefault(x => x.Id == id) ;
+            var assignment = _context.Assignments.FirstOrDefault(x => x.Id == id);
             _context.Entry(assignment).Reference(b => b.AssignedTo).Load();
             _context.Entry(assignment).Reference(b => b.Category).Load();
             _context.Entry(assignment).Reference(b => b.Owner).Load();
@@ -72,7 +90,7 @@ namespace ProjectManager.Repositories
             return true;
         }
 
-       
+
     }
     static class Extension
     {
@@ -85,7 +103,7 @@ namespace ProjectManager.Repositories
                         Include(b => b.Project).
                         Include(b => b.Status);
         }
-     
+
 
     }
 }

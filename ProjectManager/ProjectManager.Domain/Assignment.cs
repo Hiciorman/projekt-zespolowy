@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectManager.Domain
@@ -8,6 +9,10 @@ namespace ProjectManager.Domain
         public string Name { get; set; }
         public string Description { get; set; }
 
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)] //ustawiaw wartosc wskazujaca przez dataFormatString
+        public DateTime? DueDate { get; set; }
+        
         public Guid? ProjectId { get; set; }
         public string OwnerId { get; set; }
         public string AssignedToId { get; set; }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Data.Entity;
 using System.Collections.Generic;
 
@@ -67,6 +68,7 @@ namespace ProjectManager.Domain.Seed
                 {
                     Name = "Task " + i,
                     Description = "Opis taska " + i,
+                    DueDate = new DateTime(2015,11,10),
                     OwnerId = context.Users.FirstOrDefault().Id,
                     ProjectId = context.Projects.FirstOrDefault().Id,
                     StatusId = context.Statuses.FirstOrDefault().Id,
