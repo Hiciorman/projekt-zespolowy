@@ -8,3 +8,10 @@
 .vs
 *.exe
 *.dll
+
+# NuGetShit Packages
+*.nupkg
+# I tak dzieki wspanialemu nugetowi trzeba wywalac recznie...
+**/packages/*
+# poza build/, bo uzywa go MSBuild
+!**/packages/build/
