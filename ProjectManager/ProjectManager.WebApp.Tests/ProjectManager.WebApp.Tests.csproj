@@ -177,10 +177,17 @@
       <Project>{B85F4517-F3AE-4A97-9FFB-46BD32B9947D}</Project>
       <Name>ProjectManager.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ProjectManager.Services\ProjectManager.Services.csproj">
+      <Project>{8239980b-da5f-41e9-bed0-e42879f9ced1}</Project>
+      <Name>ProjectManager.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProjectManager.WebApp\ProjectManager.WebApp.csproj">
       <Project>{8732b31c-2884-48cf-a70b-325dcb819129}</Project>
       <Name>ProjectManager.WebApp</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
