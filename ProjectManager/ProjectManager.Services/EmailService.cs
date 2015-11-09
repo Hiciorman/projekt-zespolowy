@@ -1,45 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
+﻿using System.Configuration;
+using System.Net;
+using System.Net.Mail;
+using ProjectManager.Services.Interfaces;
 
 namespace ProjectManager.Services
 {
-    public class EmailService : IIdentityMessageService
+    public class EmailService : IEmailService
     {
-        public Task SendAsync(IdentityMessage message)
+        private string emailAddress { get; }
+        private string password { get; }
+        private SmtpClient smtpClient { get; }
+
+
+        public EmailService()
         {
-            //Dane logowania
-            //var pwd = ConfigurationSettings.AppSettings["MAIL_PASSWORD"];
-           // var userName = ConfigurationSettings.AppSettings["MAIL"];
-            var pwd = ConfigurationManager.AppSettings["MAIL_PASSWORD"];
-            var userName = ConfigurationManager.AppSettings["MAIL"];
-            var sentFrom = userName;
+            emailAddress = ConfigurationManager.AppSettings[nameof(emailAddress)];
+            password = ConfigurationManager.AppSettings[nameof(password)];
 
-            //Konfiguracja poczty
-            System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient("smtp-mail.outlook.com");
+            smtpClient = new SmtpClient("smtp-mail.outlook.com")
+            {
+                Port = 587,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                EnableSsl = true,
+                Credentials = new NetworkCredential(emailAddress, password)
+            };
+        }
 
-            client.Port = 587;
-            client.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
-            client.UseDefaultCredentials = false;
+        public void SendEmail(string sendTo, string subject, string body)
+        {
+            MailMessage mailMessage = new MailMessage(emailAddress, sendTo)
+            {
+                Subject = subject,
+                IsBodyHtml = true,
+                Body = body
+            };
 
-            // Creatte the credentials:
-            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential(userName, pwd);
-            client.EnableSsl = true;
-            client.Credentials = credentials;
-            
-            // Create the message:
-
-            var mail = new System.Net.Mail.MailMessage(sentFrom, message.Destination);
-            mail.Subject = message.Subject;
-            mail.Body = message.Body;
-            
-            // Send:
-            return client.SendMailAsync(mail);
-            
+            smtpClient.Send(mailMessage);
         }
     }
 }

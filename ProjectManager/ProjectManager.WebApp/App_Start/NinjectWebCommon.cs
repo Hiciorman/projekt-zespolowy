@@ -62,6 +62,7 @@ namespace ProjectManager.WebApp.App_Start
                 kernel.Bind<IProjectService>().To<ProjectService>();
                 kernel.Bind<IDictionaryService>().To<DictionaryService>();
                 kernel.Bind<IAssignmentService>().To<AssignmentService>();
+                kernel.Bind<IEmailService>().To<EmailService>();
 
                 //user
                 kernel.Bind<IUserStore<User>>().To<AppUserStore>();

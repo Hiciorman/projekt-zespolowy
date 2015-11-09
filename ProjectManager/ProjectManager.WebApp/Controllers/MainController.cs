@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using ProjectManager.Services;
 using ProjectManager.WebApp.Models;
 
 namespace ProjectManager.WebApp.Controllers
@@ -11,6 +13,7 @@ namespace ProjectManager.WebApp.Controllers
     public class MainController : Controller
     {
         private readonly IProjectService projectService;
+
         public MainController(IProjectService projectService)
         {
             this.projectService = projectService;
