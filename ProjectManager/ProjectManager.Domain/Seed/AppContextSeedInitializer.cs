@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Data.Entity;
 using System.Collections.Generic;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ProjectManager.Domain.Seed
 {
@@ -9,6 +11,7 @@ namespace ProjectManager.Domain.Seed
     {
         protected override void Seed(AppContext context)
         {
+
             #region Statuses
             context.Statuses.Add(new Status() { Type = StatusType.Backlog, Description = "Backlog" });
             context.Statuses.Add(new Status() { Type = StatusType.Todo, Description = "Todo" });
@@ -29,7 +32,6 @@ namespace ProjectManager.Domain.Seed
             #endregion
 
             #region Categories
-
             context.Categories.Add(new Category() { Type = CategoryType.Bug, Description = "Bug" });
             context.Categories.Add(new Category() { Type = CategoryType.Improvment, Description = "Improvment" });
             context.Categories.Add(new Category() { Type = CategoryType.Task, Description = "Task" });
@@ -37,14 +39,14 @@ namespace ProjectManager.Domain.Seed
             #endregion
 
             #region Users
-            User user = new User
+            var store = new UserStore<User>(context);
+            var manager = new ApplicationUserManager(store);
+            var user = new User()
             {
-                UserName = "Tester",
-                Email = "test@test.com"
+                Email = "test@test.com",
+                UserName = "Tester"
             };
-
-            context.Users.Add(user);
-            context.SaveChanges();
+            manager.Create(user, "tester12345");
             #endregion
 
             #region Projects
@@ -53,8 +55,8 @@ namespace ProjectManager.Domain.Seed
                 Name = "Test",
                 Description = "Projekt testowy",
                 OwnerId = context.Users.FirstOrDefault().Id,
-                Members = new List<User>() { user}
-                
+                Members = new List<User>() { user }
+
             };
 
             context.Projects.Add(project);
@@ -68,7 +70,7 @@ namespace ProjectManager.Domain.Seed
                 {
                     Name = "Task " + i,
                     Description = "Opis taska " + i,
-                    DueDate = new DateTime(2015,11,10),
+                    DueDate = new DateTime(2015, 11, 10),
                     OwnerId = context.Users.FirstOrDefault().Id,
                     ProjectId = context.Projects.FirstOrDefault().Id,
                     StatusId = context.Statuses.FirstOrDefault().Id,
