@@ -73,7 +73,7 @@ namespace ProjectManager.WebApp.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToAction("Start", "Main");
+                    return RedirectToAction("Dashboard", "Manager");
                 default:
                     ModelState.AddModelError("", "Incorrect username or password");
                     return View(model);

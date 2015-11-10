@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
 using ProjectManager.Domain;
-using ProjectManager.Repositories.Interfaces;
 using ProjectManager.Services.Interfaces;
 
 namespace ProjectManager.WebApp.Controllers
@@ -17,12 +16,9 @@ namespace ProjectManager.WebApp.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult AllProjects()
         {
             var projects = _projectService.GetAll();
-            var statuses = _dictionaryService.GetStatuses();
-            var priorities = _dictionaryService.GetPriorities();
-            var categories = _dictionaryService.GetCategories();
             return View(projects);
         }
 
@@ -54,7 +50,7 @@ namespace ProjectManager.WebApp.Controllers
             if (ModelState.IsValid)
             {
                 _projectService.Add(project);
-                return RedirectToAction("Index");
+                return RedirectToAction("AllProjects");
             }
 
             return View(project);
@@ -78,7 +74,7 @@ namespace ProjectManager.WebApp.Controllers
             if (ModelState.IsValid)
             {
                _projectService.Update(project);
-                return RedirectToAction("Index");
+                return RedirectToAction("AllProjects");
             }
 
             return View(project);
@@ -102,7 +98,7 @@ namespace ProjectManager.WebApp.Controllers
         {
             _projectService.Remove(id);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("AllProjects");
         }
     }
 }

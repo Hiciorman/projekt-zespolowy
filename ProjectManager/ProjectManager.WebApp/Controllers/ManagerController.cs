@@ -4,16 +4,20 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ProjectManager.Services.Interfaces;
+using ProjectManager.WebApp.Models;
 
 namespace ProjectManager.WebApp.Controllers
 {
+    [Authorize]
     public class ManagerController : Controller
     {
-        private readonly IProjectService projectService;
+        private readonly IProjectService _projectService;
+        private readonly IDictionaryService _dictionaryService;
 
-        public ManagerController(IProjectService projectService)
+        public ManagerController(IProjectService projectService, IDictionaryService dictionaryService)
         {
-            this.projectService = projectService;
+            this._projectService = projectService;
+            this._dictionaryService = dictionaryService;
         }
 
         [HttpGet]
@@ -23,15 +27,14 @@ namespace ProjectManager.WebApp.Controllers
         }
 
         [HttpGet]
-        public ActionResult Projects()
-        {
-            return View();
-        }
-
-        [HttpGet]
         public ActionResult KanbanBoard()
         {
-            return View();
+            var model = new KanbanBoardViewModel
+            {
+                Stasuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description")
+            };
+
+            return View(model);
         }
     }
 }

@@ -1,0 +1,38 @@
+﻿@using ProjectManager.Domain
+@model ProjectManager.WebApp.Models.KanbanBoardViewModel
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Kanban Board</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            @Html.Label("Filters")
+        </div>
+        @*TODO: Add class "filters" *@
+        <div class="col-md-11">
+            <a href="#">
+                Only High Priority
+            </a>
+            <a href="#">
+                Assigned to me
+            </a>
+            <a href="#">
+                Recently updated
+            </a>
+        </div>     
+    </div>
+    <div class="row">
+        @foreach (var status in Model.Stasuses)
+        {
+            if (status.Text != "Backlog")
+            {
+                <div class="col-md-3">
+                    @Html.Label(status.Text)
+                </div>
+            }
+        }
+    </div>
+</div>

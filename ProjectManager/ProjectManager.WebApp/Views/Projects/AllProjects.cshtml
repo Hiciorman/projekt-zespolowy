@@ -1,0 +1,42 @@
+﻿@using ProjectManager.Domain
+@model IEnumerable<ProjectManager.Domain.Project>
+
+@{
+    ViewBag.Title = "Projects";
+}
+<div class="container">
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <div class="row">
+        <div class="col-md-3">
+            @Html.Label(nameof(Project.Name))
+        </div>
+        <div class="col-md-3">
+            @Html.Label(nameof(Project.Description))
+        </div>
+        <div class="col-md-3">
+            @Html.Label(nameof(Project.Members))
+        </div>
+    </div>
+    @foreach (var project in Model)
+    {
+        <div class="row">
+            <div class="col-md-3">
+                @Html.DisplayFor(modelItem => project.Name)
+            </div>
+            <div class="col-md-3">
+                @Html.DisplayFor(modelItem => project.Description)
+            </div>
+            <div class="col-md-3">
+                @Html.DisplayFor(modelItem => project.Members.Count)
+            </div>
+            <div class="col-md-3">
+                @Html.ActionLink("Set", "Set", new { id = project.Id }) |
+                @Html.ActionLink("Edit", "Edit", new { id = project.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = project.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = project.Id })
+            </div>
+        </div>
+    }
+</div>

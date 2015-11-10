@@ -14,32 +14,15 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="#">FEATURES</a>
+                    <a href="@Url.Action("Features", "Main")">FEATURES</a>
+                </li>
+
+                <li>
+                    <a href="@Url.Action("Login","Profile")">LOG IN</a>
                 </li>
                 <li>
-                    <a href="@Url.Action("Index","Projects")">PROJECTS</a>
+                    <a href="@Url.Action("Register", "Profile")">SIGN UP</a>
                 </li>
-                <li>
-                    <a href="@Url.Action("Index", "Assignments")">ASSIGNMENTS</a>
-                </li>
-                @if (!Request.IsAuthenticated)
-                {
-                    <li>
-                        <a href="@Url.Action("Login","Profile")">LOG IN</a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Register", "Profile")">SIGN UP</a>
-                    </li>
-                }
-                @if (Request.IsAuthenticated)
-                {
-                    <li>
-                        <a href="@Url.Action("Details","Profile")">PROFILE</a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Logout", "Profile")">LOG OUT</a>
-                    </li>
-                }
             </ul>
         </div>
     </div>

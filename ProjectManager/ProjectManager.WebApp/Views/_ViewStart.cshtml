@@ -1,5 +1,15 @@
-﻿@{
+﻿@using System.Activities.Statements
+@{
     var controller = HttpContext.Current.Request.RequestContext.RouteData.Values["Controller"].ToString();
+    var action = HttpContext.Current.Request.RequestContext.RouteData.Values["Action"].ToString();
 
-    Layout = controller == "Manager" ? "~/Views/Shared/_ManagerLayout.cshtml" : "~/Views/Shared/_MainLayout.cshtml";
+    //TODO: Find better way to show proper layout
+    if (controller == "Main" || (controller == "Profile" && (action == "Register" || action == "Login")))
+    {
+        Layout = "~/Views/Shared/_MainLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+    }
 }
