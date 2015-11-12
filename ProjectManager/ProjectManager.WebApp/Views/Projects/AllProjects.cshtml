@@ -32,8 +32,8 @@
                 @Html.DisplayFor(modelItem => project.Members.Count)
             </div>
             <div class="col-md-3">
-                @Html.ActionLink("Set", "Set", new { id = project.Id }) |
-                @Html.ActionLink("Edit", "Edit", new { id = project.Id }) |
+                @Html.RouteLink("Add assignment", new RouteValueDictionary(new { controller = "Assignments", action = "CreateFromProject", id = project.Id })) |
+ @Html.ActionLink("Edit", "Edit", new { id = project.Id }) |
                 @Html.ActionLink("Details", "Details", new { id = project.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id = project.Id })
             </div>

@@ -31,6 +31,11 @@ namespace ProjectManager.Repositories
             return _context.Assignments.Where(x => x.AssignedToId == id).LoadRelatedEntities(); ;
         }
 
+        public IEnumerable<Assignment> GetAllByProjectId(Guid id)
+        {
+            return _context.Assignments.Where(x => x.ProjectId == id).LoadRelatedEntities(); ;
+        }
+
         public IEnumerable<Assignment> GetAllByDate(int year = 0, int month = 0, int day = 0)
         {
             var result = _context.Assignments.Where(x => x.DueDate != null);

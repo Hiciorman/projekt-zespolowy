@@ -25,6 +25,10 @@ namespace ProjectManager.Services
         {
             return _AssignmentRepository.GetAllByUserId(id).ToList();
         }
+        public IList<Assignment> GetAllByProjectId(Guid id)
+        {
+            return _AssignmentRepository.GetAllByProjectId(id).ToList();
+        }
 
         public IList<Assignment> GetAllByDate(int year = 0, int month = 0, int day = 0)
         {

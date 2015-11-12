@@ -4,16 +4,23 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using ProjectManager.Domain;
 using ProjectManager.WebApp.Models;
+using ProjectManager.Services.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ProjectManager.WebApp.Controllers
 {
     public class ProfileController : Controller
     {
+        private readonly IProjectService _projectService;
+        private readonly IAssignmentService _assignmentService;
         private readonly ApplicationUserManager _userManager;
         private readonly ApplicationSignInManager _signInManager;
 
-        public ProfileController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public ProfileController(IProjectService projectService, IAssignmentService assignmentService, ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
+            this._projectService = projectService;
+            this._assignmentService = assignmentService;
             this._userManager = userManager;
             this._signInManager = signInManager;
         }
@@ -115,6 +122,25 @@ namespace ProjectManager.WebApp.Controllers
             _signInManager.AuthenticationManager.SignOut();
 
             return RedirectToAction("Start", "Main");
+        }
+        [HttpGet]
+        public ActionResult Assignments()
+        {
+            var projects = _projectService.GetAllByUserId(User.Identity.GetUserId()).ToList();
+            var assignments = new List<List<Assignment>>(projects.Count);
+            for (int i = 0; i < projects.Count; i++)
+            {
+                assignments.Add(new List<Assignment>());
+                assignments[i] = _assignmentService.GetAllByProjectId(projects[i].Id).Where(a => a.AssignedToId==User.Identity.GetUserId()).ToList();
+            }
+
+            var model = new UserAssignmentsViewModel
+            {
+                Projects = projects, Assignments=assignments
+                
+            };
+
+            return View(model);
         }
     }
 }
