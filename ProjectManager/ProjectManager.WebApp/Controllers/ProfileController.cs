@@ -107,6 +107,20 @@ namespace ProjectManager.WebApp.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, true, true);
+
+                string code = await _userManager.GenerateEmailConfirmationTokenAsync(user.Id);
+
+                string callbackUrl = Url.Action("ConfirmEmail",
+                    "Profile",
+                    new { userId = user.Id, code = code },
+                    protocol: Request.Url.Scheme
+                    );
+
+                await
+                    _userManager.SendEmailAsync(user.Id, "Potwierdzenie konta",
+                        "Aby potwierdzić email kliknij <a href=\""
+                        + callbackUrl + "\">here</a>");
+
                 return RedirectToAction("Start", "Main");
             }
             else
@@ -131,16 +145,30 @@ namespace ProjectManager.WebApp.Controllers
             for (int i = 0; i < projects.Count; i++)
             {
                 assignments.Add(new List<Assignment>());
-                assignments[i] = _assignmentService.GetAllByProjectId(projects[i].Id).Where(a => a.AssignedToId==User.Identity.GetUserId()).ToList();
+                assignments[i] = _assignmentService.GetAllByProjectId(projects[i].Id).Where(a => a.AssignedToId == User.Identity.GetUserId()).ToList();
             }
 
             var model = new UserAssignmentsViewModel
             {
-                Projects = projects, Assignments=assignments
-                
+                Projects = projects,
+                Assignments = assignments
+
             };
 
             return View(model);
+        }
+
+        //
+        // GET: /Account/ConfirmEmail
+        public async Task<ActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(userId, code);
+            return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
     }
 }

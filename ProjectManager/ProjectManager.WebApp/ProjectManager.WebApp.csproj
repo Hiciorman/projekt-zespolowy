@@ -242,6 +242,8 @@
     <Content Include="Views\Main\Features.cshtml" />
     <Content Include="Views\Manager\KanbanBoard.cshtml" />
     <Content Include="Views\Profile\Assignments.cshtml" />
+    <Content Include="Views\Profile\ConfirmEmail.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
