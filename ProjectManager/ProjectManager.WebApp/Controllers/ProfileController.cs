@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -81,10 +82,21 @@ namespace ProjectManager.WebApp.Controllers
             {
                 case SignInStatus.Success:
                     return RedirectToAction("Dashboard", "Manager");
+                case SignInStatus.Failure:
+                    ModelState.AddModelError(string.Empty, "Incorrect username or password");
+                    break;
+                case SignInStatus.RequiresVerification:
+                    ModelState.AddModelError(string.Empty, "Account requires verification");
+                    break;
+                case SignInStatus.LockedOut:
+                    ModelState.AddModelError(string.Empty, "Account is locked out");
+                    break;
                 default:
-                    ModelState.AddModelError("", "Incorrect username or password");
-                    return View(model);
+                    ModelState.AddModelError(string.Empty, "Try login again after few minutes");
+                    break;
             }
+
+            return View(model);
         }
 
         [HttpGet]
@@ -111,7 +123,10 @@ namespace ProjectManager.WebApp.Controllers
             }
             else
             {
-                ModelState.AddModelError("failed", "Registration failed");
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error);
+                }
             }
 
             return View(model);
@@ -123,6 +138,7 @@ namespace ProjectManager.WebApp.Controllers
 
             return RedirectToAction("Start", "Main");
         }
+
         [HttpGet]
         public ActionResult Assignments()
         {
