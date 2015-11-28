@@ -9,55 +9,60 @@ namespace ProjectManager.Services
 {
     public class AssignmentService : IAssignmentService
     {
-        private readonly IAssignmentRepository _AssignmentRepository;
+        private readonly IAssignmentRepository _assignmentRepository;
 
-        public AssignmentService(IAssignmentRepository AssignmentRepository)
+        public AssignmentService(IAssignmentRepository assignmentRepository)
         {
-            _AssignmentRepository = AssignmentRepository;
+            _assignmentRepository = assignmentRepository;
         }
 
         public IList<Assignment> GetAll()
         {
-            return _AssignmentRepository.GetAll().ToList();
+            return _assignmentRepository.GetAll().ToList();
         }
 
         public IList<Assignment> GetAllByUserId(string id)
         {
-            return _AssignmentRepository.GetAllByUserId(id).ToList();
+            return _assignmentRepository.GetAllByUserId(id).ToList();
         }
-        public IList<Assignment> GetAllByProjectId(Guid id)
+        public IList<Assignment> GetAllByProjectId(Guid? id)
         {
-            return _AssignmentRepository.GetAllByProjectId(id).ToList();
+            if (id == null)
+            {
+                return new List<Assignment>();
+            }
+
+            return _assignmentRepository.GetAllByProjectId((Guid)id).ToList();
         }
 
         public IList<Assignment> GetAllByDate(int year = 0, int month = 0, int day = 0)
         {
-            return _AssignmentRepository.GetAllByDate(year, month, day).ToList();
+            return _assignmentRepository.GetAllByDate(year, month, day).ToList();
         }
 
         public Assignment FindById(Guid id)
         {
-            return _AssignmentRepository.FindById(id);
+            return _assignmentRepository.FindById(id);
         }
 
         public void Add(Assignment Assignment)
         {
-            _AssignmentRepository.Add(Assignment);
+            _assignmentRepository.Add(Assignment);
         }
 
         public void Update(Assignment Assignment)
         {
-            _AssignmentRepository.Update(Assignment);
+            _assignmentRepository.Update(Assignment);
         }
 
         public bool Remove(Guid id)
         {
-            return _AssignmentRepository.Remove(id);
+            return _assignmentRepository.Remove(id);
         }
 
         public IList<Assignment> GetAllByAssignedToId(string id)
         {
-            return _AssignmentRepository.GetAllByAssignedToId(id).ToList();
+            return _assignmentRepository.GetAllByAssignedToId(id).ToList();
         }
     }
 }

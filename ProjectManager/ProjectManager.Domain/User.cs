@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using System;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -21,5 +23,10 @@ namespace ProjectManager.Domain
         }
 
         public virtual ICollection<Project> Projects { get; set; }
+
+        public Guid? ActiveProjectId { get; set; }
+
+        [ForeignKey("ActiveProjectId")]
+        public Project ActiveProject { get; set; }
     }
 }

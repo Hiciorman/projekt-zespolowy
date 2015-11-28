@@ -21,17 +21,17 @@ namespace ProjectManager.Repositories
             return _context.Priorities;
         }
 
-        public IEnumerable<Status> GetStatus()
+        public IEnumerable<Status> GetStatuses()
         {
             return _context.Statuses;
         }
 
-        public IEnumerable<Category> GetCategory()
+        public IEnumerable<Category> GetCategories()
         {
             return _context.Categories;
         }
 
-        public IEnumerable<User> GetUser()
+        public IEnumerable<User> GetUsers()
         {
             return _context.Users;
         }

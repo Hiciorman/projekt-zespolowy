@@ -75,7 +75,7 @@ namespace ProjectManager.WebApp.Tests
             //Arange
             var model = new RegisterViewModel { Password = "short", PasswordAgain = "short", Username = "Tester" };
 
-            _userManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Failed());
+            _userManager.Setup(x => x.CreateAsync(It.IsAny<User>(), model.Password)).ReturnsAsync(IdentityResult.Failed("Error"));
             
             //Act
             var result = await _sut.Register(model) as ViewResult;

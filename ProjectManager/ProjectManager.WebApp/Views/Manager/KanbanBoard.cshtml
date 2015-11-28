@@ -1,5 +1,4 @@
-﻿@using ProjectManager.Domain
-@model ProjectManager.WebApp.Models.KanbanBoardViewModel
+﻿@model ProjectManager.WebApp.Models.KanbanBoardViewModel
 
 <div class="container">
     <div class="row">
@@ -22,17 +21,27 @@
             <a href="#">
                 Recently updated
             </a>
-        </div>     
+        </div>
     </div>
     <div class="row">
-        @foreach (var status in Model.Stasuses)
+        @foreach (var status in Model.Stasuses.Where(status => status.Text != "Backlog"))
         {
-            if (status.Text != "Backlog")
-            {
-                <div class="col-md-3">
-                    @Html.Label(status.Text)
-                </div>
-            }
+            <div class="col-md-3">
+                @Html.Label(status.Text)
+                @foreach (var assignment in Model.Assignments.Where(assign => assign.Status.Description == status.Text))
+                {
+                    <div class="assignment">
+                        @Html.Label(assignment.Name)
+                        <br />
+                        @assignment.Description
+                        <br />
+                        @if (assignment.AssignedTo != null)
+                        {
+                            @:Assigned to: @assignment.AssignedTo.UserName
+                        }
+                    </div>
+                }
+            </div>
         }
     </div>
 </div>

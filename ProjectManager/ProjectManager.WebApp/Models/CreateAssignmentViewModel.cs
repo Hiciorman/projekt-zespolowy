@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using ProjectManager.Domain;
+﻿using ProjectManager.Domain;
 using System.Web.Mvc;
 
 namespace ProjectManager.WebApp.Models

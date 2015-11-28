@@ -41,3 +41,8 @@ textarea {
 .validation-summary-valid {
   display: none;
 }
+.assignment {
+  border: solid #103b7e;
+  height: 80px;
+  margin-bottom: 3px;
+}

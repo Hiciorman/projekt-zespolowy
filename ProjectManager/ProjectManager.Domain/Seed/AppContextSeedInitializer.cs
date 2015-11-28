@@ -60,6 +60,7 @@ namespace ProjectManager.Domain.Seed
             };
 
             context.Projects.Add(project);
+            context.Users.FirstOrDefault().ActiveProjectId = project.Id;
             context.SaveChanges();
             #endregion
 
@@ -73,7 +74,7 @@ namespace ProjectManager.Domain.Seed
                     DueDate = new DateTime(2015, 11, 10),
                     OwnerId = context.Users.FirstOrDefault().Id,
                     ProjectId = context.Projects.FirstOrDefault().Id,
-                    StatusId = context.Statuses.FirstOrDefault().Id,
+                    StatusId = context.Statuses.FirstOrDefault(x => x.Type == StatusType.Todo).Id,
                     PriorityId = context.Priorities.FirstOrDefault().Id,
                     CategoryId = context.Categories.FirstOrDefault().Id
                 };
