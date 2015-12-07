@@ -233,7 +233,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AssignmentsController.cs" />
-    <Compile Include="Controllers\ChangeCurrentAssignmentController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\ManagerController.cs" />
