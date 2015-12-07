@@ -6,45 +6,115 @@
 
 <h2>Edit</h2>
 
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Project</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
+        <div class="col-md-6">
+            <h4>
+                Edit users in project
+            </h4>
+            @foreach (var user in Model.Members)
+            {
+                <div>
+                    <span>@user.UserName</span>
+                    <a href="">Remove</a>
+                </div>
+            }
+            <button id="AddUserButtonPopup" class="btn btn-default">
+                Add user to project
+            </button>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "AllProjects")
 </div>
 
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<div id="dialog" title="Add user to project" class="popup-dialog">
+    <input id="UsernameInput" class="text-info" />
+    <button id="AddUser" class="btn margin-top-10px">Add</button>
+    <button id="CancelPopup" class="btn margin-top-10px">Cancel</button>
+</div>
+
+<script>
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            resizable: false,
+            draggable: false,
+            open: function (event, ui) { $(".ui-dialog-titlebar-close", ui.dialog | ui).hide(); }
+        });
+        $("#AddUserButtonPopup").click(function (e) {
+            e.preventDefault();
+            $("#dialog").dialog("open");
+        });
+    });
+
+    $("#CancelPopup").click(function (e) {
+        $("#dialog").dialog("close");
+    });
+
+    $("#AddUser").click(function (e) {
+        var userName = $('#UsernameInput').val();
+        var projectId = @Html.Raw(Json.Encode(Model.Id));
+
+        $("#dialog").dialog("close");
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("AddUser", "Projects")',
+            data: { userName: userName, projectId: projectId },
+            datatype: "JSON",
+            success: function (data) {
+                if (data.result == 'true') {
+                    alert("User added successfully");
+                    location.reload();
+                } else {
+                    alert("User not found");
+                    $('#UsernameInput').val("");
+                }
+            },
+            error: function () {
+                alert("Failed to get data from server");
+            }
+        });
+    });
+</script>
+

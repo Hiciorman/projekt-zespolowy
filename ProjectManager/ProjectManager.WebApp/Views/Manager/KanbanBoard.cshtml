@@ -32,12 +32,18 @@
                 {
                     <div class="assignment">
                         @Html.Label(assignment.Name)
-                        <br />
+                        <br/>
                         @assignment.Description
-                        <br />
+                        <br/>
                         @if (assignment.AssignedTo != null)
                         {
-                            @:Assigned to: @assignment.AssignedTo.UserName
+                            <a data-assignmentid="@assignment.Id" class="popup-button" href="">Assigned to: @assignment.AssignedTo.UserName</a>
+                        }
+                        else
+                        {
+                            <a data-assignmentid="@assignment.Id" class="popup-button" href="#">
+                                Unassigned
+                            </a>
                         }
                     </div>
                 }
@@ -45,3 +51,64 @@
         }
     </div>
 </div>
+
+<!-- przenieść gdzieś-->
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<div id="dialog" title="Assign user to project" class="popup-dialog">
+    @foreach (var user in Model.Users)
+    {
+        <div class="col-md-6">
+            @user.UserName
+        </div>
+        <a data-userid="@user.Id" class="col-md-6 assign-user" href="">
+            Assign user
+        </a>
+    }
+    <a class="col-md-12 assign-user" href="">
+        Cancel assignment
+    </a>
+    <button id="CancelPopup" class="btn margin-top-10px col-md-6">Cancel</button>
+</div>
+
+<script>
+
+    var currentAssignmentId;
+
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            resizable: false,
+            draggable: false,
+            open: function (event, ui) { $(".ui-dialog-titlebar-close", ui.dialog | ui).hide(); }
+        });
+        $(".popup-button").click(function (e) {
+            e.preventDefault();
+            currentAssignmentId = $(this).attr("data-assignmentid");
+            $("#dialog").dialog("open");
+        });
+    });
+
+    $("#CancelPopup").click(function (e) {
+        $("#dialog").dialog("close");
+    });
+
+    $(".assign-user").click(function (e) {
+        var userId = $(this).attr("data-userid");
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ChangeCurrentAssignment", "Manager")',
+                data: { userId: userId, currentAssignmentId: currentAssignmentId },
+                datatype: "JSON",
+                success: function (data) {
+                    location.reload();
+                },
+                error: function () {
+                    alert("Failed to get data from server");
+                }
+            });
+    });
+</script>

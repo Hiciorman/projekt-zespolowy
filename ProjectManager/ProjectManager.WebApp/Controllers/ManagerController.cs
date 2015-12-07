@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Linq;
+using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using ProjectManager.Domain;
 using ProjectManager.Services.Interfaces;
@@ -13,7 +15,7 @@ namespace ProjectManager.WebApp.Controllers
         private readonly IAssignmentService _assignmentService;
         private readonly IDictionaryService _dictionaryService;
 
-        public ManagerController(ApplicationUserManager userManager ,IAssignmentService assignmentService, IDictionaryService dictionaryService)
+        public ManagerController(ApplicationUserManager userManager, IAssignmentService assignmentService, IDictionaryService dictionaryService)
         {
             this._userManager = userManager;
             this._assignmentService = assignmentService;
@@ -31,10 +33,15 @@ namespace ProjectManager.WebApp.Controllers
         {
             var user = _userManager.FindById(User.Identity.GetUserId());
 
+            var usersInProject =
+                _userManager.Users.Where(u => u.Projects.All(x => x.Id == user.ActiveProjectId.Value));
+
             var model = new KanbanBoardViewModel
             {
                 Stasuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description"),
                 Assignments = _assignmentService.GetAllByProjectId(user.ActiveProjectId),
+                Users = usersInProject.ToList(),
+                ProjectId = user.ActiveProjectId.Value
             };
 
             return View(model);
@@ -45,6 +52,13 @@ namespace ProjectManager.WebApp.Controllers
             var user = _userManager.FindById(User.Identity.GetUserId());
 
             return File(user.Avatar, "image/jpg");
+        }
+
+        public ActionResult ChangeCurrentAssignment(string userId, string currentAssignmentId)
+        {
+            _assignmentService.ChangeTaskAssignment(userId, new Guid(currentAssignmentId));
+
+            return Json(new { });
         }
     }
 }

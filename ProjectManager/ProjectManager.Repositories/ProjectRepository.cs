@@ -10,10 +10,12 @@ namespace ProjectManager.Repositories
     public class ProjectRepository : IProjectRepository
     {
         private readonly AppContext _context;
+        private readonly ApplicationUserManager _applicationUserManager;
 
-        public ProjectRepository(AppContext context)
+        public ProjectRepository(AppContext context, ApplicationUserManager applicationUserManager)
         {
             _context = context;
+            this._applicationUserManager = applicationUserManager;
         }
 
         public IEnumerable<Project> GetAll()

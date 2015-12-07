@@ -60,6 +60,11 @@ namespace ProjectManager.Services
             return _assignmentRepository.Remove(id);
         }
 
+        public void ChangeTaskAssignment(string userId, Guid currentAssignmentId)
+        {
+            _assignmentRepository.ChangeTaskAssignment(userId, currentAssignmentId);
+        }
+
         public IList<Assignment> GetAllByAssignedToId(string id)
         {
             return _assignmentRepository.GetAllByAssignedToId(id).ToList();

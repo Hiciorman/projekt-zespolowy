@@ -15,5 +15,6 @@ namespace ProjectManager.Repositories.Interfaces
         void Add(Assignment Assignment);
         void Update(Assignment Assignment);
         bool Remove(Guid id);
+        void ChangeTaskAssignment(string userId, Guid currentAssignmentId);
     }
 }

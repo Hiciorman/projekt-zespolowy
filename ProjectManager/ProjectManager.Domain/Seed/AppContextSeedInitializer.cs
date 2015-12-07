@@ -47,6 +47,13 @@ namespace ProjectManager.Domain.Seed
                 UserName = "Tester"
             };
             manager.Create(user, "tester12345");
+
+            var user2 = new User()
+            {
+                Email = "test2@test.com",
+                UserName = "Tester2"
+            };
+            manager.Create(user2, "tester12345");
             #endregion
 
             #region Projects
@@ -54,9 +61,8 @@ namespace ProjectManager.Domain.Seed
             {
                 Name = "Test",
                 Description = "Projekt testowy",
-                OwnerId = context.Users.FirstOrDefault().Id,
+                OwnerId = user.Id,
                 Members = new List<User>() { user }
-
             };
 
             context.Projects.Add(project);

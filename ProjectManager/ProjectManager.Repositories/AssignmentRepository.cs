@@ -95,7 +95,28 @@ namespace ProjectManager.Repositories
             return true;
         }
 
+        public void ChangeTaskAssignment(string userId, Guid currentAssignmentId)
+        {
+            try
+            {
+                var assignment = FindById(currentAssignmentId);
 
+                if (String.IsNullOrEmpty(userId))
+                {
+                    assignment.AssignedToId = null;
+                }
+                else
+                {
+                    assignment.AssignedToId = userId;
+                }
+
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
     static class Extension
     {
