@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using ProjectManager.Helpers;
 
 namespace ProjectManager.Domain
 {
@@ -38,5 +40,12 @@ namespace ProjectManager.Domain
             return manager;
         }
 
+        public override Task<IdentityResult> CreateAsync(User user, string password)
+        {
+            var generator = new AvatarGenerator();
+            user.Avatar = generator.Generate(user.UserName);
+
+            return base.CreateAsync(user, password);
+        }
     }
 }

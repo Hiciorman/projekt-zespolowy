@@ -2,9 +2,11 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
+using ProjectManager.Helpers;
 
 namespace ProjectManager.Domain
 {
@@ -22,11 +24,14 @@ namespace ProjectManager.Domain
             Projects = new HashSet<Project>();
         }
 
-        public virtual ICollection<Project> Projects { get; set; }
-
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public byte[] Avatar { get; set; }
         public Guid? ActiveProjectId { get; set; }
 
         [ForeignKey("ActiveProjectId")]
         public Project ActiveProject { get; set; }
+
+        public virtual ICollection<Project> Projects { get; set; }
     }
 }
