@@ -16,15 +16,18 @@
                 <a href="@Url.Action("AllProjects", "Projects")">Projects</a>
             </li>
             <li>
-                <a href="@Url.Action("KanbanBoard","Manager")">Board</a>
+                <a href="@Url.Action("KanbanBoard", "Manager")">Board</a>
             </li>
             <li>
-                <a href="@Url.Action("Assignments","Profile")">My Tasks</a>
+                <a href="@Url.Action("Assignments", "Profile")">My Tasks</a>
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
+            <li style="margin-top: 9px;">
+                <img src="@Url.Action("GetAvatar", "Manager")" alt=":("/>
+            </li>
             <li>
-                <a href="#">Avatar</a>
+                <a href="@Url.Action("Details","Profile")">@User.Identity.Name</a>
             </li>
             <li>
                 <a href="@Url.Action("Logout", "Profile")">Logout</a>
@@ -32,14 +35,3 @@
         </ul>
     </div>
 </div>
-@* Left side navbar *@
-@*<div class="navbar navbar-default navbar-left">
-    <ul class="nav nav-pills nav-stacked">
-        <li>
-            <a href="#">Search</a>
-        </li>
-        <li>
-            <a href="@Url.Action("Logout", "Profile")">Logout</a>
-        </li>
-    </ul>
-</div>*@

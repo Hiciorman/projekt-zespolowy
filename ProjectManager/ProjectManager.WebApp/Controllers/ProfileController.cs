@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -8,6 +7,8 @@ using ProjectManager.WebApp.Models;
 using ProjectManager.Services.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
+using System.Web.Helpers;
 
 namespace ProjectManager.WebApp.Controllers
 {
@@ -29,15 +30,68 @@ namespace ProjectManager.WebApp.Controllers
         [HttpGet]
         public ActionResult Details()
         {
-            var model = new ProfileDetailsViewModel();
-
             var user = _userManager.FindById(User.Identity.GetUserId());
+            if (user == null)
+            {
+                return RedirectToAction("Start", "Main");
+            }
 
-            if (user == null) return RedirectToAction("Start", "Main");
-
-            model.Username = user.UserName;
+            var model = new ProfileViewModel()
+            {
+                Username = user.UserName,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName
+            };
 
             return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult Edit()
+        {
+            var user = _userManager.FindById(User.Identity.GetUserId());
+            if (user == null)
+            {
+                return RedirectToAction("Start", "Main");
+            }
+
+            var model = new ProfileViewModel()
+            {
+                Username = user.UserName,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(ProfileViewModel model, HttpPostedFileBase upload)
+        {
+            var user = _userManager.FindById(User.Identity.GetUserId());
+            if (user == null)
+            {
+                return RedirectToAction("Start", "Main");
+            }
+
+            if (upload != null && upload.ContentLength > 0)
+            {
+                WebImage img = new WebImage(upload.InputStream);
+                if (img.Width > 32)
+                    img.Resize(32, 32);
+                user.Avatar = img.GetBytes();
+            }
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.UserName = model.Username;
+            user.Email = model.Email;
+
+            await _userManager.UpdateAsync(user);
+
+            return RedirectToAction("Details", "Profile");
         }
 
         [HttpGet]
@@ -49,12 +103,23 @@ namespace ProjectManager.WebApp.Controllers
         [HttpPost]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
             var result = await _userManager.ChangePasswordAsync(User.Identity.GetUserId(), model.CurrentPassword, model.NewPassword);
 
             if (result.Succeeded)
             {
-                //notification
                 return RedirectToAction("Details", "Profile");
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error);
+                }
             }
 
             return View(model);
@@ -147,13 +212,14 @@ namespace ProjectManager.WebApp.Controllers
             for (int i = 0; i < projects.Count; i++)
             {
                 assignments.Add(new List<Assignment>());
-                assignments[i] = _assignmentService.GetAllByProjectId(projects[i].Id).Where(a => a.AssignedToId==User.Identity.GetUserId()).ToList();
+                assignments[i] = _assignmentService.GetAllByProjectId(projects[i].Id).Where(a => a.AssignedToId == User.Identity.GetUserId()).ToList();
             }
 
             var model = new UserAssignmentsViewModel
             {
-                Projects = projects, Assignments=assignments
-                
+                Projects = projects,
+                Assignments = assignments
+
             };
 
             return View(model);

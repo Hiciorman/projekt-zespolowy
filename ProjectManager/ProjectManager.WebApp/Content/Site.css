@@ -46,3 +46,13 @@ textarea {
   height: 80px;
   margin-bottom: 3px;
 }
+.content-profile {
+  border: solid gainsboro;
+  border-radius: 10px;
+  padding-top: 4px;
+}
+.customButton {
+  margin-bottom: 5px !important;
+  margin-top: 5px;
+  width: 200px;
+}

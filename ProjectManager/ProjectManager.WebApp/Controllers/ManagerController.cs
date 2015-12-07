@@ -34,12 +34,17 @@ namespace ProjectManager.WebApp.Controllers
             var model = new KanbanBoardViewModel
             {
                 Stasuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description"),
-                Assignments = _assignmentService.GetAllByProjectId(user.ActiveProjectId)
+                Assignments = _assignmentService.GetAllByProjectId(user.ActiveProjectId),
             };
 
             return View(model);
         }
 
-       
+        public FileContentResult GetAvatar()
+        {
+            var user = _userManager.FindById(User.Identity.GetUserId());
+
+            return File(user.Avatar, "image/jpg");
+        }
     }
 }
