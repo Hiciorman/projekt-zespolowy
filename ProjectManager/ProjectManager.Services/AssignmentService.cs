@@ -65,6 +65,11 @@ namespace ProjectManager.Services
             _assignmentRepository.ChangeTaskAssignment(userId, currentAssignmentId);
         }
 
+        public void ChangeAssignmentStatus(int statusId, Guid currentAssignmentId)
+        {
+            _assignmentRepository.ChangeAssignmentStatus(statusId, currentAssignmentId);
+        }
+
         public IList<Assignment> GetAllByAssignedToId(string id)
         {
             return _assignmentRepository.GetAllByAssignedToId(id).ToList();

@@ -32,19 +32,27 @@
                 {
                     <div class="assignment">
                         @Html.Label(assignment.Name)
-                        <br/>
+                        <br />
                         @assignment.Description
-                        <br/>
-                        @if (assignment.AssignedTo != null)
-                        {
-                            <a data-assignmentid="@assignment.Id" class="popup-button" href="">Assigned to: @assignment.AssignedTo.UserName</a>
-                        }
-                        else
-                        {
-                            <a data-assignmentid="@assignment.Id" class="popup-button" href="#">
-                                Unassigned
+                        <br />
+                        <div class="col-md-6">
+                            @if (assignment.AssignedTo != null)
+                            {
+                                <a data-assignmentid="@assignment.Id" class="popup-button" href="">@assignment.AssignedTo.UserName</a>
+                            }
+                            else
+                            {
+                                <a data-assignmentid="@assignment.Id" class="popup-button" href="#">
+                                    Unassigned
+                                </a>
+                            }
+                        </div>
+
+                        <div class="col-md-6">
+                            <a class="popup-button-status" data-assignmentid="@assignment.Id" href="">
+                                Change status
                             </a>
-                        }
+                        </div>
                     </div>
                 }
             </div>
@@ -73,6 +81,19 @@
     <button id="CancelPopup" class="btn margin-top-10px col-md-6">Cancel</button>
 </div>
 
+<div id="dialog-status" title="Change project status" class="popup-dialog">
+    @foreach (var status in Model.Stasuses)
+    {
+        <div class="col-md-6">
+            @status.Text
+        </div>
+        <a data-statusid="@status.Value" class="col-md-6 change-status" href="">
+            Change
+        </a>
+    }
+    <button id="CancelPopupStatus" class="btn margin-top-10px">Cancel</button>
+</div>
+
 <script>
 
     var currentAssignmentId;
@@ -91,24 +112,60 @@
         });
     });
 
+    $(function () {
+        $("#dialog-status").dialog({
+            autoOpen: false,
+            resizable: false,
+            draggable: false,
+            open: function (event, ui) { $(".ui-dialog-titlebar-close", ui.dialog | ui).hide(); }
+        });
+        $(".popup-button-status").click(function (e) {
+            e.preventDefault();
+            currentAssignmentId = $(this).attr("data-assignmentid");
+            $("#dialog-status").dialog("open");
+        });
+    });
+
     $("#CancelPopup").click(function (e) {
         $("#dialog").dialog("close");
+    });
+
+    $("#CancelPopupStatus").click(function (e) {
+        $("#dialog-status").dialog("close");
     });
 
     $(".assign-user").click(function (e) {
         var userId = $(this).attr("data-userid");
 
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("ChangeCurrentAssignment", "Manager")',
-                data: { userId: userId, currentAssignmentId: currentAssignmentId },
-                datatype: "JSON",
-                success: function (data) {
-                    location.reload();
-                },
-                error: function () {
-                    alert("Failed to get data from server");
-                }
-            });
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ChangeCurrentAssignment", "Manager")',
+            data: { userId: userId, currentAssignmentId: currentAssignmentId },
+            datatype: "JSON",
+            success: function (data) {
+                location.reload();
+            },
+            error: function () {
+                alert("Failed to get data from server");
+            }
+        });
     });
+
+    $(".change-status").click(function (e) {
+        var statusId = $(this).attr("data-statusid");
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ChangeAssignmentStatus", "Manager")',
+            data: { statusId: statusId, currentAssignmentId: currentAssignmentId },
+            datatype: "JSON",
+            success: function (data) {
+                location.reload();
+            },
+            error: function () {
+                alert("Failed to get data from server");
+            }
+        });
+    });
+
 </script>

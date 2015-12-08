@@ -117,6 +117,24 @@ namespace ProjectManager.Repositories
                 throw;
             }
         }
+
+        public void ChangeAssignmentStatus(int statusId, Guid currentAssignmentId)
+        {
+            try
+            {
+                var assignment = FindById(currentAssignmentId);
+
+                var status = _context.Statuses.ToList().Find(x => x.Id == statusId);
+
+                assignment.Status = status;
+
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
     static class Extension
     {

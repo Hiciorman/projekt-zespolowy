@@ -60,5 +60,12 @@ namespace ProjectManager.WebApp.Controllers
 
             return Json(new { });
         }
+
+        public ActionResult ChangeAssignmentStatus(string statusId, string currentAssignmentId)
+        {
+            _assignmentService.ChangeAssignmentStatus(int.Parse(statusId), new Guid(currentAssignmentId));
+
+            return Json(new {});
+        }
     }
 }
