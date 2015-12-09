@@ -1,6 +1,58 @@
-﻿@model ProjectManager.WebApp.Models.ProfileDetailsViewModel
+﻿@model ProjectManager.WebApp.Models.ProfileViewModel
 
-<h1>Profile details</h1>
-Username - @Model.Username
-
-<a href="@Url.Action("ChangePassword","Profile")">Change password</a>
+<div class="container content-profile">
+    <div class="row">
+        <div class="col-md-3">
+            Avatar
+        </div>
+        <div class="col-md-9">
+            <img src="@Url.Action("GetAvatar", "Manager")" alt=":(" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            @Html.DisplayNameFor(m => m.Username)
+        </div>
+        <div class="col-md-9">
+            @Html.DisplayFor(m => m.Username)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            @Html.DisplayNameFor(m => m.Email)
+        </div>
+        <div class="col-md-9">
+            @Html.DisplayFor(m => m.Email)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            Password
+        </div>
+        <div class="col-md-9">
+            **********
+            <a href="@Url.Action("ChangePassword", "Profile")">Change password</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            @Html.DisplayNameFor(m => m.FirstName)
+        </div>
+        <div class="col-md-9">
+            @Html.DisplayFor(m => m.FirstName)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            @Html.DisplayNameFor(m => m.LastName)
+        </div>
+        <div class="col-md-8">
+            @Html.DisplayFor(m => m.LastName)
+        </div>
+    </div>
+    <div class="row">
+        <div class="text-center">
+            <a href="@Url.Action("Edit", "Profile")" type="button" class="btn btn-primary customButton">Edit</a>
+        </div>
+    </div>
+</div>

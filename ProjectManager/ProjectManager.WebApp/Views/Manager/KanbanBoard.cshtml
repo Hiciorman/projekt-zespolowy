@@ -1,5 +1,4 @@
-﻿@using ProjectManager.Domain
-@model ProjectManager.WebApp.Models.KanbanBoardViewModel
+﻿@model ProjectManager.WebApp.Models.KanbanBoardViewModel
 
 <div class="container">
     <div class="row">
@@ -22,17 +21,151 @@
             <a href="#">
                 Recently updated
             </a>
-        </div>     
+        </div>
     </div>
     <div class="row">
-        @foreach (var status in Model.Stasuses)
+        @foreach (var status in Model.Stasuses.Where(status => status.Text != "Backlog"))
         {
-            if (status.Text != "Backlog")
-            {
-                <div class="col-md-3">
-                    @Html.Label(status.Text)
-                </div>
-            }
+            <div class="col-md-3">
+                @Html.Label(status.Text)
+                @foreach (var assignment in Model.Assignments.Where(assign => assign.Status.Description == status.Text))
+                {
+                    <div class="assignment">
+                        @Html.Label(assignment.Name)
+                        <br />
+                        @assignment.Description
+                        <br />
+                        <div class="col-md-6">
+                            @if (assignment.AssignedTo != null)
+                            {
+                                <a data-assignmentid="@assignment.Id" class="popup-button" href="">@assignment.AssignedTo.UserName</a>
+                            }
+                            else
+                            {
+                                <a data-assignmentid="@assignment.Id" class="popup-button" href="#">
+                                    Unassigned
+                                </a>
+                            }
+                        </div>
+
+                        <div class="col-md-6">
+                            <a class="popup-button-status" data-assignmentid="@assignment.Id" href="">
+                                Change status
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
         }
     </div>
 </div>
+
+<!-- przenieść gdzieś-->
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<div id="dialog" title="Assign user to project" class="popup-dialog">
+    @foreach (var user in Model.Users)
+    {
+        <div class="col-md-6">
+            @user.UserName
+        </div>
+        <a data-userid="@user.Id" class="col-md-6 assign-user" href="">
+            Assign user
+        </a>
+    }
+    <a class="col-md-12 assign-user" href="">
+        Cancel assignment
+    </a>
+    <button id="CancelPopup" class="btn margin-top-10px col-md-6">Cancel</button>
+</div>
+
+<div id="dialog-status" title="Change project status" class="popup-dialog">
+    @foreach (var status in Model.Stasuses)
+    {
+        <div class="col-md-6">
+            @status.Text
+        </div>
+        <a data-statusid="@status.Value" class="col-md-6 change-status" href="">
+            Change
+        </a>
+    }
+    <button id="CancelPopupStatus" class="btn margin-top-10px">Cancel</button>
+</div>
+
+<script>
+
+    var currentAssignmentId;
+
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            resizable: false,
+            draggable: false,
+            open: function (event, ui) { $(".ui-dialog-titlebar-close", ui.dialog | ui).hide(); }
+        });
+        $(".popup-button").click(function (e) {
+            e.preventDefault();
+            currentAssignmentId = $(this).attr("data-assignmentid");
+            $("#dialog").dialog("open");
+        });
+    });
+
+    $(function () {
+        $("#dialog-status").dialog({
+            autoOpen: false,
+            resizable: false,
+            draggable: false,
+            open: function (event, ui) { $(".ui-dialog-titlebar-close", ui.dialog | ui).hide(); }
+        });
+        $(".popup-button-status").click(function (e) {
+            e.preventDefault();
+            currentAssignmentId = $(this).attr("data-assignmentid");
+            $("#dialog-status").dialog("open");
+        });
+    });
+
+    $("#CancelPopup").click(function (e) {
+        $("#dialog").dialog("close");
+    });
+
+    $("#CancelPopupStatus").click(function (e) {
+        $("#dialog-status").dialog("close");
+    });
+
+    $(".assign-user").click(function (e) {
+        var userId = $(this).attr("data-userid");
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ChangeCurrentAssignment", "Manager")',
+            data: { userId: userId, currentAssignmentId: currentAssignmentId },
+            datatype: "JSON",
+            success: function (data) {
+                location.reload();
+            },
+            error: function () {
+                alert("Failed to get data from server");
+            }
+        });
+    });
+
+    $(".change-status").click(function (e) {
+        var statusId = $(this).attr("data-statusid");
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ChangeAssignmentStatus", "Manager")',
+            data: { statusId: statusId, currentAssignmentId: currentAssignmentId },
+            datatype: "JSON",
+            success: function (data) {
+                location.reload();
+            },
+            error: function () {
+                alert("Failed to get data from server");
+            }
+        });
+    });
+
+</script>

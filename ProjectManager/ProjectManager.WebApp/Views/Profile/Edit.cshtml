@@ -1,0 +1,53 @@
+﻿@model ProjectManager.WebApp.Models.ProfileViewModel
+@using (Html.BeginForm("Edit", "Profile", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="container content-profile">
+        <div class="row">
+            <div class="col-md-3">
+                Avatar
+            </div>
+            <div class="col-md-9">
+                <img src="@Url.Action("GetAvatar", "Manager")" alt=":(" style="float: left; margin-right:2px" />
+                <input type="file" id="Avatar" name="upload" />
+            </div>
+        </div>
+        <div class="row" style="margin-top: 2px;">
+            <div class="col-md-3">
+                @Html.DisplayNameFor(m => m.Username)
+            </div>
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.Username)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.DisplayNameFor(m => m.Email)
+            </div>
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.Email)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.DisplayNameFor(m => m.FirstName)
+            </div>
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.FirstName)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.DisplayNameFor(m => m.LastName)
+            </div>
+            <div class="col-md-8">
+                @Html.TextBoxFor(m => m.LastName)
+            </div>
+        </div>
+        <div class="row">
+            <div class="text-center">
+                <input type="submit" value="Save" class="btn btn-primary customButton"/>
+            </div>
+        </div>
+    </div>
+}

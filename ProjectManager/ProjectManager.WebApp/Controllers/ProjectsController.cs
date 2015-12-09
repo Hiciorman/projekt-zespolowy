@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using System.Web.Management;
 using System.Web.Mvc;
 using ProjectManager.Domain;
 using ProjectManager.Services.Interfaces;
@@ -9,10 +11,12 @@ namespace ProjectManager.WebApp.Controllers
     {
         private readonly IProjectService _projectService;
         private readonly IDictionaryService _dictionaryService;
-        public ProjectsController(IProjectService projectService, IDictionaryService dictionaryService)
+        private readonly ApplicationUserManager _applicationUserManager;
+        public ProjectsController(IProjectService projectService, IDictionaryService dictionaryService, ApplicationUserManager applicationUserManager)
         {
             this._dictionaryService = dictionaryService;
             _projectService = projectService;
+            this._applicationUserManager = applicationUserManager;
         }
 
         [HttpGet]
@@ -73,7 +77,7 @@ namespace ProjectManager.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-               _projectService.Update(project);
+                _projectService.Update(project);
                 return RedirectToAction("AllProjects");
             }
 
@@ -99,6 +103,27 @@ namespace ProjectManager.WebApp.Controllers
             _projectService.Remove(id);
 
             return RedirectToAction("AllProjects");
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AddUser(string userName, string projectId)
+        {
+            var currentUser = await _applicationUserManager.FindByNameAsync(User.Identity.Name);
+
+            //get user to add to project
+            var user = await _applicationUserManager.FindByNameAsync(userName);
+
+            //if not found or user not logged return false
+            if (user != null && currentUser != null)
+            {
+                //TODO: find way to finish this
+
+                return Json(new { result = "true"});
+            }
+            else
+            {
+                return Json(new { result = "false" });
+            }
         }
     }
 }

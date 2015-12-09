@@ -2,10 +2,24 @@
 
 @using (Html.BeginForm("Register", "Profile", FormMethod.Post, new { @class = "form-center" }))
 {
+    @Html.ValidationSummary(true)
     <h2>Register</h2>
+<<<<<<< HEAD
     @Html.TextBoxFor(model => model.Username, new { @class = "form-control", placeholder = "Username" })
     @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = "Password" })
     @Html.PasswordFor(model => model.PasswordAgain, new { @class = "form-control", placeholder = "Password again" })
     @Html.TextBoxFor(model => model.Email, new {@class = "form-control", placeholder = "Email"})
+=======
+    <div class="form-group">
+        @Html.TextBoxFor(model => model.EmailAdress, new { @class = "form-control", placeholder = "Email Adress" })
+        @Html.ValidationMessageFor(model => model.EmailAdress)
+        @Html.TextBoxFor(model => model.Username, new {@class = "form-control", placeholder = "Username"})
+        @Html.ValidationMessageFor(model => model.Username)
+        @Html.PasswordFor(model => model.Password, new {@class = "form-control", placeholder = "Password"})
+        @Html.ValidationMessageFor(model => model.Password)
+        @Html.PasswordFor(model => model.PasswordAgain, new {@class = "form-control", placeholder = "Password again"})
+        @Html.ValidationMessageFor(model => model.PasswordAgain)
+    </div>
+>>>>>>> ed65d52bf42583568dcb82d068d3075ebac08d94
     <input type="submit" name="submitButton" value="Register" class="btn btn-lg btn-primary btn-block margin-top-10px" />
 }

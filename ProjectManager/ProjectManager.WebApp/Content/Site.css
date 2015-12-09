@@ -21,5 +21,38 @@ textarea {
   margin: 0 auto;
 }
 .margin-top-10px {
-  margin-top: 10px !important;
+  margin-top: 10px;
+}
+.field-validation-error {
+  color: Red;
+  font-size: medium;
+}
+.field-validation-valid {
+  display: none;
+}
+.input-validation-error {
+  border: 1px solid Red !important;
+  background-color: #fee !important;
+}
+.validation-summary-errors {
+  font-weight: bold;
+  color: Red;
+}
+.validation-summary-valid {
+  display: none;
+}
+.assignment {
+  border: solid #103b7e;
+  height: 80px;
+  margin-bottom: 3px;
+}
+.content-profile {
+  border: solid gainsboro;
+  border-radius: 10px;
+  padding-top: 4px;
+}
+.customButton {
+  margin-bottom: 5px !important;
+  margin-top: 5px;
+  width: 200px;
 }

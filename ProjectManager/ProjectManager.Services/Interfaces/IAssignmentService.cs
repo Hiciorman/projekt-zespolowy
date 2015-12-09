@@ -8,11 +8,13 @@ namespace ProjectManager.Services.Interfaces
     {
         IList<Assignment> GetAll();
         IList<Assignment> GetAllByUserId(string id);
-        IList<Assignment> GetAllByProjectId(Guid id);
+        IList<Assignment> GetAllByProjectId(Guid? id);
         IList<Assignment> GetAllByDate(int year = 0, int month = 0, int day = 0);
         Assignment FindById(Guid id);
         void Add(Assignment Assignment);
         void Update(Assignment Assignment);
         bool Remove(Guid id);
+        void ChangeTaskAssignment(string userId, Guid currentAssignmentId);
+        void ChangeAssignmentStatus(int statusId, Guid currentAssignmentId);
     }
 }

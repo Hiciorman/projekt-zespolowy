@@ -1,4 +1,6 @@
-﻿body {
+﻿@errorColor: Red;
+
+body {
     padding-bottom: 20px;
 }
 
@@ -27,6 +29,57 @@ textarea {
 
 //Paddings
 
-.margin-top-10px{
-    margin-top:10px !important;
+.margin-top-10px {
+    margin-top: 10px;
+}
+
+
+//Validation
+.field-validation-error {
+    color: @errorColor;
+    font-size: medium;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid @errorColor !important;
+    background-color: #fee !important;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: @errorColor;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+//KanbanBoard
+
+.assignment {
+    border: solid #103b7e;
+    height: 80px;
+    margin-bottom: 3px;
+}
+
+//Profile Detials
+.content-profile {
+    border: solid gainsboro;
+    border-radius: 10px;
+    padding-top:4px;
+}
+
+.customButton {
+    margin-bottom: 5px !important;
+    margin-top: 5px;
+    width: 200px;
+}
+
+//Popup style
+.popup-dialog {
+    background-color: grey;
 }

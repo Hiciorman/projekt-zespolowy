@@ -1,10 +1,18 @@
+<<<<<<< HEAD
 ﻿using System;
 using System.Reflection;
+=======
+﻿using System.Threading.Tasks;
+>>>>>>> ed65d52bf42583568dcb82d068d3075ebac08d94
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+<<<<<<< HEAD
 using Microsoft.Owin.Security.DataProtection;
+=======
+using ProjectManager.Helpers;
+>>>>>>> ed65d52bf42583568dcb82d068d3075ebac08d94
 
 namespace ProjectManager.Domain
 {
@@ -52,5 +60,12 @@ namespace ProjectManager.Domain
             return manager;
         }
 
+        public override Task<IdentityResult> CreateAsync(User user, string password)
+        {
+            var generator = new AvatarGenerator();
+            user.Avatar = generator.Generate(user.UserName);
+
+            return base.CreateAsync(user, password);
+        }
     }
 }
