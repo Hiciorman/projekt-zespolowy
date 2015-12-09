@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System;
+using System.Reflection;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -18,11 +20,18 @@ namespace ProjectManager.Domain
 
             var manager = new ApplicationUserManager(
                 new UserStore<User>(context.Get<AppContext>()));
+            
+           // var provider = new DpapiDataProtectionProvider("ProjectManager");
 
-            var provider = new DpapiDataProtectionProvider("ProjectManager");
+            //manager.UserTokenProvider =
+               // new DataProtectorTokenProvider<User>(options.DataProtectionProvider);
 
-            manager.UserTokenProvider =
-                new DataProtectorTokenProvider<User,string>(provider.Create("EmailConfirmation")) as IUserTokenProvider<User,string>;
+            var dataProtectionProvider = options.DataProtectionProvider;
+            if (dataProtectionProvider != null)
+            {
+                manager.UserTokenProvider = new DataProtectorTokenProvider<User>(dataProtectionProvider.Create("ASP.NET"));
+            }
+            // manager.UserTokenProvider = new EmailTokenProvider<User, string>();
             // Configure validation logic for usernames
             manager.UserValidator =
                 new UserValidator<User>(manager)
