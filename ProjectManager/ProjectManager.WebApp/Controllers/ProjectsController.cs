@@ -1,29 +1,60 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Web.Management;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using ProjectManager.Domain;
 using ProjectManager.Services.Interfaces;
+using ProjectManager.WebApp.Models;
 
 namespace ProjectManager.WebApp.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         private readonly IProjectService _projectService;
-        private readonly IDictionaryService _dictionaryService;
         private readonly ApplicationUserManager _applicationUserManager;
-        public ProjectsController(IProjectService projectService, IDictionaryService dictionaryService, ApplicationUserManager applicationUserManager)
+
+        public ProjectsController(IProjectService projectService, ApplicationUserManager applicationUserManager)
         {
-            this._dictionaryService = dictionaryService;
             _projectService = projectService;
-            this._applicationUserManager = applicationUserManager;
+            _applicationUserManager = applicationUserManager;
+        }
+
+
+        public ActionResult Activate(Guid id)
+        {
+            var userId = User.Identity.GetUserId();
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Profile");
+            }
+
+            var user = _applicationUserManager.FindById(userId);
+            user.ActiveProjectId = id;
+            _applicationUserManager.Update(user);
+
+            return RedirectToAction("AllProjects", "Projects");
         }
 
         [HttpGet]
         public ActionResult AllProjects()
         {
-            var projects = _projectService.GetAll();
-            return View(projects);
+            var userId = User.Identity.GetUserId();
+
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Profile");
+            }
+
+            var user = _applicationUserManager.FindById(userId);
+
+            var model = new ProjectsViewModel
+            {
+                Projects = _projectService.GetAllByUserId(userId),
+                ActiveProjectId = user.ActiveProjectId ?? Guid.Empty
+            };
+
+            return View(model);
         }
 
         [HttpGet]
@@ -41,8 +72,6 @@ namespace ProjectManager.WebApp.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            //Można wziąć po Identity.User cośtam - wskazuje aktualnie zalogowanego usera,
-            //wtedy będzie można wyciągnąć jakieś dodatkowe rzeczy 
             return View();
         }
 
@@ -51,9 +80,21 @@ namespace ProjectManager.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Project project)
         {
+            var userId = User.Identity.GetUserId();
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Profile");
+            }
+
+            var user = _applicationUserManager.FindById(userId);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Profile");
+            }
+
             if (ModelState.IsValid)
             {
-                _projectService.Add(project);
+                _projectService.Add(project, userId);
                 return RedirectToAction("AllProjects");
             }
 
@@ -84,41 +125,32 @@ namespace ProjectManager.WebApp.Controllers
             return View(project);
         }
 
-        [HttpGet]
-        public ActionResult Delete(Guid id)
+        public JsonResult Delete(Guid id)
         {
-            Project project = _projectService.FindById(id);
-            if (project == null)
+            try
             {
-                return HttpNotFound();
+                _projectService.Remove(id);
+            }
+            catch (Exception)
+            {
+                HttpNotFound();
+                throw;
             }
 
-            return View(project);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
-        {
-            _projectService.Remove(id);
-
-            return RedirectToAction("AllProjects");
+            return Json(new { });
         }
 
         [HttpPost]
         public async Task<JsonResult> AddUser(string userName, string projectId)
         {
             var currentUser = await _applicationUserManager.FindByNameAsync(User.Identity.Name);
-
-            //get user to add to project
             var user = await _applicationUserManager.FindByNameAsync(userName);
 
-            //if not found or user not logged return false
             if (user != null && currentUser != null)
             {
-                //TODO: find way to finish this
+                _projectService.AddMember(Guid.Parse(projectId), user.Id);
 
-                return Json(new { result = "true"});
+                return Json(new { result = "true" });
             }
             else
             {

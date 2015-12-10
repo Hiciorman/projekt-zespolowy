@@ -29,6 +29,16 @@ namespace ProjectManager.Domain
 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
+            modelBuilder.Entity<User>()
+                .HasMany(c => c.Projects)
+                .WithMany(p => p.Members)
+                .Map(m =>
+                {
+                    m.MapLeftKey("MemberId");
+                    m.MapRightKey("ProjectId");
+                    m.ToTable("ProjectMembers");
+                });
         }
     }
 }

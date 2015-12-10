@@ -31,9 +31,14 @@ namespace ProjectManager.Services
             return _projectRepository.FindById(id);
         }
 
-        public void Add(Project project)
+        public void Add(Project project, string userId)
         {
-            _projectRepository.Add(project);
+            _projectRepository.Add(project, userId);
+        }
+
+        public void AddMember(Guid projectId, string userId)
+        {
+            _projectRepository.AddMember(projectId, userId);
         }
 
         public void Update(Project project)
