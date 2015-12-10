@@ -1,41 +1,122 @@
 ﻿
 @model ProjectManager.WebApp.Models.UserAssignmentsViewModel
 @{
-    ViewBag.Title = "Assignments";
+    ViewBag.Title = "My tasks";
 }
 
 <h2>Your assignments</h2>
 
 <div class="container">
-    
+
     @for (int i = 0; i < Model.Projects.Count; i++)
     {
+        if (Model.AssignmentsAssignedTo[i].Count != 0)
+        {
         <div class="row">
-            <h3>    @Html.DisplayFor(modelItem => Model.Projects[i].Name)</h3>
+            <div class="col-md-2">
+                <h3> @Html.DisplayFor(modelItem => Model.Projects[i].Name)</h3>
+                <h4>Assigned to you</h4>
+            </div>
+            
+              
+                      
         </div>
-            foreach (var a in Model.Assignments[i])
+        <div class="row">
+            <div class="col-md-2">
+                <b>Name</b>
+            </div>
+            <div class="col-md-2">
+                <b>Description</b>
+            </div>
+            <div class="col-md-2">
+                <b>Priority</b>
+            </div>
+            <div class="col-md-2">
+                <b>Status</b>
+            </div>
+            <div class="col-md-2">
+                <b> Date</b>
+            </div>
+            <div class="col-md-2">
+                <b>Owned by</b>
+            </div>
+        </div>
+            foreach (var a in Model.AssignmentsAssignedTo[i])
             {
-                <div class="row">
-                    <div class="col-md-2">
-                        @Html.DisplayFor(Model => a.Name)
-                    </div>
-                    <div class="col-md-2">
-                        @Html.DisplayFor(Model => a.Description)
-                    </div>
-                    <div class="col-md-2">
-                        @Html.DisplayFor(Model => a.Priority.Description)
-                    </div>
-                    <div class="col-md-2">
-                        @Html.DisplayFor(Model => a.Status.Description)
-                    </div>
-                    <div class="col-md-2">
-                        @Html.DisplayFor(Model => a.DueDate)
-                    </div>
-                    <div class="col-md-2">
-                        @Html.DisplayFor(Model => a.AssignedTo.UserName)
-                    </div>
-                 </div>
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.DisplayFor(Model => a.Name)
+                </div>
+                <div class="col-md-2">
+                    @Html.DisplayFor(Model => a.Description)
+                </div>
+                <div class="col-md-2">
+                    @Html.DisplayFor(Model => a.Priority.Description)
+                </div>
+                <div class="col-md-2">
+                    @Html.DisplayFor(Model => a.Status.Description)
+                </div>
+                <div class="col-md-2">
+                    @Html.DisplayFor(Model => a.DueDate)
+                </div>
+                <div class="col-md-2">
+                    @Html.DisplayFor(Model => a.Owner.UserName)
+                </div>
+            </div>
             }
+        }
+        if (Model.AssignmentsOwnedBy[i].Count != 0)
+        {
+        <div class="row">
+           
+            <div class="col-md-2">
+                <h4> Owned by you</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <b>Name</b>
+            </div>
+            <div class="col-md-2">
+                <b>Description</b>
+            </div>
+            <div class="col-md-2">
+                <b>Priority</b>
+            </div>
+            <div class="col-md-2">
+                <b>Status</b>
+            </div>
+            <div class="col-md-2">
+                <b> Date</b>
+            </div>
+            <div class="col-md-2">
+                <b>Assigned to</b>
+            </div>
+        </div>
+            foreach (var a in Model.AssignmentsOwnedBy[i])
+            {
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.DisplayFor(Model => a.Name)
+                </div>
+                <div class="col-md-2">
+                    @Html.DisplayFor(Model => a.Description)
+                </div>
+                <div class="col-md-2">
+                    @Html.DisplayFor(Model => a.Priority.Description)
+                </div>
+                <div class="col-md-2">
+                    @Html.DisplayFor(Model => a.Status.Description)
+                </div>
+                <div class="col-md-2">
+                    @Html.DisplayFor(Model => a.DueDate)
+                </div>
+                <div class="col-md-2">
+                    @Html.DisplayFor(Model => a.AssignedTo.UserName)
+                </div>
+            </div>
+            }
+        }
     }
 
 

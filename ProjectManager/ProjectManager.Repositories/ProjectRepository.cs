@@ -30,9 +30,16 @@ namespace ProjectManager.Repositories
                 .SelectMany(x => x.Projects);
         }
 
+        public IEnumerable<Project> GetAllUserProjectByUserId(string id)
+        {
+            var user = _context.Users.FirstOrDefault(x => x.Id == id);
+            return _context.Projects.Where(x => x.Members.Contains(user));
+        }
+
         public Project FindById(Guid id)
         {
-            return _context.Projects.FirstOrDefault(x => x.Id == id);
+            var x = _context.Projects.Where(b => b.Id == id).Include(p=>p.Members).First();
+            return x;
         }
 
         public void Add(Project project, string userId)
@@ -78,5 +85,7 @@ namespace ProjectManager.Repositories
 
             return true;
         }
+       
     }
+    
 }

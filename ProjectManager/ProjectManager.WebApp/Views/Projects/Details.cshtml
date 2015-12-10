@@ -19,16 +19,27 @@
         </dd>
 
     </dl>
-    <h5>Members under this project</h5>
+    
+    <h5>Members under this project:</h5>
     <div>
         @foreach (var member in Model.Members)
         {
             @member.UserName
             <br/>
         }
+        @if (Model.Members.Count==0)
+        {
+        <h4>No members under this project.</h4>
+        }
 
     </div>
     <h5>Assignments under this project:</h5>
+    @if (Model.Assignemnts.Count == 0)
+    {
+        <h4>No assignments under this project.</h4>
+    }
+    else
+    {
     <table class="table">
         <tr>
             <th>

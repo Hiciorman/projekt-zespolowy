@@ -3,8 +3,13 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using ProjectManager.Domain;
-using ProjectManager.Services.Interfaces;
+using Microsoft.AspNet.Identity;
 using ProjectManager.WebApp.Models;
+using ProjectManager.Services.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Helpers;
 
 namespace ProjectManager.WebApp.Controllers
 {
@@ -65,7 +70,15 @@ namespace ProjectManager.WebApp.Controllers
             {
                 return HttpNotFound();
             }
-
+            project.Owner = _applicationUserManager.FindById(project.OwnerId);
+            foreach (var assignment in project.Assignemnts)
+            {
+                assignment.AssignedTo = _applicationUserManager.FindById(assignment.AssignedToId);
+                assignment.Category = _dictionaryService.GetCategories().First(c => c.Id == assignment.CategoryId);
+                assignment.Owner = _applicationUserManager.FindById(assignment.OwnerId);
+                assignment.Priority = _dictionaryService.GetPriorities().First(p=> p.Id ==assignment.PriorityId);
+                assignment.Status = _dictionaryService.GetStatuses().First(s => s.Id == assignment.StatusId);
+            }
             return View(project);
         }
 
@@ -98,7 +111,7 @@ namespace ProjectManager.WebApp.Controllers
                 return RedirectToAction("AllProjects");
             }
 
-            return View(project);
+            return View();
         }
 
         public ActionResult Edit(Guid id)

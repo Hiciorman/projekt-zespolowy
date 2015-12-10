@@ -207,18 +207,27 @@ namespace ProjectManager.WebApp.Controllers
         [HttpGet]
         public ActionResult Assignments()
         {
-            var projects = _projectService.GetAllByUserId(User.Identity.GetUserId()).ToList();
-            var assignments = new List<List<Assignment>>(projects.Count);
+            //TODO: Zrobić lepiej [KD]
+            var projects = _projectService.GetAll().ToList();
+            var assignmentsAssignedTo = new List<List<Assignment>>(projects.Count);
+            var assignmentsOwnedBy = new List<List<Assignment>>(projects.Count);
+
             for (int i = 0; i < projects.Count; i++)
             {
-                assignments.Add(new List<Assignment>());
-                assignments[i] = _assignmentService.GetAllByProjectId(projects[i].Id).Where(a => a.AssignedToId == User.Identity.GetUserId()).ToList();
+                assignmentsAssignedTo.Add(new List<Assignment>());
+                assignmentsAssignedTo[i] = _assignmentService.GetAllByProjectId(projects[i].Id).Where(a => a.AssignedToId == User.Identity.GetUserId()).ToList();
+            }
+             for (int i = 0; i < projects.Count; i++)
+            {
+                assignmentsOwnedBy.Add(new List<Assignment>());
+                assignmentsOwnedBy[i] = _assignmentService.GetAllByProjectId(projects[i].Id).Where(a => a.OwnerId == User.Identity.GetUserId()).ToList();
             }
 
             var model = new UserAssignmentsViewModel
             {
                 Projects = projects,
-                Assignments = assignments
+                AssignmentsAssignedTo = assignmentsAssignedTo,
+                AssignmentsOwnedBy = assignmentsOwnedBy
 
             };
 

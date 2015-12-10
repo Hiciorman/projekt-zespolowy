@@ -1,5 +1,8 @@
 ﻿@model ProjectManager.WebApp.Models.KanbanBoardViewModel
 
+@{
+    ViewBag.Title = "Kanban board";
+}
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -71,13 +74,13 @@
         <div class="col-md-6">
             @user.UserName
         </div>
-        <a data-userid="@user.Id" class="col-md-6 assign-user" href="">
+        <button data-userid="@user.Id" class="col-md-6 assign-user">
             Assign user
-        </a>
+        </button>
     }
-    <a class="col-md-12 assign-user" href="">
+    <button class="col-md-12 assign-user">
         Cancel assignment
-    </a>
+    </button>
     <button id="CancelPopup" class="btn margin-top-10px col-md-6">Cancel</button>
 </div>
 
@@ -87,9 +90,9 @@
         <div class="col-md-6">
             @status.Text
         </div>
-        <a data-statusid="@status.Value" class="col-md-6 change-status" href="">
+        <button data-statusid="@status.Value" class="col-md-6 change-status">
             Change
-        </a>
+        </button>
     }
     <button id="CancelPopupStatus" class="btn margin-top-10px">Cancel</button>
 </div>
@@ -117,6 +120,7 @@
             autoOpen: false,
             resizable: false,
             draggable: false,
+            width: "480",
             open: function (event, ui) { $(".ui-dialog-titlebar-close", ui.dialog | ui).hide(); }
         });
         $(".popup-button-status").click(function (e) {
