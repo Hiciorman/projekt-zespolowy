@@ -1,5 +1,8 @@
 ﻿@model ProjectManager.WebApp.Models.LoginViewModel
 
+@{
+    ViewBag.Title = "Login";
+}
 @using (Html.BeginForm("Login", "Profile", FormMethod.Post, new { @class = "form-center" }))
 {
     @Html.ValidationSummary(true)

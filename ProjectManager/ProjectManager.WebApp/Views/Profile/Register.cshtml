@@ -1,5 +1,7 @@
 ﻿@model ProjectManager.WebApp.Models.RegisterViewModel
-
+@{
+    ViewBag.Title = "Register";
+}
 @using (Html.BeginForm("Register", "Profile", FormMethod.Post, new { @class = "form-center" }))
 {
     @Html.ValidationSummary(true)

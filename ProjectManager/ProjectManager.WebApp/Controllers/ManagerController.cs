@@ -36,12 +36,17 @@ namespace ProjectManager.WebApp.Controllers
             var usersInProject =
                 _userManager.Users.Where(u => u.Projects.All(x => x.Id == user.ActiveProjectId.Value));
 
+            var Stasuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description");
+            var Assignments = _assignmentService.GetAllByProjectId(user.ActiveProjectId);
+            var Users = usersInProject.ToList();
+            var ProjectId = user.ActiveProjectId.Value;
             var model = new KanbanBoardViewModel
             {
-                Stasuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description"),
-                Assignments = _assignmentService.GetAllByProjectId(user.ActiveProjectId),
-                Users = usersInProject.ToList(),
-                ProjectId = user.ActiveProjectId.Value
+                Stasuses = Stasuses,
+            Assignments = Assignments,
+            Users=Users,
+            ProjectId = ProjectId
+
             };
 
             return View(model);

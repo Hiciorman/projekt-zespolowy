@@ -30,7 +30,8 @@ namespace ProjectManager.Repositories
 
         public Project FindById(Guid id)
         {
-            return _context.Projects.FirstOrDefault(x => x.Id == id);
+            var x = _context.Projects.Where(b => b.Id == id).Include(p=>p.Members).First();
+            return x;
         }
 
         public void Add(Project project)
@@ -61,5 +62,7 @@ namespace ProjectManager.Repositories
 
             return true;
         }
+       
     }
+    
 }

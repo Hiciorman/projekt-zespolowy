@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ProjectManager.Domain;
+using Microsoft.AspNet.Identity;
 using ProjectManager.Services.Interfaces;
 using ProjectManager.WebApp.Models;
 
@@ -29,33 +30,33 @@ namespace ProjectManager.WebApp.Controllers
             var assignments = _assignmentService.GetAll();
             return View(assignments.ToList());
         }
-        
+
 
         public ActionResult Details(Guid id)
         {
 
-            Assignment assignment = _assignmentService.FindById(id); 
+            Assignment assignment = _assignmentService.FindById(id);
 
-            
+
             if (assignment == null)
             {
                 return HttpNotFound();
             }
-         
+
             return View(assignment);
         }
-        
+
         public ActionResult Create()
         {
             var model = new CreateAssignmentViewModel
             {
                 Assignment = new Assignment(),
-                ListOfProjects = new SelectList(_projectService.GetAll(), "Id", "Description"),
+                ListOfProjects = new SelectList(_projectService.GetAll(), "Id", "Name"),
                 ListOfCategories = new SelectList(_dictionaryService.GetCategories(), "Id", "Description"),
                 ListOfPriorities = new SelectList(_dictionaryService.GetPriorities(), "Id", "Description"),
                 ListOfStatuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description"),
-                ListOfUsers = new SelectList(_dictionaryService.GetUsers(), "Id", "UserName")
-            };        
+                ListOfUsers = new SelectList(_dictionaryService.GetUsers(), "Id", "UserName", User.Identity.GetUserId())
+            };
             return View(model);
         }
 
@@ -64,28 +65,30 @@ namespace ProjectManager.WebApp.Controllers
             var model = new CreateAssignmentViewModel
             {
                 Assignment = new Assignment(),
-                ListOfProjects = new SelectList(_projectService.GetAll(), "Id", "Description",_projectService.FindById(id)),
+                // ListOfProjects = new SelectList(new List<Project> { _projectService.FindById(id) }, "Id", "Name", id),
+                ListOfProjects = new SelectList(_projectService.GetAll(), "Id", "Name", id),
                 ListOfCategories = new SelectList(_dictionaryService.GetCategories(), "Id", "Description"),
                 ListOfPriorities = new SelectList(_dictionaryService.GetPriorities(), "Id", "Description"),
                 ListOfStatuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description"),
-                ListOfUsers = new SelectList(_dictionaryService.GetUsers(), "Id", "UserName")
+                //  ListOfUsers = new SelectList(_projectService.FindById(id).Members, "Id", "UserName", User.Identity.GetUserId())
+                ListOfUsers = new SelectList(_dictionaryService.GetUsers(), "Id", "UserName", User.Identity.GetUserId())
             };
             return View("Create", model);
         }
 
-   
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create( Assignment assignment)
+        public ActionResult Create(Assignment assignment)
         {
-            
+
             if (ModelState.IsValid)
             {
                 _assignmentService.Add(assignment);
                 return RedirectToAction("Index");
             }
 
-      
+
             return View(assignment);
         }
 
@@ -96,12 +99,12 @@ namespace ProjectManager.WebApp.Controllers
             if (ModelState.IsValid)
             {
                 _assignmentService.Add(assignment);
-                return RedirectToAction("Details","Projects",new { id = assignment.ProjectId });
+                return RedirectToAction("Details", "Projects", new { id = assignment.ProjectId });
             }
 
             return View(assignment);
         }
-        
+
         public ActionResult Edit(Guid id)
         {
 
@@ -110,11 +113,11 @@ namespace ProjectManager.WebApp.Controllers
             {
                 return HttpNotFound();
             }
-    
+
             return View(assignment);
         }
 
-         [HttpPost]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Assignment assignment)
         {
@@ -125,7 +128,7 @@ namespace ProjectManager.WebApp.Controllers
             }
             return View(assignment);
         }
-        
+
 
         public ActionResult Delete(Guid id)
         {
@@ -134,10 +137,10 @@ namespace ProjectManager.WebApp.Controllers
             {
                 return HttpNotFound();
             }
-            
+
             return View(assignment);
         }
-        
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
@@ -145,6 +148,6 @@ namespace ProjectManager.WebApp.Controllers
             _assignmentService.Remove(id);
             return RedirectToAction("Index");
         }
-        
+
     }
 }

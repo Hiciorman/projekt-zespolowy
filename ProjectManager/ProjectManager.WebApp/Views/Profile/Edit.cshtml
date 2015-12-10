@@ -1,4 +1,7 @@
 ﻿@model ProjectManager.WebApp.Models.ProfileViewModel
+@{
+    ViewBag.Title = "Edit profile";
+}
 @using (Html.BeginForm("Edit", "Profile", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
