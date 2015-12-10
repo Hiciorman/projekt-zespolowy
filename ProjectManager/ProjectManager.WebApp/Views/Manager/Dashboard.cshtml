@@ -1,1 +1,116 @@
-﻿Main Page for User, looks nice in Jira for me 
+﻿@using System.Web.Script.Services
+@using ProjectManager.Domain
+@model ProjectManager.WebApp.Models.DashboardViewModel
+
+
+<div class="container">
+    <div class="row">
+        <div>
+            <div class="row" style="text-align: center">
+                @Model.User.UserName
+            </div>
+            <div class="row">
+                <canvas id="myTasks" width="200" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="row">
+                <div class="well">2</div>
+            </div>
+            <div class="row">
+                <div class="well">3</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="well">
+                <h3>My Tasks:</h3>
+                @foreach (var task in @Model.Assignments)
+                {
+                    <br />
+                    switch (task.Status.Type)
+                    {
+                        case StatusType.Backlog:
+                            <span class="label label-default">@task.Name</span>
+                            break;
+                        case StatusType.Done:
+                            <span class="label label-success">@task.Name</span>
+                            break;
+                        case StatusType.InProgress:
+                            <span class="label label-warning">@task.Name</span>
+                            break;
+                        case StatusType.ReadyForReview:
+                            <span class="label label-info">@task.Name</span>
+                            break;
+                        case StatusType.Todo:
+                            <span class="label label-primary">@task.Name</span>
+                            break;
+
+                    }
+
+
+                }
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="well">
+                5
+                @foreach (var project in @Model.Projects)
+                {
+                    @project.Name;
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script src='Chart.min.js'></script>
+<script src='Chart.js'></script>
+
+<script>
+
+
+    var pieData = [
+        //BackLog
+        {
+            value: @Model.BacklogCounter,
+            color:"#878BB6"
+        },
+        //To do
+        {
+            value: @Model.ToDoCounter,
+            color:"#4ACAB4"
+        },
+        //inprogress
+        {
+            value: @Model.InProgressCounter,
+            color:"#FF8153"
+        },
+        //ReadyForReview
+        {
+            value: @Model.ReadyForReviewCounter,
+            color:"#FFEA88"
+        },
+        //Done
+        {
+            value: @Model.DoneCounter,
+            color:"#F7464A"
+        },
+        {
+            value: 20,
+            color:"#FFEA88"
+        }
+    ];
+
+    var pieOptions = {
+        segmentShowStroke : true,
+        animateScale : true
+    }
+    var context1= document.getElementById("myTasks").getContext("2d");
+    var context = $("#myTasks").get(0).getContext("2d");
+    new Chart(context).Pie(pieData, pieOptions);
+</script>

@@ -25,7 +25,53 @@ namespace ProjectManager.WebApp.Controllers
         [HttpGet]
         public ActionResult Dashboard()
         {
-            return View();
+            var user = _userManager.FindById(User.Identity.GetUserId());
+            var assigments = _assignmentService.GetAllByUserId(user.Id);
+            var projects = user.Projects;
+            int backlogCounter = 0;
+            int toDoCounter = 0 ;
+            int inProgressCounter = 0;
+            int readyForReviewCounter = 0;
+            int doneCounter =0;
+            foreach (var x in assigments)
+            {
+                var status = x.Status.Type;
+                
+                switch (status)
+                {
+                    case StatusType.Backlog:
+                        backlogCounter++;
+                        break;
+                    case StatusType.Done:
+                        doneCounter++;
+                        break;
+                    case StatusType.InProgress:
+                        inProgressCounter++;
+                        break;
+                    case StatusType.ReadyForReview:
+                        readyForReviewCounter++;
+                        break;
+                    case StatusType.Todo:
+                        doneCounter++;
+                        break;
+                }
+
+                
+            }
+
+            var model = new DashboardViewModel
+            {
+                Assignments = assigments,
+                User = user,
+                BacklogCounter = backlogCounter,
+                DoneCounter = doneCounter,
+                InProgressCounter = inProgressCounter,
+                ReadyForReviewCounter = readyForReviewCounter,
+                ToDoCounter = toDoCounter,
+                Projects = projects
+               
+            };
+            return View(model);
         }
 
         [HttpGet]
@@ -65,7 +111,7 @@ namespace ProjectManager.WebApp.Controllers
         {
             _assignmentService.ChangeAssignmentStatus(int.Parse(statusId), new Guid(currentAssignmentId));
 
-            return Json(new {});
+            return Json(new { });
         }
     }
 }
