@@ -28,6 +28,12 @@ namespace ProjectManager.Repositories
             return _context.Projects.Where(x => x.OwnerId == id);
         }
 
+        public IEnumerable<Project> GetAllUserProjectByUserId(string id)
+        {
+            var user = _context.Users.FirstOrDefault(x => x.Id == id);
+            return _context.Projects.Where(x => x.Members.Contains(user));
+        }
+
         public Project FindById(Guid id)
         {
             var x = _context.Projects.Where(b => b.Id == id).Include(p=>p.Members).First();
