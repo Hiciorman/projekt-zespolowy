@@ -50,7 +50,7 @@ namespace ProjectManager.WebApp.Controllers
             var model = new CreateAssignmentViewModel
             {
                 Assignment = new Assignment(),
-                ListOfProjects = new SelectList(_projectService.GetAll(), "Id", "Description"),
+                ListOfProjects = new SelectList(_projectService.GetAll(), "Id", "Name"),
                 ListOfCategories = new SelectList(_dictionaryService.GetCategories(), "Id", "Description"),
                 ListOfPriorities = new SelectList(_dictionaryService.GetPriorities(), "Id", "Description"),
                 ListOfStatuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description"),
@@ -64,7 +64,7 @@ namespace ProjectManager.WebApp.Controllers
             var model = new CreateAssignmentViewModel
             {
                 Assignment = new Assignment(),
-                ListOfProjects = new SelectList(_projectService.GetAll(), "Id", "Description",_projectService.FindById(id)),
+                ListOfProjects = new SelectList(_projectService.GetAll(), "Id", "Name",_projectService.FindById(id)),
                 ListOfCategories = new SelectList(_dictionaryService.GetCategories(), "Id", "Description"),
                 ListOfPriorities = new SelectList(_dictionaryService.GetPriorities(), "Id", "Description"),
                 ListOfStatuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description"),

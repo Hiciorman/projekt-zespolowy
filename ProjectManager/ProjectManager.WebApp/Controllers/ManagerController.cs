@@ -34,14 +34,14 @@ namespace ProjectManager.WebApp.Controllers
             var user = _userManager.FindById(User.Identity.GetUserId());
 
             var usersInProject =
-                _userManager.Users.Where(u => u.Projects.All(x => x.Id == user.ActiveProjectId.Value));
+                _userManager.Users.Where(u => u.Projects.All(x => x.Id == user.ActiveProjectId));
 
             var model = new KanbanBoardViewModel
             {
                 Stasuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description"),
                 Assignments = _assignmentService.GetAllByProjectId(user.ActiveProjectId),
                 Users = usersInProject.ToList(),
-                ProjectId = user.ActiveProjectId.Value
+                ProjectId = user.ActiveProjectId ?? Guid.Empty
             };
 
             return View(model);

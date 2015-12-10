@@ -29,7 +29,7 @@ namespace ProjectManager.Helpers
             sf.Alignment = StringAlignment.Center;
             sf.LineAlignment = StringAlignment.Center;
 
-            var font = new Font("Arial", 48, FontStyle.Bold, GraphicsUnit.Pixel);
+            var font = new Font("Arial", 32, FontStyle.Bold, GraphicsUnit.Pixel);
             var graphics = Graphics.FromImage(bmp);
 
             var convertFromString = new ColorConverter().ConvertFromString("#" + bgColour);

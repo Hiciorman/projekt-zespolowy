@@ -178,7 +178,7 @@ namespace ProjectManager.WebApp.Controllers
                 return View(model);
             }
 
-            var user = new User() { UserName = model.Username };
+            var user = new User() { UserName = model.Username, Email = model.EmailAdress };
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
