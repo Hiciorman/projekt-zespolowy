@@ -248,6 +248,7 @@
     <Compile Include="Models\KanbanBoardViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\ProfileViewModel.cs" />
+    <Compile Include="Models\ProjectsViewModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\UserAssignmentsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -266,7 +267,6 @@
     <Content Include="Views\Shared\_ManagerLayout.cshtml" />
     <Content Include="Views\Shared\_NavbarManager.cshtml" />
     <Content Include="Views\Projects\Create.cshtml" />
-    <Content Include="Views\Projects\Delete.cshtml" />
     <Content Include="Views\Projects\Details.cshtml" />
     <Content Include="Views\Projects\Edit.cshtml" />
     <Content Include="Views\Projects\AllProjects.cshtml" />

@@ -59,13 +59,26 @@ namespace ProjectManager.Domain.Seed
             #region Projects
             Project project = new Project
             {
-                Name = "Test",
-                Description = "Projekt testowy",
-                OwnerId = user.Id,
-                Members = new List<User>() { user }
+                Name = "X",
+                Description = "Project X is a 2012 American comedy film directed by Nima Nourizadeh and written by Michael Bacall and Matt Drake" +
+                              " based on a story by Bacall, and produced by director Todd Phillips. The film follows three friends—Thomas (Thomas Mann)," +
+                              " Costa (Oliver Cooper) and J.B. (Jonathan Daniel Brown)—who plan to gain popularity by throwing a party, a plan which quickly" +
+                              " escalates out of their control.",
+                Members = new HashSet<User>() { user, user2 }
+            };
+
+            Project project2 = new Project
+            {
+                Name = "Manhattan",
+                Description = "The Manhattan Project was a research and development project that produced the first nuclear weapons" +
+                              " during World War II. It was led by the United States with the support of the United Kingdom and Canada." +
+                              " From 1942 to 1946, the project was under the direction of Major General Leslie Groves of the U.S. Army Corps of Engineers;" +
+                              " physicist J. Robert Oppenheimer was the director of the Los Alamos National Laboratory that designed the actual bombs.",
+                Members = new HashSet<User>() { user }
             };
 
             context.Projects.Add(project);
+            context.Projects.Add(project2);
             context.Users.FirstOrDefault().ActiveProjectId = project.Id;
             context.SaveChanges();
             #endregion

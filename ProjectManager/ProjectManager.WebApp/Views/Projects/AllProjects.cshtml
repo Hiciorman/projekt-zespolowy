@@ -1,42 +1,107 @@
 ﻿@using ProjectManager.Domain
-@model IEnumerable<ProjectManager.Domain.Project>
-
+@model  ProjectManager.WebApp.Models.ProjectsViewModel
 @{
     ViewBag.Title = "Projects";
 }
+
 <div class="container">
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
     <div class="row">
-        <div class="col-md-3">
-            @Html.Label(nameof(Project.Name))
-        </div>
-        <div class="col-md-3">
-            @Html.Label(nameof(Project.Description))
-        </div>
-        <div class="col-md-3">
-            @Html.Label(nameof(Project.Members))
-        </div>
+        <a href="@Url.Action("Create", "Projects")" class="btn btn-primary col-md-6 col-md-offset-3">Create project</a>
     </div>
-    @foreach (var project in Model)
-    {
-        <div class="row">
-            <div class="col-md-3">
-                @Html.DisplayFor(modelItem => project.Name)
+    <div class="row margin-top-9">
+        @foreach (Project project in Model.Projects)
+            {
+            <div class="col-md-4">
+                <div class="projectContainer @(project.Id == Model.ActiveProjectId ? "activeProjectContainer" : null)">
+                    <h3 class="projectTitle">@project.Name</h3>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <div style="word-break: break-all;">@project.Description</div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="projectButtons row">
+                        <div class="col-md-2 col-md-offset-1">
+                            <a href="@Url.Action("Activate", "Projects", new {id = project.Id})" class="btn btn-default">
+                                <span class="glyphicon glyphicon-star"></span>
+                            </a>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="@Url.Action("CreateFromProject", "Assignments", new {id = project.Id})" class="btn btn-default">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </a>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="@Url.Action("Details", "Projects", new {id = project.Id})" class="btn btn-default">
+                                <span class="glyphicon glyphicon-list-alt"></span>
+                            </a>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="@Url.Action("Edit", "Projects", new {id = project.Id})" class="btn btn-default">
+                                <span class="glyphicon glyphicon-cog"></span>
+                            </a>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="#" data-projectId="@project.Id" class="btn btn-default popup-button">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-3">
-                @Html.DisplayFor(modelItem => project.Description)
-            </div>
-            <div class="col-md-3">
-                @Html.DisplayFor(modelItem => project.Members.Count)
-            </div>
-            <div class="col-md-3">
-                @Html.RouteLink("Add assignment", new RouteValueDictionary(new { controller = "Assignments", action = "CreateFromProject", id = project.Id })) |
- @Html.ActionLink("Edit", "Edit", new { id = project.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = project.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = project.Id })
-            </div>
-        </div>
-    }
+        }
+    </div>
 </div>
+
+<!-- przenieść gdzieś-->
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<div id="dialog" title="Delete project" class="popup-dialog">
+    <div>
+        Do you want to delete project?
+    </div>
+    <button class="delete-project">
+        Delete
+    </button>
+    <button id="CancelPopup">Cancel</button>
+</div>
+
+<script>
+    var currentProjectId;
+
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            resizable: false,
+            draggable: false,
+            open: function (event, ui) { $(".ui-dialog-titlebar-close", ui.dialog | ui).hide(); }
+        });
+        $(".popup-button").click(function (e) {
+            e.preventDefault();
+            currentProjectId = $(this).attr("data-projectId");
+            $("#dialog").dialog("open");
+        });
+    });
+
+    $("#CancelPopup").click(function () {
+        $("#dialog").dialog("close");
+    });
+
+    $(".delete-project").click(function () {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Delete", "Projects")',
+            data: { id: currentProjectId },
+            datatype: "JSON",
+            success: function () {
+                location.reload();
+            },
+            error: function () {
+                alert("Failed to get data from server");
+            }
+        });
+    });
+</script>

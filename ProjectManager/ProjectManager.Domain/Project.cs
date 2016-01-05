@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjectManager.Domain
 {
@@ -14,12 +14,8 @@ namespace ProjectManager.Domain
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public string OwnerId { get; set; }
+        public virtual ICollection<Assignment> Assignemnts { get; private set; }
 
-        [ForeignKey("OwnerId")]
-        public User Owner { get; set; }
-
-        public virtual ICollection<Assignment> Assignemnts { get; set; }
         public virtual ICollection<User> Members { get; set; }
     }
 }

@@ -10,12 +10,12 @@ namespace ProjectManager.Repositories
     public class ProjectRepository : IProjectRepository
     {
         private readonly AppContext _context;
-        private readonly ApplicationUserManager _applicationUserManager;
+        private readonly ApplicationUserManager _userManager;
 
-        public ProjectRepository(AppContext context, ApplicationUserManager applicationUserManager)
+        public ProjectRepository(AppContext context, ApplicationUserManager userManager)
         {
             _context = context;
-            this._applicationUserManager = applicationUserManager;
+            _userManager = userManager;
         }
 
         public IEnumerable<Project> GetAll()
@@ -25,7 +25,9 @@ namespace ProjectManager.Repositories
 
         public IEnumerable<Project> GetAllByUserId(string id)
         {
-            return _context.Projects.Where(x => x.OwnerId == id);
+            return _context.Users
+                .Where(x => x.Id == id)
+                .SelectMany(x => x.Projects);
         }
 
         public IEnumerable<Project> GetAllUserProjectByUserId(string id)
@@ -36,13 +38,29 @@ namespace ProjectManager.Repositories
 
         public Project FindById(Guid id)
         {
-            return _context.Projects.FirstOrDefault(x => x.Id == id);
+            var x = _context.Projects.Where(b => b.Id == id).Include(p=>p.Members).First();
+            return x;
         }
 
-        public void Add(Project project)
+        public void Add(Project project, string userId)
         {
+            User user = _context.Users.FirstOrDefault(x => x.Id == userId);
+            project.Members.Add(user);
+
             _context.Projects.Add(project);
             _context.SaveChanges();
+        }
+
+        public void AddMember(Guid projectId, string userId)
+        {
+            User user = _context.Users.FirstOrDefault(x => x.Id == userId);
+            Project project = _context.Projects.FirstOrDefault(x => x.Id == projectId);
+
+            if (project != null)
+            {
+                project.Members.Add(user);
+                _context.SaveChanges();
+            }
         }
 
         public void Update(Project project)
@@ -67,5 +85,7 @@ namespace ProjectManager.Repositories
 
             return true;
         }
+       
     }
+    
 }

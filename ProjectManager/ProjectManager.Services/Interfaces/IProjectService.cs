@@ -9,7 +9,8 @@ namespace ProjectManager.Services.Interfaces
         IList<Project> GetAll();
         IList<Project> GetAllByUserId(string id);
         Project FindById(Guid id);
-        void Add(Project project);
+        void Add(Project project, string userId);
+        void AddMember(Guid projectId, string userId);
         void Update(Project project);
         bool Remove(Guid id);
     }

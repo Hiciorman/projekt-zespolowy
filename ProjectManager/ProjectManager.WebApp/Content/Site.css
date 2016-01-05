@@ -1,28 +1,31 @@
-﻿body {
+﻿/*#region Default*/
+body {
   padding-bottom: 20px;
 }
-/* Set padding to keep content from hitting the edges */
 .body-content {
   padding-left: 15px;
   padding-right: 15px;
 }
-/* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
 textarea {
   max-width: 280px;
 }
-/*.navbar{
-    margin-bottom: 0 !important;
-}*/
 .form-center {
   max-width: 330px;
   padding: 15px;
   margin: 0 auto;
 }
+/*#endregion*/
+/*#region Margins*/
+.margin-top-9 {
+  margin-top: 9px;
+}
 .margin-top-10px {
   margin-top: 10px;
 }
+/*#endregion*/
+/*#region Validation*/
 .field-validation-error {
   color: Red;
   font-size: medium;
@@ -41,11 +44,15 @@ textarea {
 .validation-summary-valid {
   display: none;
 }
+/*#endregion*/
+/*#region KanbanBoard*/
 .assignment {
   border: solid #103b7e;
   height: 80px;
   margin-bottom: 3px;
 }
+/*#endregion*/
+/*#region Profile Detials*/
 .content-profile {
   border: solid gainsboro;
   border-radius: 10px;
@@ -56,3 +63,26 @@ textarea {
   margin-top: 5px;
   width: 200px;
 }
+/*#endregion*/
+/*#region Popup Style*/
+.popup-dialog {
+  background-color: grey;
+}
+/*#endregion*/
+/*#region Projects*/
+.projectContainer {
+  border: solid black;
+  border-radius: 10px;
+  box-shadow: gray 5px 5px;
+  padding: 5px;
+}
+.activeProjectContainer {
+  border: solid red;
+}
+.projectTitle {
+  text-align: center;
+}
+.create-project-button {
+  text-align: center;
+}
+/*#endregion*/

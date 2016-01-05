@@ -1,7 +1,7 @@
 ﻿@model ProjectManager.Domain.Project
 
 @{
-    ViewBag.Title = "Details "  +Model.Name;
+    ViewBag.Title = "Details " + Model.Name;
 }
 
 <h2>Details</h2>
@@ -11,16 +11,7 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-           Owner
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Owner.Email)
-        </dd>
-
-
-        <dt>
-        Description
+            Description
         </dt>
 
         <dd>
@@ -28,15 +19,27 @@
         </dd>
 
     </dl>
-    <h5>Members under this project</h5>
+    
+    <h5>Members under this project:</h5>
     <div>
         @foreach (var member in Model.Members)
         {
             @member.UserName
+            <br/>
+        }
+        @if (Model.Members.Count==0)
+        {
+        <h4>No members under this project.</h4>
         }
 
     </div>
     <h5>Assignments under this project:</h5>
+    @if (Model.Assignemnts.Count == 0)
+    {
+        <h4>No assignments under this project.</h4>
+    }
+    else
+    {
     <table class="table">
         <tr>
             <th>
@@ -63,7 +66,7 @@
             <th>
                 Assignment description
             </th>
-            
+
         </tr>
 
         @foreach (var item in Model.Assignemnts)
@@ -96,9 +99,8 @@
             </tr>
         }
     </table>
-   @Html.RouteLink("Add assignment",new RouteValueDictionary( new { controller = "Assignments", action = "CreateFromProject", id=Model.Id }))
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
-    </div>
+    @Html.RouteLink("Add assignment", new RouteValueDictionary(new { controller = "Assignments", action = "CreateFromProject", id = Model.Id }))
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    </p>
+</div>
