@@ -33,11 +33,22 @@ namespace ProjectManager.WebApp.Controllers
             {
                 Assignments = assigments,
                 User = user,
+
                 BacklogCount = assigments.Where(x => x.Status.Type == StatusType.Backlog).Count(),
                 DoneCount = assigments.Where(x => x.Status.Type == StatusType.Done).Count(),
                 InProgressCount = assigments.Where(x => x.Status.Type == StatusType.InProgress).Count(),
                 ReadyForReviewCount = assigments.Where(x => x.Status.Type == StatusType.ReadyForReview).Count(),
                 ToDoCount = assigments.Where(x => x.Status.Type == StatusType.Todo).Count(),
+
+                MinorCount = assigments.Where(x => x.Priority.Type == PriorityType.Minor).Count(),
+                LowCount = assigments.Where(x => x.Priority.Type == PriorityType.Low).Count(),
+                NormalCount = assigments.Where(x => x.Priority.Type == PriorityType.Normal).Count(),
+                HighCount = assigments.Where(x => x.Priority.Type == PriorityType.High).Count(),
+                CriticalCount = assigments.Where(x => x.Priority.Type == PriorityType.Criticial).Count(),
+
+                TaskCount = assigments.Where(x => x.Category.Type == CategoryType.Task).Count(),
+                BugCount = assigments.Where(x => x.Category.Type == CategoryType.Bug).Count(),
+                ImprovmentCount = assigments.Where(x => x.Category.Type == CategoryType.Improvment).Count(),
                 Projects = projects
                
             };
@@ -58,11 +69,10 @@ namespace ProjectManager.WebApp.Controllers
             var ProjectId = user.ActiveProjectId.Value;
             var model = new KanbanBoardViewModel
             {
-
-                Stasuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description"),
-                Assignments = _assignmentService.GetAllByProjectId(user.ActiveProjectId),
-                Users = usersInProject.ToList(),
-                ProjectId = user.ActiveProjectId ?? Guid.Empty
+                Stasuses = Stasuses,
+                Assignments = Assignments,
+                Users = Users,
+                ProjectId = ProjectId
 
             };
 
