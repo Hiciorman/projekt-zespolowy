@@ -8,11 +8,11 @@ namespace ProjectManager.WebApp.Models
         public User User { get; set; }
         public IList<Assignment> Assignments { get; set; }
         public ICollection<Project> Projects { get; set; }
-        public int BacklogCounter { get; set; }
-        public int ToDoCounter { get; set; }
-        public int InProgressCounter { get; set; }
-        public int ReadyForReviewCounter { get; set; }
-        public int DoneCounter { get; set; }
+        public int BacklogCount { get; set; }
+        public int ToDoCount { get; set; }
+        public int InProgressCount { get; set; }
+        public int ReadyForReviewCount { get; set; }
+        public int DoneCount { get; set; }
 
 
 

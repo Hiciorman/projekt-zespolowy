@@ -28,46 +28,16 @@ namespace ProjectManager.WebApp.Controllers
             var user = _userManager.FindById(User.Identity.GetUserId());
             var assigments = _assignmentService.GetAllByUserId(user.Id);
             var projects = user.Projects;
-            int backlogCounter = 0;
-            int toDoCounter = 0 ;
-            int inProgressCounter = 0;
-            int readyForReviewCounter = 0;
-            int doneCounter =0;
-            foreach (var x in assigments)
-            {
-                var status = x.Status.Type;
-                
-                switch (status)
-                {
-                    case StatusType.Backlog:
-                        backlogCounter++;
-                        break;
-                    case StatusType.Done:
-                        doneCounter++;
-                        break;
-                    case StatusType.InProgress:
-                        inProgressCounter++;
-                        break;
-                    case StatusType.ReadyForReview:
-                        readyForReviewCounter++;
-                        break;
-                    case StatusType.Todo:
-                        doneCounter++;
-                        break;
-                }
-
-                
-            }
-
+           
             var model = new DashboardViewModel
             {
                 Assignments = assigments,
                 User = user,
-                BacklogCounter = backlogCounter,
-                DoneCounter = doneCounter,
-                InProgressCounter = inProgressCounter,
-                ReadyForReviewCounter = readyForReviewCounter,
-                ToDoCounter = toDoCounter,
+                BacklogCount = assigments.Where(x => x.Status.Type == StatusType.Backlog).Count(),
+                DoneCount = assigments.Where(x => x.Status.Type == StatusType.Done).Count(),
+                InProgressCount = assigments.Where(x => x.Status.Type == StatusType.InProgress).Count(),
+                ReadyForReviewCount = assigments.Where(x => x.Status.Type == StatusType.ReadyForReview).Count(),
+                ToDoCount = assigments.Where(x => x.Status.Type == StatusType.Todo).Count(),
                 Projects = projects
                
             };
@@ -87,7 +57,7 @@ namespace ProjectManager.WebApp.Controllers
                 Stasuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description"),
                 Assignments = _assignmentService.GetAllByProjectId(user.ActiveProjectId),
                 Users = usersInProject.ToList(),
-                ProjectId = user.ActiveProjectId.Value
+                ProjectId = user.ActiveProjectId ?? Guid.Empty
             };
 
             return View(model);

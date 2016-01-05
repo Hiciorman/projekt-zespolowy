@@ -12,7 +12,14 @@ namespace ProjectManager.Domain
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)] //ustawiaw wartosc wskazujaca przez dataFormatString
         public DateTime? DueDate { get; set; }
-        
+
+        [DataType(DataType.DateTime)]
+        public DateTime? StartDateTime { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime? StopDateTime { get; set; }
+        [DataType(DataType.Time)]
+        public  TimeSpan Estimation { get; set; }
+
         public Guid? ProjectId { get; set; }
         public string OwnerId { get; set; }
         public string AssignedToId { get; set; }

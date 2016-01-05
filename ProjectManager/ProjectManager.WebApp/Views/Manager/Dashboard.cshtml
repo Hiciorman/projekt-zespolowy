@@ -1,53 +1,123 @@
 ﻿@using System.Web.Script.Services
 @using ProjectManager.Domain
 @model ProjectManager.WebApp.Models.DashboardViewModel
+<style>
+    #breadcrumbs-three{
+  overflow: hidden;
+  width: 100%;
+}
 
+#breadcrumbs-three li{
+  margin: 0 2em 0 0;
+}
+
+#breadcrumbs-three a{
+  padding: .7em 1em .7em 2em; 
+  float: left;
+  text-decoration: none;
+  color: #444;
+  background: #ddd;  
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
+  border-radius: .4em 0 0 .4em;  
+}
+
+#breadcrumbs-three a:hover{
+  background: #abe0ef;
+}
+
+#breadcrumbs-three a::after{
+  background: #ddd;
+  content: "";
+  height: 2.5em;
+  margin-top: -1.25em;
+  position: absolute;
+  right: -1em;
+  top: 50%;
+  width: 2.5em;
+  z-index: -1; 
+  transform: rotate(45deg);
+  border-radius: .4em;
+}
+
+#breadcrumbs-three a:hover::after{
+  background: #abe0ef;
+}
+
+#breadcrumbs-three .current,
+#breadcrumbs-three .current:hover{
+  font-weight: bold;
+  background: none;
+}
+
+#breadcrumbs-three .current::after{
+  content: normal;
+}
+     
+</style>
 
 <div class="container">
     <div class="row">
         <div>
             <div class="row" style="text-align: center">
-                @Model.User.UserName
+                <div style="font-size: xx-large; color: dimgray">
+                    Welcome @Model.User.UserName
+                </div>
+                <br />
+                <br />
             </div>
-            <div class="row">
+            <div class="row" style="text-align: center">
+                @*<div style="position: relative; width: 200px; height: 200px;">
+                    <canvas id="text" style="z-index: 1; position: absolute; left: 0px; top: 0px;"
+                            height="200" width="200"></canvas>*@
+
                 <canvas id="myTasks" width="200" height="200"></canvas>
+                @*  <canvas id="myTasks"
+                             style="z-index: 2;
+                    position: absolute;
+                    left: 0px;
+                    top: 0px;"
+                             height="200"
+                             width="200"></canvas>*@
+
             </div>
+            <br />
+            <br />
         </div>
     </div>
 
     <div class="row">
-
         <div class="col-md-4">
-            <div class="row">
-                <div class="well">2</div>
+            <div class="">
+                <div class="well">p2</div>
             </div>
-            <div class="row">
+            <div class="">
                 <div class="well">3</div>
             </div>
         </div>
-
         <div class="col-md-4">
             <div class="well">
                 <h3>My Tasks:</h3>
                 @foreach (var task in @Model.Assignments)
                 {
                     <br />
-                    switch (task.Status.Type)
+                    switch (task.Priority.Type)
                     {
-                        case StatusType.Backlog:
-                            <span class="label label-default">@task.Name</span>
+                        case PriorityType.Minor:
+                            <span class="label label-default" title=" Danger">@task.Name</span>
                             break;
-                        case StatusType.Done:
-                            <span class="label label-success">@task.Name</span>
+                        case PriorityType.Low:
+                            <span class="label label-primary" title=" Danger">@task.Name</span>
                             break;
-                        case StatusType.InProgress:
-                            <span class="label label-warning">@task.Name</span>
+                        case PriorityType.Normal:
+                            <span class="label label-success" title=" Danger">@task.Name</span>
                             break;
-                        case StatusType.ReadyForReview:
-                            <span class="label label-info">@task.Name</span>
+                        case PriorityType.High:
+                            <span class="label label-warning" title=" Danger">@task.Name</span>
                             break;
-                        case StatusType.Todo:
-                            <span class="label label-primary">@task.Name</span>
+                        case PriorityType.Criticial:
+                            <span class="label label-danger" title="Danger">@task.Name</span>
                             break;
 
                     }
@@ -55,8 +125,27 @@
 
                 }
             </div>
-        </div>
+            <div class="task-list">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>Daily Tasks:</h4>
+                    </div>
+                    <div class="panel-body">
+                        <ul id="breadcrumbs-three">
+                            @foreach (var task in @Model.Assignments)
+                            {
+                                <br/>
+                                <li><a href="">@task.Name</a></li>
+                                <br/>
+                            }
+                        </ul>
+                        <br />
+                        <button class="btn btn-block btn-primary" type="button">Block level button</button>
 
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-md-4">
             <div class="well">
                 5
@@ -68,41 +157,41 @@
         </div>
     </div>
 </div>
-<script src='Chart.min.js'></script>
-<script src='Chart.js'></script>
-
+<script src="~/Scripts/Chart.min.js"></script>
+@*<script src='Chart.js'></script>*@
 <script>
 
 
     var pieData = [
         //BackLog
         {
-            value: @Model.BacklogCounter,
+            value: @Model.BacklogCount,
+            label: "Backlog",
             color:"#878BB6"
         },
         //To do
         {
-            value: @Model.ToDoCounter,
-            color:"#4ACAB4"
+            value: @Model.ToDoCount,
+            label:"To Do",
+            color:"#4ACAC4"
         },
         //inprogress
         {
-            value: @Model.InProgressCounter,
+            value: @Model.InProgressCount,
+            label:"In progress",
             color:"#FF8153"
         },
         //ReadyForReview
         {
-            value: @Model.ReadyForReviewCounter,
+            value: @Model.ReadyForReviewCount,
+            label:"Ready for review",
             color:"#FFEA88"
         },
         //Done
         {
-            value: @Model.DoneCounter,
+            value: @Model.DoneCount,
+            label:"Done",
             color:"#F7464A"
-        },
-        {
-            value: 20,
-            color:"#FFEA88"
         }
     ];
 
@@ -111,6 +200,11 @@
         animateScale : true
     }
     var context1= document.getElementById("myTasks").getContext("2d");
-    var context = $("#myTasks").get(0).getContext("2d");
-    new Chart(context).Pie(pieData, pieOptions);
+    //var context = $('#myTasks').get(0).getContext("2d");
+    new Chart(context1).Doughnut(pieData, pieOptions);
+    /*var textCtx = document.getElementById("text").getContext("2d");
+    textCtx.textAlign = "center";
+    textCtx.textBaseline = "middle";
+    textCtx.font = "30px sans-serif";
+    textCtx.fillText(10, 100, 100);*/
 </script>
