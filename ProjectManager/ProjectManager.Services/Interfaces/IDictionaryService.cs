@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ProjectManager.Domain;
 
 namespace ProjectManager.Services.Interfaces
@@ -8,6 +9,6 @@ namespace ProjectManager.Services.Interfaces
         IList<Priority> GetPriorities();
         IList<Status> GetStatuses();
         IList<Category> GetCategories();
-        IList<User> GetUsers();
+        IList<User> GetUsers(Guid id);
     }
 }

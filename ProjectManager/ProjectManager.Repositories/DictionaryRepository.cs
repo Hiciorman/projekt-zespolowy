@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ProjectManager.Domain;
 using ProjectManager.Repositories.Interfaces;
 
@@ -31,9 +29,9 @@ namespace ProjectManager.Repositories
             return _context.Categories;
         }
 
-        public IEnumerable<User> GetUsers()
+        public IEnumerable<User> GetUsers(Guid id)
         {
-            return _context.Users;
+            return _context.Users.Where(user=> user.Projects.Any(project => project.Id == id));
         }
     }
 }

@@ -79,7 +79,8 @@ namespace ProjectManager.Domain.Seed
 
             context.Projects.Add(project);
             context.Projects.Add(project2);
-            context.Users.FirstOrDefault().ActiveProjectId = project.Id;
+            context.Users.First(x => x.UserName == "Tester").ActiveProjectId = project.Id;
+            context.Users.First(x => x.UserName == "Tester2").ActiveProjectId = project.Id;
             context.SaveChanges();
             #endregion
 
