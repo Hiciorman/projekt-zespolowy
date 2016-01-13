@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using ProjectManager.Domain;
 using Microsoft.AspNet.Identity;
@@ -48,33 +44,57 @@ namespace ProjectManager.WebApp.Controllers
 
         public ActionResult Create()
         {
+            var projects = _projectService.GetAllByUserId(User.Identity.GetUserId());
+            if (!projects.Any())
+            {
+                //Przydałyby się jakieś notyfikacje 
+                return RedirectToAction("Dashboard", "Manager");
+            }
+
             var model = new CreateAssignmentViewModel
             {
                 Assignment = new Assignment(),
-                ListOfProjects = new SelectList(_projectService.GetAll(), "Id", "Name"),
+                ListOfProjects = new SelectList(projects, "Id", "Name"),
                 ListOfCategories = new SelectList(_dictionaryService.GetCategories(), "Id", "Description"),
                 ListOfPriorities = new SelectList(_dictionaryService.GetPriorities(), "Id", "Description"),
                 ListOfStatuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description"),
-                ListOfUsers = new SelectList(_dictionaryService.GetUsers(), "Id", "UserName", User.Identity.GetUserId())
+                ListOfUsers =
+                    new SelectList(_dictionaryService.GetUsers(projects.FirstOrDefault().Id), "Id", "UserName",
+                        User.Identity.GetUserId())
             };
             return View(model);
         }
 
         public ActionResult CreateFromProject(Guid id)
         {
+            var projects = _projectService.GetAllByUserId(User.Identity.GetUserId());
             var model = new CreateAssignmentViewModel
             {
                 Assignment = new Assignment(),
-                ListOfProjects = new SelectList(_projectService.GetAll(), "Id", "Name", id),
+                ListOfProjects = new SelectList(projects, "Id", "Name", id),
                 ListOfCategories = new SelectList(_dictionaryService.GetCategories(), "Id", "Description"),
                 ListOfPriorities = new SelectList(_dictionaryService.GetPriorities(), "Id", "Description"),
                 ListOfStatuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description"),
-                  ListOfUsers = new SelectList(_projectService.FindById(id).Members, "Id", "UserName", User.Identity.GetUserId())
-  //              ListOfUsers = new SelectList(_dictionaryService.GetUsers(), "Id", "UserName", User.Identity.GetUserId())
-          };
+                ListOfUsers = new SelectList(_dictionaryService.GetUsers(id), "Id", "UserName", User.Identity.GetUserId())
+            };
             return View("Create", model);
         }
 
+        [HttpPost]
+        public async Task<JsonResult> ChangeProject(string id)
+        {
+            if (id != null)
+            {
+                var listOfUsers = new SelectList(_dictionaryService.GetUsers(Guid.Parse(id)), "Id", "UserName",
+                    User.Identity.GetUserId());
+
+                return Json(new { result = listOfUsers});
+            }
+            else
+            {
+                return Json(new { result = "false" });
+            }
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

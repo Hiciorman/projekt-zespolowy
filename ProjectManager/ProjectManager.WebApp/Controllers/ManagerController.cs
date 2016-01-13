@@ -28,48 +28,29 @@ namespace ProjectManager.WebApp.Controllers
             var user = _userManager.FindById(User.Identity.GetUserId());
             var assigments = _assignmentService.GetAllByUserId(user.Id);
             var projects = user.Projects;
-            int backlogCounter = 0;
-            int toDoCounter = 0 ;
-            int inProgressCounter = 0;
-            int readyForReviewCounter = 0;
-            int doneCounter =0;
-            foreach (var x in assigments)
-            {
-                var status = x.Status.Type;
-                
-                switch (status)
-                {
-                    case StatusType.Backlog:
-                        backlogCounter++;
-                        break;
-                    case StatusType.Done:
-                        doneCounter++;
-                        break;
-                    case StatusType.InProgress:
-                        inProgressCounter++;
-                        break;
-                    case StatusType.ReadyForReview:
-                        readyForReviewCounter++;
-                        break;
-                    case StatusType.Todo:
-                        doneCounter++;
-                        break;
-                }
-
-                
-            }
 
             var model = new DashboardViewModel
             {
                 Assignments = assigments,
                 User = user,
-                BacklogCounter = backlogCounter,
-                DoneCounter = doneCounter,
-                InProgressCounter = inProgressCounter,
-                ReadyForReviewCounter = readyForReviewCounter,
-                ToDoCounter = toDoCounter,
+
+                BacklogCount = assigments.Count(x => x.Status.Type == StatusType.Backlog),
+                DoneCount = assigments.Count(x => x.Status.Type == StatusType.Done),
+                InProgressCount = assigments.Count(x => x.Status.Type == StatusType.InProgress),
+                ReadyForReviewCount = assigments.Count(x => x.Status.Type == StatusType.ReadyForReview),
+                ToDoCount = assigments.Count(x => x.Status.Type == StatusType.Todo),
+
+                MinorCount = assigments.Count(x => x.Priority.Type == PriorityType.Minor),
+                LowCount = assigments.Count(x => x.Priority.Type == PriorityType.Low),
+                NormalCount = assigments.Count(x => x.Priority.Type == PriorityType.Normal),
+                HighCount = assigments.Count(x => x.Priority.Type == PriorityType.High),
+                CriticalCount = assigments.Count(x => x.Priority.Type == PriorityType.Criticial),
+
+                TaskCount = assigments.Count(x => x.Category.Type == CategoryType.Task),
+                BugCount = assigments.Count(x => x.Category.Type == CategoryType.Bug),
+                ImprovmentCount = assigments.Count(x => x.Category.Type == CategoryType.Improvment),
                 Projects = projects
-               
+
             };
             return View(model);
         }
@@ -85,13 +66,13 @@ namespace ProjectManager.WebApp.Controllers
             var Stasuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description");
             var Assignments = _assignmentService.GetAllByProjectId(user.ActiveProjectId);
             var Users = usersInProject.ToList();
-            var ProjectId = user.ActiveProjectId.Value;
+            var ProjectId = user.ActiveProjectId ?? Guid.Empty;
             var model = new KanbanBoardViewModel
             {
                 Stasuses = Stasuses,
-            Assignments = Assignments,
-            Users=Users,
-            ProjectId = ProjectId
+                Assignments = Assignments,
+                Users = Users,
+                ProjectId = ProjectId
 
             };
 
