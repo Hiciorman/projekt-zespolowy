@@ -7,6 +7,7 @@ using ProjectManager.WebApp.Models;
 using ProjectManager.Services.Interfaces;
 using System.Linq;
 
+
 namespace ProjectManager.WebApp.Controllers
 {
     [Authorize]
@@ -74,7 +75,7 @@ namespace ProjectManager.WebApp.Controllers
                 assignment.AssignedTo = _applicationUserManager.FindById(assignment.AssignedToId);
                 assignment.Category = _dictionaryService.GetCategories().First(c => c.Id == assignment.CategoryId);
                 assignment.Owner = _applicationUserManager.FindById(assignment.OwnerId);
-                assignment.Priority = _dictionaryService.GetPriorities().First(p=> p.Id ==assignment.PriorityId);
+                assignment.Priority = _dictionaryService.GetPriorities().First(p => p.Id == assignment.PriorityId);
                 assignment.Status = _dictionaryService.GetStatuses().First(s => s.Id == assignment.StatusId);
             }
 
@@ -136,6 +137,37 @@ namespace ProjectManager.WebApp.Controllers
 
             return View(project);
         }
+
+        public void GenerateReport(Guid id)
+        {
+            Project project = _projectService.FindById(id);
+            foreach (var assignment in project.Assignemnts)
+            {
+                assignment.AssignedTo = _applicationUserManager.FindById(assignment.AssignedToId);
+                assignment.Category = _dictionaryService.GetCategories().First(c => c.Id == assignment.CategoryId);
+                assignment.Owner = _applicationUserManager.FindById(assignment.OwnerId);
+                assignment.Priority = _dictionaryService.GetPriorities().First(p => p.Id == assignment.PriorityId);
+                assignment.Status = _dictionaryService.GetStatuses().First(s => s.Id == assignment.StatusId);
+            }
+            var serverPath = Request.PhysicalApplicationPath;
+            var output = _projectService.GenerateReport(project, serverPath);
+
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("Content-Disposition", string.Format("attachment;filename={0}-Report-{1}.pdf", project.Name,System.DateTime.Now.ToLongDateString()));
+            Response.BinaryWrite(output.ToArray());
+
+
+            //return RedirectToAction(id.ToString(), "Projects/Details") ;
+
+        }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult GenerateReport(Project project)
+        //{
+        //    return View("Details",project);
+        //}
+
 
         public JsonResult Delete(Guid id)
         {

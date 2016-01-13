@@ -10,12 +10,11 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-1">
+        @*<div class="col-md-1">
             @Html.Label("Filters")
         </div>
-        @*TODO: Add class "filters" *@
-        <div class="col-md-11">
-            <a href="#">
+        @*TODO: Add class "filters"
+       <div class="col-md-11">           <a href="#">
                 Only High Priority
             </a>
             <a href="#">
@@ -24,7 +23,7 @@
             <a href="#">
                 Recently updated
             </a>
-        </div>
+        </div>*@
     </div>
     <div class="row">
         @foreach (var status in Model.Stasuses.Where(status => status.Text != "Backlog"))

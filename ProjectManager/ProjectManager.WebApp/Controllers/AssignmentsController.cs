@@ -69,9 +69,9 @@ namespace ProjectManager.WebApp.Controllers
                 ListOfCategories = new SelectList(_dictionaryService.GetCategories(), "Id", "Description"),
                 ListOfPriorities = new SelectList(_dictionaryService.GetPriorities(), "Id", "Description"),
                 ListOfStatuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description"),
-                //  ListOfUsers = new SelectList(_projectService.FindById(id).Members, "Id", "UserName", User.Identity.GetUserId())
-                ListOfUsers = new SelectList(_dictionaryService.GetUsers(), "Id", "UserName", User.Identity.GetUserId())
-            };
+                  ListOfUsers = new SelectList(_projectService.FindById(id).Members, "Id", "UserName", User.Identity.GetUserId())
+  //              ListOfUsers = new SelectList(_dictionaryService.GetUsers(), "Id", "UserName", User.Identity.GetUserId())
+          };
             return View("Create", model);
         }
 

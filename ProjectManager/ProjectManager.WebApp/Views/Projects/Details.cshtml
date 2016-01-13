@@ -99,8 +99,12 @@
             </tr>
         }
     </table>
+    }
     @Html.RouteLink("Add assignment", new RouteValueDictionary(new { controller = "Assignments", action = "CreateFromProject", id = Model.Id }))
     <p>
         @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    </p>
+    <p>
+        @Html.ActionLink("Generate report", "GenerateReport", new { id = Model.Id }) |
     </p>
 </div>
