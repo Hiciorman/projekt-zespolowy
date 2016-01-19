@@ -4,10 +4,9 @@
     ViewBag.Title = "Details " + Model.Name;
 }
 
-<h2>Details</h2>
+<h2>Details - @Html.DisplayFor(model => model.Name)</h2>
 
 <div>
-    <h4>@Html.DisplayFor(model => model.Name)</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -19,92 +18,117 @@
         </dd>
 
     </dl>
-    
-    <h5>Members under this project:</h5>
-    <div>
-        @foreach (var member in Model.Members)
-        {
-            @member.UserName
-            <br/>
-        }
-        @if (Model.Members.Count==0)
-        {
+
+    <h4>Members under this project:</h4>
+    @if (Model.Members.Count == 0)
+    {
         <h4>No members under this project.</h4>
-        }
+    }
+    else
+    {
+        <table class="table">
+            <tr>
+                <th>
+                    First name
+                </th>
+                <th>
+                    Last name
+                </th>
+                <th>
+                    E-mail adress
+                </th>
+            </tr>
+
+            @foreach (var item in Model.Members)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+ 
+        
 
     </div>
-    <h5>Assignments under this project:</h5>
+    <h4>Assignments under this project:</h4>
     @if (Model.Assignemnts.Count == 0)
     {
         <h4>No assignments under this project.</h4>
     }
     else
     {
-    <table class="table">
-        <tr>
-            <th>
-                Programist
-            </th>
-            <th>
-                Category
-            </th>
-            <th>
-                Owner
-            </th>
-            <th>
-                Priority
-            </th>
-            <th>
-                Project
-            </th>
-            <th>
-                Status
-            </th>
-            <th>
-                Assignment name
-            </th>
-            <th>
-                Assignment description
-            </th>
-
-        </tr>
-
-        @foreach (var item in Model.Assignemnts)
-        {
+        <table class="table">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AssignedTo.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Owner.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Priority.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Project.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
+                <th>
+                    Programist
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                    Owner
+                </th>
+                <th>
+                    Priority
+                </th>
+                <th>
+                    Project
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Assignment name
+                </th>
+                <th>
+                    Assignment description
+                </th>
+
             </tr>
-        }
-    </table>
+
+            @foreach (var item in Model.Assignemnts)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AssignedTo.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Owner.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Priority.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Project.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                </tr>
+            }
+        </table>
     }
-    @Html.RouteLink("Add assignment", new RouteValueDictionary(new { controller = "Assignments", action = "CreateFromProject", id = Model.Id }))
-    <p>
+    <div>
+        @Html.RouteLink("Add assignment", new RouteValueDictionary(new { controller = "Assignments", action = "CreateFromProject", id = Model.Id })) |
         @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    </p>
-    <p>
-        @Html.ActionLink("Generate report", "GenerateReport", new { id = Model.Id }) |
-    </p>
+        @Html.ActionLink("Generate report", "GenerateReport", new { id = Model.Id })
+    </div>
 </div>

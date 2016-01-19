@@ -153,20 +153,9 @@ namespace ProjectManager.WebApp.Controllers
             var output = _projectService.GenerateReport(project, serverPath);
 
             Response.ContentType = "application/pdf";
-            Response.AddHeader("Content-Disposition", string.Format("attachment;filename={0}-Report-{1}.pdf", project.Name,System.DateTime.Now.ToLongDateString()));
+            Response.AddHeader("Content-Disposition", string.Format("attachment;filename="+project.Name+"_Report_"+ DateTime.Now.ToShortDateString() + ".pdf"));
             Response.BinaryWrite(output.ToArray());
-
-
-            //return RedirectToAction(id.ToString(), "Projects/Details") ;
-
         }
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult GenerateReport(Project project)
-        //{
-        //    return View("Details",project);
-        //}
 
 
         public JsonResult Delete(Guid id)
