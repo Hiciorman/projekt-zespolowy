@@ -42,7 +42,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Assignment.OwnerId, "Owner", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBox("Owner", User.Identity.Name, new { @class = "form-control", @readonly = "readonly" })
+                @Html.DropDownListFor(model => model.Assignment.OwnerId, Model.ListOfUsers, new { @class = "form-control" })
             </div>
         </div>
         <div class="form-group">

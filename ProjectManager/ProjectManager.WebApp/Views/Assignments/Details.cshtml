@@ -3,80 +3,60 @@
 @{
     ViewBag.Title = "Details " + Model.Name;
 }
+<div style="padding:10px;">
+    <h2 class="text-left">Details - @Html.DisplayFor(model => model.Name)</h2>
 
-<h2>Details</h2>
+    <div>
+       
+        <table class="table">
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Priority
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Owned by
+                </th>
+               
+            </tr>
 
-<div>
-    <h4>@Html.DisplayFor(model => model.Name)</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            DueDate
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DueDate)
-        </dd>
-        <dt>
-            Programist
-        </dt>
+           
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem.Name)
+                    </td>
+                    
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem.Priority.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem.Status.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem.DueDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem.Owner.UserName)
+                    </td>
+                   
+                </tr>
+           
+        </table>
+        <h4>Descriprion</h4>
+        <p>@Html.DisplayFor(modelItem => modelItem.Description)</p>
 
-        <dd>
-            @Html.DisplayFor(model => model.AssignedTo.Email)
-        </dd>
-
-        <dt>
-            Assignment kind
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Category.Description)
-        </dd>
-
-        <dt>
-            Owner
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Owner.Email)
-        </dd>
-
-        <dt>
-            Priority
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Priority.Description)
-        </dd>
-
-        <dt>
-            Project
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Project.Name)
-        </dd>
-
-        <dt>
-            Status
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status.Description)
-        </dd>
-
-        <dt>
-
-        <dt>
-            Description
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-    </dl>
+       
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

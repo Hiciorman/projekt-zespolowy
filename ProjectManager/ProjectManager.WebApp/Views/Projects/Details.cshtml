@@ -3,60 +3,60 @@
 @{
     ViewBag.Title = "Details " + Model.Name;
 }
+<div style="padding-left:10px; padding-right:10px;">
+    <h2>Details - @Html.DisplayFor(model => model.Name)</h2>
 
-<h2>Details - @Html.DisplayFor(model => model.Name)</h2>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Description
+            </dt>
 
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            Description
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
+        </dl>
 
-    </dl>
-
-    <h4>Members under this project:</h4>
-    @if (Model.Members.Count == 0)
-    {
-        <h4>No members under this project.</h4>
-    }
-    else
-    {
-        <table class="table">
-            <tr>
-                <th>
-                    First name
-                </th>
-                <th>
-                    Last name
-                </th>
-                <th>
-                    E-mail adress
-                </th>
-            </tr>
-
-            @foreach (var item in Model.Members)
-            {
+        <h4>Members under this project:</h4>
+        @if (Model.Members.Count == 0)
+        {
+            <h4>No members under this project.</h4>
+        }
+        else
+        {
+            <table class="table">
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FirstName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LastName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
+                    <th>
+                        First name
+                    </th>
+                    <th>
+                        Last name
+                    </th>
+                    <th>
+                        E-mail adress
+                    </th>
                 </tr>
-            }
-        </table>
-    }
- 
-        
+
+                @foreach (var item in Model.Members)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+
+
 
     </div>
     <h4>Assignments under this project:</h4>
