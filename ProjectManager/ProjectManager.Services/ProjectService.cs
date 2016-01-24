@@ -93,7 +93,7 @@ namespace ProjectManager.Services
             #endregion
             #region assignmentsTable
 
-            var assignmentsParagraph = new Paragraph("Assingnments", headerFont);
+            var assignmentsParagraph = new Paragraph("Assignments", headerFont);
             assignmentsParagraph.PaddingTop = 20;
             assignmentsParagraph.Alignment = Element.ALIGN_CENTER;
             document.Add(assignmentsParagraph);
