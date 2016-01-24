@@ -190,5 +190,11 @@ namespace ProjectManager.WebApp.Controllers
                 return Json(new { result = "false" });
             }
         }
+
+        public ActionResult RemoveUser(Guid projId, string userId)
+        {
+            _projectService.RemoveMember(projId, userId);
+            return RedirectToAction("Details", "Projects", new { id = projId });
+        }
     }
 }

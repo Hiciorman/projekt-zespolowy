@@ -164,23 +164,18 @@ namespace ProjectManager.WebApp.Controllers
             return RedirectToAction("Edit", new { id = model.Assignment.Id });
         }
 
-        public ActionResult Delete(Guid id)
+        public ActionResult Delete(Guid id,Guid projId)
         {
             Assignment assignment = _assignmentService.FindById(id);
             if (assignment == null)
             {
                 return HttpNotFound();
             }
-
-            return View(assignment);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
-        {
             _assignmentService.Remove(id);
-            return RedirectToAction("Dashboard", "Manager");
+
+            return RedirectToAction("Details", "Projects", new { id = projId });
         }
+
+       
     }
 }

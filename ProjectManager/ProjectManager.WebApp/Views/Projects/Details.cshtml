@@ -30,6 +30,7 @@
                     <th>
                         E-mail adress
                     </th>
+                    <th></th>
                 </tr>
                 @foreach (var item in Model.Members)
                 {
@@ -42,6 +43,9 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            <a href="@Url.Action("RemoveUser", "Projects", new {userId = item.Id,projId=Model.Id})" class="btn btn-danger">Remove member</a>
                         </td>
                     </tr>
                 }
@@ -82,6 +86,9 @@
                     <th>
                         Assignment description
                     </th>
+                    <th>
+                       
+                    </th>
 
                 </tr>
                 @foreach (var item in Model.Assignemnts)
@@ -110,6 +117,9 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Delete", "Assignments", new {id = item.Id,projId=Model.Id})" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 }

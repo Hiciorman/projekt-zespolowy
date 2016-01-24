@@ -43,7 +43,10 @@ namespace ProjectManager.Services
         {
             _projectRepository.AddMember(projectId, userId);
         }
-
+        public void RemoveMember(Guid projectId, string userId)
+        {
+            _projectRepository.RemoveMember(projectId, userId);
+        }
         public void Update(Project project)
         {
             _projectRepository.Update(project);

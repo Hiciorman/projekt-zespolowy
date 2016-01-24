@@ -11,6 +11,7 @@ namespace ProjectManager.Services.Interfaces
         Project FindById(Guid id);
         void Add(Project project, string userId);
         void AddMember(Guid projectId, string userId);
+        void RemoveMember(Guid projectId, string userId);       
         void Update(Project project);
         bool Remove(Guid id);
         MemoryStream GenerateReport(Project project, string serverPath);
