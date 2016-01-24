@@ -86,3 +86,6 @@ textarea {
   text-align: center;
 }
 /*#endregion*/
+.min-width-80 {
+  min-width: 80% !important;
+}
