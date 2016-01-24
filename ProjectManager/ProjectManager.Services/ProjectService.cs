@@ -125,7 +125,7 @@ namespace ProjectManager.Services
                     owner = "";
 
                 string assignedTo;
-                if (assignment.AssignedTo != null)
+                if (assignment.AssignedTo != null && assignment.Owner != null)
                     assignedTo = assignment.AssignedTo.FirstName + " " + assignment.Owner.LastName;
                 else
                     assignedTo = "";
