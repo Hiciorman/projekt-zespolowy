@@ -27,7 +27,6 @@ namespace ProjectManager.WebApp.Controllers
             return View(assignments.ToList());
         }
 
-
         public ActionResult Details(Guid id)
         {
 
@@ -88,7 +87,7 @@ namespace ProjectManager.WebApp.Controllers
                 var listOfUsers = new SelectList(_dictionaryService.GetUsers(Guid.Parse(id)), "Id", "UserName",
                     User.Identity.GetUserId());
 
-                return Json(new { result = listOfUsers});
+                return Json(new { result = listOfUsers });
             }
             else
             {
@@ -104,11 +103,10 @@ namespace ProjectManager.WebApp.Controllers
             if (ModelState.IsValid)
             {
                 _assignmentService.Add(assignment);
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Assignments", new { id = assignment.Id });
             }
 
-
-            return View(assignment);
+            return RedirectToAction("Create");
         }
 
         [HttpPost]
@@ -126,6 +124,11 @@ namespace ProjectManager.WebApp.Controllers
 
         public ActionResult Edit(Guid id)
         {
+            var projects = _projectService.GetAllByUserId(User.Identity.GetUserId());
+            if (!projects.Any())
+            {
+                return RedirectToAction("Dashboard", "Manager");
+            }
 
             Assignment assignment = _assignmentService.FindById(id);
             if (assignment == null)
@@ -133,21 +136,33 @@ namespace ProjectManager.WebApp.Controllers
                 return HttpNotFound();
             }
 
-            return View(assignment);
+            var model = new EditAssignmentViewModel
+            {
+                Assignment = assignment,
+                ListOfProjects = new SelectList(projects, "Id", "Name"),
+                ListOfCategories = new SelectList(_dictionaryService.GetCategories(), "Id", "Description"),
+                ListOfPriorities = new SelectList(_dictionaryService.GetPriorities(), "Id", "Description"),
+                ListOfStatuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description"),
+                ListOfUsers =
+                    new SelectList(_dictionaryService.GetUsers(projects.FirstOrDefault().Id), "Id", "UserName",
+                        User.Identity.GetUserId())
+            };
+
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Assignment assignment)
+        public ActionResult Edit(EditAssignmentViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _assignmentService.Update(assignment);
-                return RedirectToAction("Index");
+                _assignmentService.Update(model.Assignment);
+                return RedirectToAction("Details", "Assignments", new { id = model.Assignment.Id });
             }
-            return View(assignment);
-        }
 
+            return RedirectToAction("Edit", new { id = model.Assignment.Id });
+        }
 
         public ActionResult Delete(Guid id)
         {
@@ -165,8 +180,7 @@ namespace ProjectManager.WebApp.Controllers
         public ActionResult DeleteConfirmed(Guid id)
         {
             _assignmentService.Remove(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("Dashboard", "Manager");
         }
-
     }
 }

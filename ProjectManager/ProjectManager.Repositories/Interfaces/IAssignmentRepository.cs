@@ -12,8 +12,8 @@ namespace ProjectManager.Repositories.Interfaces
         IEnumerable<Assignment> GetAllByProjectId(Guid id);
         IEnumerable<Assignment> GetAllByDate(int year = 0, int month = 0, int day = 0);
         Assignment FindById(Guid id);
-        void Add(Assignment Assignment);
-        void Update(Assignment Assignment);
+        void Add(Assignment assignment);
+        void Update(Assignment assignment);
         bool Remove(Guid id);
         void ChangeTaskAssignment(string userId, Guid currentAssignmentId);
         void ChangeAssignmentStatus(int statusId, Guid currentAssignmentId);

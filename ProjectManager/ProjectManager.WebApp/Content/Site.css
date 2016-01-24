@@ -83,6 +83,9 @@ textarea {
 .min-width-80 {
   min-width: 80% !important;
 }
+.min-width-100 {
+  min-width: 100% !important;
+}
 .th3-child div:nth-child(3n) {
   margin-bottom: 10px;
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,6 +12,7 @@ namespace ProjectManager.Domain
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)] //ustawiaw wartosc wskazujaca przez dataFormatString
+        [DisplayName("Due date")]
         public DateTime? DueDate { get; set; }
 
         [DataType(DataType.DateTime)]

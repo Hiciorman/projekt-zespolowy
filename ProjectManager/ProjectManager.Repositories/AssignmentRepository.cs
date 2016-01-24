@@ -67,15 +67,15 @@ namespace ProjectManager.Repositories
             return assignment;
         }
 
-        public void Add(Assignment Assignment)
+        public void Add(Assignment assignment)
         {
-            _context.Assignments.Add(Assignment);
+            _context.Assignments.Add(assignment);
             _context.SaveChanges();
         }
 
-        public void Update(Assignment Assignment)
+        public void Update(Assignment assignment)
         {
-            _context.Entry(Assignment).State = EntityState.Modified;
+            _context.Entry(assignment).State = EntityState.Modified;
             _context.SaveChanges();
         }
 
@@ -83,9 +83,9 @@ namespace ProjectManager.Repositories
         {
             try
             {
-                Assignment Assignment = FindById(id);
+                Assignment assignment = FindById(id);
 
-                _context.Assignments.Remove(Assignment);
+                _context.Assignments.Remove(assignment);
                 _context.SaveChanges();
             }
             catch

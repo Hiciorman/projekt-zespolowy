@@ -1,18 +1,20 @@
 ﻿@model ProjectManager.Domain.Assignment
 
 @{
-    ViewBag.Title = "Details " + Model.Name;
+    ViewBag.Title = "Details assignment: " + Model.Name;
 }
-<div style="padding:10px;">
-    <h2 class="text-left">Details - @Html.DisplayFor(model => model.Name)</h2>
-
-    <div>
-       
+<div class="container">
+    <h2>@ViewBag.Title</h2>
+    <hr />
+    <div class="row">
+        @Html.LabelFor(model => model.Description)
+        @Html.DisplayFor(model => model.Description)
+    </div>
+    <br />
+    <div class="row">
+        <h4>Properties</h4>
         <table class="table">
             <tr>
-                <th>
-                    Name
-                </th>
                 <th>
                     Priority
                 </th>
@@ -20,43 +22,32 @@
                     Status
                 </th>
                 <th>
-                    Date
+                    Due date
                 </th>
                 <th>
                     Owned by
                 </th>
-               
             </tr>
-
-           
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => modelItem.Name)
-                    </td>
-                    
-                    <td>
-                        @Html.DisplayFor(modelItem => modelItem.Priority.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => modelItem.Status.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => modelItem.DueDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => modelItem.Owner.UserName)
-                    </td>
-                   
-                </tr>
-           
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.Priority.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.Status.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.DueDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.Owner.UserName)
+                </td>
+            </tr>
         </table>
-        <h4>Descriprion</h4>
-        <p>@Html.DisplayFor(modelItem => modelItem.Description)</p>
-
-       
     </div>
-    <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
+
+    <div class="col-md-offset-4">
+        <a href="@Url.Action("Edit", "Assignments", new {id = Model.Id})" class="btn btn-primary col-md-2" style="margin-right: 5px;">Edit</a>
+
+        <a href="@Url.Action("Delete", "Assignments", new {id = Model.Id})" class="btn btn-danger col-md-2">Remove</a>
+    </div>
 </div>
