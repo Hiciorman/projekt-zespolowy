@@ -22,6 +22,9 @@
                     Status
                 </th>
                 <th>
+                    Sprint
+                </th>
+                <th>
                     Due date
                 </th>
                 <th>
@@ -34,6 +37,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => modelItem.Status.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.Sprint.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => modelItem.DueDate)

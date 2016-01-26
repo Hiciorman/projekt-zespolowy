@@ -14,12 +14,14 @@ namespace ProjectManager.WebApp.Controllers
     {
         private readonly IProjectService _projectService;
         private readonly IDictionaryService _dictionaryService;
+        private readonly ISprintService _sprintService;
         private readonly ApplicationUserManager _applicationUserManager;
 
-        public ProjectsController(IProjectService projectService, IDictionaryService dictionaryService, ApplicationUserManager applicationUserManager)
+        public ProjectsController(IProjectService projectService, IDictionaryService dictionaryService, ISprintService spirntService, ApplicationUserManager applicationUserManager)
         {
             _projectService = projectService;
             _dictionaryService = dictionaryService;
+            _sprintService = spirntService;
             _applicationUserManager = applicationUserManager;
         }
 
@@ -76,6 +78,8 @@ namespace ProjectManager.WebApp.Controllers
                 assignment.Owner = _applicationUserManager.FindById(assignment.OwnerId);
                 assignment.Priority = _dictionaryService.GetPriorities().First(p => p.Id == assignment.PriorityId);
                 assignment.Status = _dictionaryService.GetStatuses().First(s => s.Id == assignment.StatusId);
+                if (assignment.SprintId != null)
+                    assignment.Sprint = _sprintService.FindById((Guid)assignment.SprintId);
             }
 
             return View(project);
@@ -113,6 +117,80 @@ namespace ProjectManager.WebApp.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult CreateSprint(Guid id)
+        {
+            var model = new SprintViewModel()
+            {
+                ProjectId = id
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateSprint(SprintViewModel model)
+        {
+            var userId = User.Identity.GetUserId();
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Profile");
+            }
+
+            var user = _applicationUserManager.FindById(userId);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Profile");
+            }
+
+            if (ModelState.IsValid)
+            {
+                _sprintService.Add(model.Sprint, model.ProjectId);
+                return RedirectToAction("Details", new { id = model.ProjectId });
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult EditSprint(Guid sprintid, Guid projectId)
+        {
+            var model = new SprintViewModel()
+            {
+                ProjectId = projectId,
+                Sprint = _sprintService.FindById(sprintid)
+
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditSprint(SprintViewModel model)
+        {
+            var userId = User.Identity.GetUserId();
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Profile");
+            }
+
+            var user = _applicationUserManager.FindById(userId);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Profile");
+            }
+
+            if (ModelState.IsValid)
+            {
+                _sprintService.Update(model.Sprint);
+                return RedirectToAction("Details", new { id = model.ProjectId });
+            }
+
+            return View();
+        }
+
         public ActionResult Edit(Guid id)
         {
             Project project = _projectService.FindById(id);
@@ -131,7 +209,7 @@ namespace ProjectManager.WebApp.Controllers
             if (ModelState.IsValid)
             {
                 _projectService.Update(project);
-                return RedirectToAction("AllProjects");
+                return RedirectToAction("Details", new { id = project.Id });
             }
 
             return View(project);
@@ -152,7 +230,7 @@ namespace ProjectManager.WebApp.Controllers
             var output = _projectService.GenerateReport(project, serverPath);
 
             Response.ContentType = "application/pdf";
-            Response.AddHeader("Content-Disposition", string.Format("attachment;filename="+project.Name+"_Report_"+ DateTime.Now.ToShortDateString() + ".pdf"));
+            Response.AddHeader("Content-Disposition", string.Format("attachment;filename=" + project.Name + "_Report_" + DateTime.Now.ToShortDateString() + ".pdf"));
             Response.BinaryWrite(output.ToArray());
         }
 
@@ -188,6 +266,12 @@ namespace ProjectManager.WebApp.Controllers
             {
                 return Json(new { result = "false" });
             }
+        }
+
+        public ActionResult RemoveSprint(Guid sprintId, Guid projId)
+        {
+            _sprintService.Remove(sprintId);
+            return RedirectToAction("Details", "Projects", new { id = projId });
         }
 
         public ActionResult RemoveUser(Guid projId, string userId)

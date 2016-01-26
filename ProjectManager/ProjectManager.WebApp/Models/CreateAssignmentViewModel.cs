@@ -11,6 +11,7 @@ namespace ProjectManager.WebApp.Models
         public SelectList ListOfPriorities { get; set; }
         public SelectList ListOfUsers { get; set; }
         public SelectList ListOfStatuses { get; set; }
+        public SelectList ListOfSprints { get; set; }
         public string OwnerName { get; set; }
     }
 }

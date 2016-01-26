@@ -66,8 +66,10 @@
     <Compile Include="Interfaces\IAssignmentRepository.cs" />
     <Compile Include="Interfaces\IDictionaryRepository.cs" />
     <Compile Include="Interfaces\IProjectRepository.cs" />
+    <Compile Include="Interfaces\ISprintRepository.cs" />
     <Compile Include="ProjectRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SprintRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

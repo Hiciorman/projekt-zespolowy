@@ -103,6 +103,7 @@
     <Compile Include="IntEntity.cs" />
     <Compile Include="PriorityType.cs" />
     <Compile Include="Priority.cs" />
+    <Compile Include="Sprint.cs" />
     <Compile Include="Status.cs" />
     <Compile Include="StatusType.cs" />
     <Compile Include="Project.cs" />

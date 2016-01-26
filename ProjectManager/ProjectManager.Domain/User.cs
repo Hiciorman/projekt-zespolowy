@@ -31,5 +31,7 @@ namespace ProjectManager.Domain
         public Project ActiveProject { get; set; }
 
         public virtual ICollection<Project> Projects { get; set; }
+
+        public int asdsa { get; set; }
     }
 }

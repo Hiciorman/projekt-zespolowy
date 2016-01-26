@@ -23,6 +23,7 @@ namespace ProjectManager.Domain
         public  TimeSpan Estimation { get; set; }
 
         public Guid? ProjectId { get; set; }
+        public Guid? SprintId { get; set; }
         public string OwnerId { get; set; }
         public string AssignedToId { get; set; }
         public int StatusId { get; set; }
@@ -31,6 +32,9 @@ namespace ProjectManager.Domain
 
         [ForeignKey("ProjectId")]
         public Project Project { get; set; }
+
+        [ForeignKey("SprintId")]
+        public Sprint Sprint { get; set; }
 
         [ForeignKey("OwnerId")]
         public User Owner { get; set; }

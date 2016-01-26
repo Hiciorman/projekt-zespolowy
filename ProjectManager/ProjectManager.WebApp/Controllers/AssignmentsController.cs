@@ -47,7 +47,6 @@ namespace ProjectManager.WebApp.Controllers
             var projects = _projectService.GetAllByUserId(User.Identity.GetUserId());
             if (!projects.Any())
             {
-                //Przydałyby się jakieś notyfikacje 
                 return RedirectToAction("Dashboard", "Manager");
             }
 
@@ -58,10 +57,10 @@ namespace ProjectManager.WebApp.Controllers
                 ListOfCategories = new SelectList(_dictionaryService.GetCategories(), "Id", "Description"),
                 ListOfPriorities = new SelectList(_dictionaryService.GetPriorities(), "Id", "Description"),
                 ListOfStatuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description"),
-                ListOfUsers =
-                    new SelectList(_dictionaryService.GetUsers(projects.FirstOrDefault().Id), "Id", "UserName",
-                        User.Identity.GetUserId())
+                ListOfUsers =new SelectList(_dictionaryService.GetUsers(projects.FirstOrDefault().Id), "Id", "UserName",User.Identity.GetUserId()),
+                ListOfSprints = new SelectList(projects.First().Sprints, "Id", "Name")
             };
+
             return View(model);
         }
 
@@ -75,13 +74,15 @@ namespace ProjectManager.WebApp.Controllers
                 ListOfCategories = new SelectList(_dictionaryService.GetCategories(), "Id", "Description"),
                 ListOfPriorities = new SelectList(_dictionaryService.GetPriorities(), "Id", "Description"),
                 ListOfStatuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description"),
-                ListOfUsers = new SelectList(_dictionaryService.GetUsers(id), "Id", "UserName", User.Identity.GetUserId())
+                ListOfUsers = new SelectList(_dictionaryService.GetUsers(id), "Id", "UserName", User.Identity.GetUserId()),
+                ListOfSprints = new SelectList(projects.First(x => x.Id == id).Sprints, "Id", "Name")
             };
+
             return View("Create", model);
         }
 
         [HttpPost]
-        public async Task<JsonResult> ChangeProject(string id)
+        public async Task<JsonResult> ChangeProjectUsers(string id)
         {
             if (id != null)
             {
@@ -89,6 +90,21 @@ namespace ProjectManager.WebApp.Controllers
                     User.Identity.GetUserId());
 
                 return Json(new { result = listOfUsers });
+            }
+            else
+            {
+                return Json(new { result = "false" });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ChangeProjectSprints(string id)
+        {
+            if (id != null)
+            {
+                var listOfSprints = new SelectList(_projectService.FindById(Guid.Parse(id)).Sprints, "Id", "Name");
+
+                return Json(new { result = listOfSprints });
             }
             else
             {
@@ -144,9 +160,8 @@ namespace ProjectManager.WebApp.Controllers
                 ListOfCategories = new SelectList(_dictionaryService.GetCategories(), "Id", "Description"),
                 ListOfPriorities = new SelectList(_dictionaryService.GetPriorities(), "Id", "Description"),
                 ListOfStatuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description"),
-                ListOfUsers =
-                    new SelectList(_dictionaryService.GetUsers(projects.FirstOrDefault().Id), "Id", "UserName",
-                        User.Identity.GetUserId())
+                ListOfUsers = new SelectList(_dictionaryService.GetUsers(projects.FirstOrDefault().Id), "Id", "UserName", User.Identity.GetUserId()),
+                ListOfSprints = new SelectList(projects.First(x => x.Id == assignment.ProjectId).Sprints, "Id", "Name")
             };
 
             return View(model);

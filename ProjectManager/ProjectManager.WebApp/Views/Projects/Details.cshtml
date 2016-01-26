@@ -12,6 +12,51 @@
     </div>
     <br />
     <div class="row">
+        <h4>Sprints under this project: </h4>
+        @if (Model.Sprints.Count == 0)
+        {
+            <h4>No sprints under this project.</h4>
+        }
+        else
+        {
+            <table class="table">
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Start date
+                    </th>
+                    <th>
+                        End date
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.Sprints)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                        <td>
+                            <a href="@Url.Action("EditSprint", "Projects", new { sprintId = item.Id, projectId = Model.Id })" class="btn btn-primary">Edit</a>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("RemoveSprint", "Projects", new {sprintId = item.Id, projId = Model.Id})" class="btn btn-danger">Remove sprint</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+    <div class="row">
         <h4>Members under this project:</h4>
         @if (Model.Members.Count == 0)
         {
@@ -75,19 +120,22 @@
                         Priority
                     </th>
                     <th>
-                        Project
-                    </th>
-                    <th>
                         Status
                     </th>
                     <th>
-                        Assignment name
+                        Name
                     </th>
                     <th>
-                        Assignment description
+                        Description
                     </th>
                     <th>
-                       
+                        Sprint
+                    </th>
+                    <th>
+
+                    </th>
+                    <th>
+
                     </th>
 
                 </tr>
@@ -107,9 +155,6 @@
                             @Html.DisplayFor(modelItem => item.Priority.Description)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Project.Name)
-                        </td>
-                        <td>
                             @Html.DisplayFor(modelItem => item.Status.Description)
                         </td>
                         <td>
@@ -119,6 +164,12 @@
                             @Html.DisplayFor(modelItem => item.Description)
                         </td>
                         <td>
+                            @Html.DisplayFor(modelItem => item.Sprint.Name)
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Edit", "Assignments", new { id = item.Id })" class="btn btn-primary">Edit</a>
+                        </td>
+                        <td>
                             <a href="@Url.Action("Delete", "Assignments", new {id = item.Id,projId=Model.Id})" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
@@ -126,9 +177,10 @@
             </table>
         }
     </div>
-    <br/>
+    <br />
     <div class="text-center">
         <a href="@Url.Action("Edit", "Projects", new {id = Model.Id})" class="btn btn-primary">Edit</a>
+        <a href="@Url.Action("CreateSprint", "Projects", new { id = Model.Id })" class="btn btn-primary">Add sprint</a>
         <a href="@Url.Action("CreateFromProject", "Assignments", new {id = Model.Id})" class="btn btn-primary">Add assignment</a>
         <a href="@Url.Action("GenerateReport", "Projects", new {id = Model.Id})" class="btn btn-primary">Generate raport</a>
     </div>

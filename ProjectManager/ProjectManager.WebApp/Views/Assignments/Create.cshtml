@@ -62,18 +62,24 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-4">
-                        @Html.LabelFor(model => model.Assignment.DueDate, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.Assignment.SprintId, "Sprint", htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-4">
                         @Html.LabelFor(model => model.Assignment.PriorityId, "Priority", htmlAttributes: new { @class = "control-label" })
                     </div>
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.Assignment.DueDate, htmlAttributes: new { @class = "control-label" })
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        @Html.EditorFor(model => model.Assignment.DueDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Drop-off date here..." } })
+                        @Html.DropDownListFor(model => model.Assignment.SprintId, Model.ListOfSprints, htmlAttributes: new { @class = "form-control" })
                     </div>
                     <div class="col-md-4">
                         @Html.DropDownListFor(model => model.Assignment.PriorityId, Model.ListOfPriorities, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-4">
+                        @Html.EditorFor(model => model.Assignment.DueDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Drop-off date here..." } })
                     </div>
                 </div>
             </div>
@@ -105,13 +111,29 @@
     function CallChange(val) {
         $.ajax({
             type: "POST",
-            url: '@Url.Action("ChangeProject", "Assignments")',
+            url: '@Url.Action("ChangeProjectUsers", "Assignments")',
             data: { id: val },
             datatype: "JSON",
             success: function (data) {
                 $("#Assignment_AssignedToId").empty();
                 for (var i = 0; i < data.result.length; i++) {
                     $('#Assignment_AssignedToId').append($('<option></option>').val(data.result[i].Value).html(data.result[i].Text));
+                }
+                // location.reload();
+            },
+            error: function () {
+                alert("Failed to get data from server");
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ChangeProjectSprints", "Assignments")',
+            data: { id: val },
+            datatype: "JSON",
+            success: function (data) {
+                $("#Assignment_SprintId").empty();
+                for (var i = 0; i < data.result.length; i++) {
+                    $('#Assignment_SprintId').append($('<option></option>').val(data.result[i].Value).html(data.result[i].Text));
                 }
                 // location.reload();
             },
