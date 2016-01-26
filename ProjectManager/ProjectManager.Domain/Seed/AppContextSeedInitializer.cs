@@ -44,16 +44,15 @@ namespace ProjectManager.Domain.Seed
             var user = new User()
             {
                 Email = "test@test.com",
-                UserName = "Tester"
+                UserName = "Tester",
             };
-            manager.Create(user, "tester12345");
-
+            
             var user2 = new User()
             {
                 Email = "test2@test.com",
-                UserName = "Tester2"
+                UserName = "Manager"
             };
-            manager.Create(user2, "tester12345");
+
             #endregion
 
             #region Projects

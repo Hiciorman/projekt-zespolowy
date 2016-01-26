@@ -14,10 +14,11 @@ namespace ProjectManager.WebApp.Controllers
         private readonly IProjectService _projectService;
         private readonly IAssignmentService _assignmentService;
         private readonly IDictionaryService _dictionaryService;
+
         public AssignmentsController(IProjectService projectService, IAssignmentService assignmentService, IDictionaryService dictionaryService)
         {
             _assignmentService = assignmentService;
-            this._dictionaryService = dictionaryService;
+            _dictionaryService = dictionaryService;
             _projectService = projectService;
         }
 

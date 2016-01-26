@@ -7,7 +7,6 @@ using ProjectManager.WebApp.Models;
 using ProjectManager.Services.Interfaces;
 using System.Linq;
 
-
 namespace ProjectManager.WebApp.Controllers
 {
     [Authorize]

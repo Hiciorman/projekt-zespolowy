@@ -12,6 +12,7 @@ using System.Web.Helpers;
 
 namespace ProjectManager.WebApp.Controllers
 {
+    [Authorize]
     public class ProfileController : Controller
     {
         private readonly IProjectService _projectService;
@@ -126,6 +127,7 @@ namespace ProjectManager.WebApp.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Login()
         {
             //We should redirect to controller Manager action Dashboard
@@ -133,6 +135,7 @@ namespace ProjectManager.WebApp.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
@@ -165,12 +168,14 @@ namespace ProjectManager.WebApp.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
@@ -208,7 +213,7 @@ namespace ProjectManager.WebApp.Controllers
         public ActionResult Assignments()
         {
             //TODO: Zrobić lepiej [KD]
-            var projects = _projectService.GetAll().ToList();
+            var projects = _projectService.GetAllByUserId(User.Identity.GetUserId()).ToList();
             var assignmentsAssignedTo = new List<List<Assignment>>(projects.Count);
             var assignmentsOwnedBy = new List<List<Assignment>>(projects.Count);
 
@@ -217,7 +222,7 @@ namespace ProjectManager.WebApp.Controllers
                 assignmentsAssignedTo.Add(new List<Assignment>());
                 assignmentsAssignedTo[i] = _assignmentService.GetAllByProjectId(projects[i].Id).Where(a => a.AssignedToId == User.Identity.GetUserId()).ToList();
             }
-             for (int i = 0; i < projects.Count; i++)
+            for (int i = 0; i < projects.Count; i++)
             {
                 assignmentsOwnedBy.Add(new List<Assignment>());
                 assignmentsOwnedBy[i] = _assignmentService.GetAllByProjectId(projects[i].Id).Where(a => a.OwnerId == User.Identity.GetUserId()).ToList();
