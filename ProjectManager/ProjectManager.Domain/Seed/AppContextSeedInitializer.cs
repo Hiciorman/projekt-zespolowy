@@ -44,16 +44,18 @@ namespace ProjectManager.Domain.Seed
             var user = new User()
             {
                 Email = "test@test.com",
-                UserName = "Tester"
+                UserName = "Tester",
             };
-            manager.Create(user, "tester12345");
+
+            manager.Create(user, "test12345");
 
             var user2 = new User()
             {
                 Email = "test2@test.com",
-                UserName = "Tester2"
+                UserName = "Manager"
             };
-            manager.Create(user2, "tester12345");
+
+            manager.Create(user2, "test12345");
             #endregion
 
             #region Projects
@@ -64,7 +66,7 @@ namespace ProjectManager.Domain.Seed
                               " based on a story by Bacall, and produced by director Todd Phillips. The film follows three friends—Thomas (Thomas Mann)," +
                               " Costa (Oliver Cooper) and J.B. (Jonathan Daniel Brown)—who plan to gain popularity by throwing a party, a plan which quickly" +
                               " escalates out of their control.",
-                Members = new HashSet<User>() { user, user2 }
+                Members = new HashSet<User>() { user, user2 },
             };
 
             Project project2 = new Project
@@ -74,12 +76,13 @@ namespace ProjectManager.Domain.Seed
                               " during World War II. It was led by the United States with the support of the United Kingdom and Canada." +
                               " From 1942 to 1946, the project was under the direction of Major General Leslie Groves of the U.S. Army Corps of Engineers;" +
                               " physicist J. Robert Oppenheimer was the director of the Los Alamos National Laboratory that designed the actual bombs.",
-                Members = new HashSet<User>() { user }
+                Members = new HashSet<User>() { user },
             };
 
             context.Projects.Add(project);
             context.Projects.Add(project2);
-            context.Users.FirstOrDefault().ActiveProjectId = project.Id;
+            context.Users.First(x => x.UserName == "Tester").ActiveProjectId = project.Id;
+            context.Users.First(x => x.UserName == "Manager").ActiveProjectId = project.Id;
             context.SaveChanges();
             #endregion
 
@@ -91,15 +94,33 @@ namespace ProjectManager.Domain.Seed
                     Name = "Task " + i,
                     Description = "Opis taska " + i,
                     DueDate = new DateTime(2015, 11, 10),
-                    OwnerId = context.Users.FirstOrDefault().Id,
-                    ProjectId = context.Projects.FirstOrDefault().Id,
-                    StatusId = context.Statuses.FirstOrDefault(x => x.Type == StatusType.Todo).Id,
-                    PriorityId = context.Priorities.FirstOrDefault().Id,
-                    CategoryId = context.Categories.FirstOrDefault().Id
+                    OwnerId = context.Users.First(x => x.UserName == "Tester").Id,
+                    ProjectId = context.Projects.First(x => x.Name == "X").Id,
+                    StatusId = context.Statuses.First(x => x.Type == StatusType.Todo).Id,
+                    PriorityId = context.Priorities.First(x => x.Type == PriorityType.Normal).Id,
+                    CategoryId = context.Categories.First(x => x.Type == CategoryType.Task).Id,
                 };
 
                 context.Assignments.Add(assignment);
             }
+
+            context.SaveChanges();
+            #endregion
+
+            #region Sprints
+            Sprint sprint1 = new Sprint
+            {
+                Name = "Sprint 1",
+                StartDate = DateTime.Today,
+                EndDate = DateTime.Today.AddDays(7),
+                Assignemnts = new List<Assignment>()
+                {
+                    context.Assignments.First(x => x.Name == "Task 1")
+                }
+            };
+
+            var projectX = context.Projects.First(x => x.Name == "X");
+            projectX?.Sprints.Add(sprint1);
 
             context.SaveChanges();
             #endregion

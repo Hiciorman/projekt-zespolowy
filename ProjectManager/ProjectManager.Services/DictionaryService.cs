@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ProjectManager.Domain;
 using ProjectManager.Repositories.Interfaces;
@@ -28,9 +29,9 @@ namespace ProjectManager.Services
             return _dictionaryRepository.GetCategories().ToList();
         }
 
-        public IList<User> GetUsers()
+        public IList<User> GetUsers(Guid id)
         {
-            return _dictionaryRepository.GetUsers().ToList();
+            return _dictionaryRepository.GetUsers(id).ToList();
         }
     }
 }

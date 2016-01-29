@@ -1,104 +1,145 @@
 ﻿@model ProjectManager.WebApp.Models.CreateAssignmentViewModel
-
 @{
-    ViewBag.Title = "Create task";
+    ViewBag.Title = "Create assignment";
 }
+<div class="container">
+    <h2>@ViewBag.Title</h2>
+    <hr />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
 
-<h2>Create</h2>
-
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <h4>Assignment</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Assignment.Name, htmlAttributes: new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Assignment.Name, new {htmlAttributes = new {@class = "form-control"}})
-                @* @Html.ValidationMessageFor(model => model.Assignment.Name, "", new { @class = "text-danger" })*@
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.Assignment.Name, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.Assignment.CategoryId, "Category", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.Assignment.OwnerId, "Owner", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.EditorFor(model => model.Assignment.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(model => model.Assignment.CategoryId, Model.ListOfCategories, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(model => model.Assignment.OwnerId, Model.ListOfUsers, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.Assignment.Project, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.Assignment.StatusId, "Status", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.Assignment.AssignedToId, "Assigned To", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(model => model.Assignment.ProjectId, Model.ListOfProjects, new { @class = "form-control", @onchange = "CallChange(this.value)" })
+                    </div>
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(model => model.Assignment.StatusId, Model.ListOfStatuses, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(model => model.Assignment.AssignedToId, Model.ListOfUsers, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.Assignment.SprintId, "Sprint", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.Assignment.PriorityId, "Priority", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.Assignment.DueDate, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(model => model.Assignment.SprintId, Model.ListOfSprints, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(model => model.Assignment.PriorityId, Model.ListOfPriorities, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-4">
+                        @Html.EditorFor(model => model.Assignment.DueDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Drop-off date here..." } })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.Assignment.Description, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        @Html.TextAreaFor(model => model.Assignment.Description, htmlAttributes: new { @class = "form-control min-width-100", rows = "10" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-4 col-md-4">
+                    <input type="submit" value="Create" class="btn btn-block btn-primary" />
+                </div>
             </div>
         </div>
-        @* Tu Jestes *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Assignment.DueDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Assignment.DueDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Drop-off date here..." } })
-                @* @Html.ValidationMessageFor(model => model.Assignment.DueDate, "", new { @class = "text-danger" })*@
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Assignment.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Assignment.Description, new { htmlAttributes = new { @class = "form-control" } })
-               @* @Html.ValidationMessageFor(model => model.Assignment.Description, "", new { @class = "text-danger" })*@
-            </div>
-        </div>
-       
-        <div class="form-group">
-            @Html.LabelFor(model => model.Assignment.ProjectId, "Project", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @{  
-                        @Html.DropDownList("Assignment.ProjectId", Model.ListOfProjects, htmlAttributes: new { @class = "form-control" });
-                }
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Assignment.OwnerId, "Owner", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("Assignment.OwnerId", Model.ListOfUsers, htmlAttributes: new { @class = "form-control" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Assignment.AssignedToId, "Assigned To", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("Assignment.AssignedToId", Model.ListOfUsers, htmlAttributes: new { @class = "form-control" })
-               @* @Html.ValidationMessageFor(model => model.AssignedToId, "", new { @class = "text-danger" })*@
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Assignment.StatusId, "Status", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("Assignment.StatusId", Model.ListOfStatuses, htmlAttributes: new { @class = "form-control" })
-               @* @Html.ValidationMessageFor(model => model.StatusId, "", new { @class = "text-danger" })*@
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Assignment.PriorityId, "Priority", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("Assignment.PriorityId", Model.ListOfPriorities, htmlAttributes: new { @class = "form-control" })
-               @* @Html.ValidationMessageFor(model => model.PriorityId, "", new { @class = "text-danger" })*@
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Assignment.CategoryId, "Category", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("Assignment.CategoryId", Model.ListOfCategories, htmlAttributes: new { @class = "form-control" })
-                @*@Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })*@
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    }
 </div>
 
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    function CallChange(val) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ChangeProjectUsers", "Assignments")',
+            data: { id: val },
+            datatype: "JSON",
+            success: function (data) {
+                $("#Assignment_AssignedToId").empty();
+                for (var i = 0; i < data.result.length; i++) {
+                    $('#Assignment_AssignedToId').append($('<option></option>').val(data.result[i].Value).html(data.result[i].Text));
+                }
+                // location.reload();
+            },
+            error: function () {
+                alert("Failed to get data from server");
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ChangeProjectSprints", "Assignments")',
+            data: { id: val },
+            datatype: "JSON",
+            success: function (data) {
+                $("#Assignment_SprintId").empty();
+                for (var i = 0; i < data.result.length; i++) {
+                    $('#Assignment_SprintId').append($('<option></option>').val(data.result[i].Value).html(data.result[i].Text));
+                }
+                // location.reload();
+            },
+            error: function () {
+                alert("Failed to get data from server");
+            }
+        });
+    }
+</script>

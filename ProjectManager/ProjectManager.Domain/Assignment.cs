@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,6 +12,7 @@ namespace ProjectManager.Domain
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)] //ustawiaw wartosc wskazujaca przez dataFormatString
+        [DisplayName("Due date")]
         public DateTime? DueDate { get; set; }
 
         [DataType(DataType.DateTime)]
@@ -21,6 +23,7 @@ namespace ProjectManager.Domain
         public  TimeSpan Estimation { get; set; }
 
         public Guid? ProjectId { get; set; }
+        public Guid? SprintId { get; set; }
         public string OwnerId { get; set; }
         public string AssignedToId { get; set; }
         public int StatusId { get; set; }
@@ -29,6 +32,9 @@ namespace ProjectManager.Domain
 
         [ForeignKey("ProjectId")]
         public Project Project { get; set; }
+
+        [ForeignKey("SprintId")]
+        public Sprint Sprint { get; set; }
 
         [ForeignKey("OwnerId")]
         public User Owner { get; set; }

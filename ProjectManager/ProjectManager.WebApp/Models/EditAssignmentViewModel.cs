@@ -1,9 +1,9 @@
-﻿using ProjectManager.Domain;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using ProjectManager.Domain;
 
 namespace ProjectManager.WebApp.Models
 {
-    public class CreateAssignmentViewModel
+    public class EditAssignmentViewModel
     {
         public Assignment Assignment { get; set; }
         public SelectList ListOfProjects { get; set; }
@@ -12,6 +12,5 @@ namespace ProjectManager.WebApp.Models
         public SelectList ListOfUsers { get; set; }
         public SelectList ListOfStatuses { get; set; }
         public SelectList ListOfSprints { get; set; }
-        public string OwnerName { get; set; }
     }
 }

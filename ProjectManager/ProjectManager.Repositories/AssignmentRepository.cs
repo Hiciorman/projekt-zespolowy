@@ -9,7 +9,7 @@ namespace ProjectManager.Repositories
 {
     public class AssignmentRepository : IAssignmentRepository
     {
-        public readonly AppContext _context;
+        private readonly AppContext _context;
 
         public AssignmentRepository(AppContext context)
         {
@@ -64,18 +64,19 @@ namespace ProjectManager.Repositories
             _context.Entry(assignment).Reference(b => b.Priority).Load();
             _context.Entry(assignment).Reference(b => b.Status).Load();
             _context.Entry(assignment).Reference(b => b.Project).Load();
+            _context.Entry(assignment).Reference(b => b.Sprint).Load();
             return assignment;
         }
 
-        public void Add(Assignment Assignment)
+        public void Add(Assignment assignment)
         {
-            _context.Assignments.Add(Assignment);
+            _context.Assignments.Add(assignment);
             _context.SaveChanges();
         }
 
-        public void Update(Assignment Assignment)
+        public void Update(Assignment assignment)
         {
-            _context.Entry(Assignment).State = EntityState.Modified;
+            _context.Entry(assignment).State = EntityState.Modified;
             _context.SaveChanges();
         }
 
@@ -83,9 +84,9 @@ namespace ProjectManager.Repositories
         {
             try
             {
-                Assignment Assignment = FindById(id);
+                Assignment assignment = FindById(id);
 
-                _context.Assignments.Remove(Assignment);
+                _context.Assignments.Remove(assignment);
                 _context.SaveChanges();
             }
             catch
@@ -146,7 +147,8 @@ namespace ProjectManager.Repositories
                         Include(b => b.Owner).
                         Include(b => b.Priority).
                         Include(b => b.Project).
-                        Include(b => b.Status);
+                        Include(b => b.Status).
+                        Include(b => b.Sprint);
         }
 
 

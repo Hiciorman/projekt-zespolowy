@@ -8,6 +8,7 @@ namespace ProjectManager.Domain
         public Project()
         {
             Assignemnts = new HashSet<Assignment>();
+            Sprints = new HashSet<Sprint>();
             Members = new HashSet<User>();
         }
 
@@ -15,6 +16,8 @@ namespace ProjectManager.Domain
         public string Description { get; set; }
 
         public virtual ICollection<Assignment> Assignemnts { get; private set; }
+
+        public virtual ICollection<Sprint> Sprints { get; set; }
 
         public virtual ICollection<User> Members { get; set; }
     }

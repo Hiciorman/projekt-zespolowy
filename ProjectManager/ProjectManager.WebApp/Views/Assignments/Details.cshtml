@@ -1,82 +1,59 @@
 ﻿@model ProjectManager.Domain.Assignment
 
 @{
-    ViewBag.Title = "Details " + Model.Name;
+    ViewBag.Title = "Details assignment: " + Model.Name;
 }
-
-<h2>Details</h2>
-
-<div>
-    <h4>@Html.DisplayFor(model => model.Name)</h4>
+<div class="container">
+    <h2>@ViewBag.Title</h2>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            DueDate
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DueDate)
-        </dd>
-        <dt>
-            Programist
-        </dt>
+    <div class="row">
+        @Html.LabelFor(model => model.Description)
+        @Html.DisplayFor(model => model.Description)
+    </div>
+    <br />
+    <div class="row">
+        <h4>Properties</h4>
+        <table class="table">
+            <tr>
+                <th>
+                    Priority
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Sprint
+                </th>
+                <th>
+                    Due date
+                </th>
+                <th>
+                    Owned by
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.Priority.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.Status.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.Sprint.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.DueDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.Owner.UserName)
+                </td>
+            </tr>
+        </table>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.AssignedTo.Email)
-        </dd>
+    <div class="col-md-offset-4">
+        <a href="@Url.Action("Edit", "Assignments", new {id = Model.Id})" class="btn btn-primary col-md-2" style="margin-right: 5px;">Edit</a>
 
-        <dt>
-            Assignment kind
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Category.Description)
-        </dd>
-
-        <dt>
-            Owner
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Owner.Email)
-        </dd>
-
-        <dt>
-            Priority
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Priority.Description)
-        </dd>
-
-        <dt>
-            Project
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Project.Name)
-        </dd>
-
-        <dt>
-            Status
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status.Description)
-        </dd>
-
-        <dt>
-
-        <dt>
-            Description
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-    </dl>
+        <a href="@Url.Action("Delete", "Assignments", new {id = Model.Id})" class="btn btn-danger col-md-2">Remove</a>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

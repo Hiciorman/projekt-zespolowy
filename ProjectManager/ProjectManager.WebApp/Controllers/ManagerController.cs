@@ -28,29 +28,29 @@ namespace ProjectManager.WebApp.Controllers
             var user = _userManager.FindById(User.Identity.GetUserId());
             var assigments = _assignmentService.GetAllByUserId(user.Id);
             var projects = user.Projects;
-           
+
             var model = new DashboardViewModel
             {
                 Assignments = assigments,
                 User = user,
 
-                BacklogCount = assigments.Where(x => x.Status.Type == StatusType.Backlog).Count(),
-                DoneCount = assigments.Where(x => x.Status.Type == StatusType.Done).Count(),
-                InProgressCount = assigments.Where(x => x.Status.Type == StatusType.InProgress).Count(),
-                ReadyForReviewCount = assigments.Where(x => x.Status.Type == StatusType.ReadyForReview).Count(),
-                ToDoCount = assigments.Where(x => x.Status.Type == StatusType.Todo).Count(),
+                BacklogCount = assigments.Count(x => x.Status.Type == StatusType.Backlog),
+                DoneCount = assigments.Count(x => x.Status.Type == StatusType.Done),
+                InProgressCount = assigments.Count(x => x.Status.Type == StatusType.InProgress),
+                ReadyForReviewCount = assigments.Count(x => x.Status.Type == StatusType.ReadyForReview),
+                ToDoCount = assigments.Count(x => x.Status.Type == StatusType.Todo),
 
-                MinorCount = assigments.Where(x => x.Priority.Type == PriorityType.Minor).Count(),
-                LowCount = assigments.Where(x => x.Priority.Type == PriorityType.Low).Count(),
-                NormalCount = assigments.Where(x => x.Priority.Type == PriorityType.Normal).Count(),
-                HighCount = assigments.Where(x => x.Priority.Type == PriorityType.High).Count(),
-                CriticalCount = assigments.Where(x => x.Priority.Type == PriorityType.Criticial).Count(),
+                MinorCount = assigments.Count(x => x.Priority.Type == PriorityType.Minor),
+                LowCount = assigments.Count(x => x.Priority.Type == PriorityType.Low),
+                NormalCount = assigments.Count(x => x.Priority.Type == PriorityType.Normal),
+                HighCount = assigments.Count(x => x.Priority.Type == PriorityType.High),
+                CriticalCount = assigments.Count(x => x.Priority.Type == PriorityType.Criticial),
 
-                TaskCount = assigments.Where(x => x.Category.Type == CategoryType.Task).Count(),
-                BugCount = assigments.Where(x => x.Category.Type == CategoryType.Bug).Count(),
-                ImprovmentCount = assigments.Where(x => x.Category.Type == CategoryType.Improvment).Count(),
+                TaskCount = assigments.Count(x => x.Category.Type == CategoryType.Task),
+                BugCount = assigments.Count(x => x.Category.Type == CategoryType.Bug),
+                ImprovmentCount = assigments.Count(x => x.Category.Type == CategoryType.Improvment),
                 Projects = projects
-               
+
             };
             return View(model);
         }
@@ -66,7 +66,7 @@ namespace ProjectManager.WebApp.Controllers
             var Stasuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description");
             var Assignments = _assignmentService.GetAllByProjectId(user.ActiveProjectId);
             var Users = usersInProject.ToList();
-            var ProjectId = user.ActiveProjectId.Value;
+            var ProjectId = user.ActiveProjectId ?? Guid.Empty;
             var model = new KanbanBoardViewModel
             {
                 Stasuses = Stasuses,

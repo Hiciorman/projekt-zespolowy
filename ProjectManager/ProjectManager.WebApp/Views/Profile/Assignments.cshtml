@@ -1,122 +1,157 @@
 ﻿
 @model ProjectManager.WebApp.Models.UserAssignmentsViewModel
 @{
-    ViewBag.Title = "My tasks";
+    ViewBag.Title = "My assignments";
 }
 
-<h2>Your assignments</h2>
+<h2 class="text-center">Your assignments</h2>
 
 <div class="container">
 
     @for (int i = 0; i < Model.Projects.Count; i++)
     {
-        if (Model.AssignmentsAssignedTo[i].Count != 0)
+        if (Model.AssignmentsAssignedTo[i].Count != 0 || Model.AssignmentsOwnedBy[i].Count != 0)
         {
-        <div class="row">
-            <div class="col-md-2">
-                <h3> @Html.DisplayFor(modelItem => Model.Projects[i].Name)</h3>
-                <h4>Assigned to you</h4>
-            </div>
-            
-              
-                      
-        </div>
-        <div class="row">
-            <div class="col-md-2">
-                <b>Name</b>
-            </div>
-            <div class="col-md-2">
-                <b>Description</b>
-            </div>
-            <div class="col-md-2">
-                <b>Priority</b>
-            </div>
-            <div class="col-md-2">
-                <b>Status</b>
-            </div>
-            <div class="col-md-2">
-                <b> Date</b>
-            </div>
-            <div class="col-md-2">
-                <b>Owned by</b>
-            </div>
-        </div>
-            foreach (var a in Model.AssignmentsAssignedTo[i])
-            {
-            <div class="row">
-                <div class="col-md-2">
-                    @Html.DisplayFor(Model => a.Name)
+            <div class="container" style="background:aliceblue;border-radius:25px;padding-left:20px;padding-right:20px;;padding-bottom:10px;margin-bottom:20px;">
+
+                <div class="text-left">
+                    <h3 style="font-weight:bold;">Project: @Html.RouteLink(Model.Projects[i].Name, new RouteValueDictionary(new { controller = "Projects", action = "Details", id = Model.Projects[i].Id }))</h3>
                 </div>
-                <div class="col-md-2">
-                    @Html.DisplayFor(Model => a.Description)
-                </div>
-                <div class="col-md-2">
-                    @Html.DisplayFor(Model => a.Priority.Description)
-                </div>
-                <div class="col-md-2">
-                    @Html.DisplayFor(Model => a.Status.Description)
-                </div>
-                <div class="col-md-2">
-                    @Html.DisplayFor(Model => a.DueDate)
-                </div>
-                <div class="col-md-2">
-                    @Html.DisplayFor(Model => a.Owner.UserName)
-                </div>
+
+
+                @if (Model.AssignmentsAssignedTo[i].Count != 0)
+                    {
+                    <div class="text-center">
+                        <h4>Assigned to you</h4>
+                    </div>
+
+                            <table class="table">
+                                <tr>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Description
+                                    </th>
+                                    <th>
+                                        Priority
+                                    </th>
+                                    <th>
+                                        Status
+                                    </th>
+                                    <th>
+                                        Sprint
+                                    </th>
+                                    <th>
+                                        Date
+                                    </th>
+                                    <th>
+                                        Owned by
+                                    </th>
+                                    <th>
+
+                                    </th>
+                                </tr>
+
+                                @foreach (var item in Model.AssignmentsAssignedTo[i])
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Priority.Description)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Status.Description)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Sprint.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.DueDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Owner.UserName)
+                                        </td>
+                                        <td>
+                                            @Html.RouteLink("Details", new RouteValueDictionary(new { controller = "Assignments", action = "Details", id = item.Id }))
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+
+
+                }
+                @if (Model.AssignmentsOwnedBy[i].Count != 0)
+                    {
+                    <div class="text-center">
+                        <h4> Owned by you</h4>
+                    </div>
+
+                            <table class="table">
+                                <tr>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Description
+                                    </th>
+                                    <th>
+                                        Priority
+                                    </th>
+                                    <th>
+                                        Status
+                                    </th>
+                                    <th>
+                                        Sprint
+                                    </th>
+                                    <th>
+                                        Date
+                                    </th>
+                                    <th>
+                                        Assigned to
+                                    </th>
+                                    <th>
+
+                                    </th>
+                                </tr>
+
+                                @foreach (var item in Model.AssignmentsOwnedBy[i])
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Priority.Description)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Status.Description)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Sprint.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.DueDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.AssignedTo.UserName)
+                                        </td>
+                                        <td>
+                                            @Html.RouteLink("Details", new RouteValueDictionary(new { controller = "Assignments", action = "Details", id = item.Id }))
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                }
             </div>
-            }
-        }
-        if (Model.AssignmentsOwnedBy[i].Count != 0)
-        {
-        <div class="row">
-           
-            <div class="col-md-2">
-                <h4> Owned by you</h4>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-2">
-                <b>Name</b>
-            </div>
-            <div class="col-md-2">
-                <b>Description</b>
-            </div>
-            <div class="col-md-2">
-                <b>Priority</b>
-            </div>
-            <div class="col-md-2">
-                <b>Status</b>
-            </div>
-            <div class="col-md-2">
-                <b> Date</b>
-            </div>
-            <div class="col-md-2">
-                <b>Assigned to</b>
-            </div>
-        </div>
-            foreach (var a in Model.AssignmentsOwnedBy[i])
-            {
-            <div class="row">
-                <div class="col-md-2">
-                    @Html.DisplayFor(Model => a.Name)
-                </div>
-                <div class="col-md-2">
-                    @Html.DisplayFor(Model => a.Description)
-                </div>
-                <div class="col-md-2">
-                    @Html.DisplayFor(Model => a.Priority.Description)
-                </div>
-                <div class="col-md-2">
-                    @Html.DisplayFor(Model => a.Status.Description)
-                </div>
-                <div class="col-md-2">
-                    @Html.DisplayFor(Model => a.DueDate)
-                </div>
-                <div class="col-md-2">
-                    @Html.DisplayFor(Model => a.AssignedTo.UserName)
-                </div>
-            </div>
-            }
         }
     }
-
-
+</div>

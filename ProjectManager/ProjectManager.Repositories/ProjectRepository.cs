@@ -63,6 +63,18 @@ namespace ProjectManager.Repositories
             }
         }
 
+        public void RemoveMember(Guid projectId, string userId)
+        {
+            User user = _context.Users.FirstOrDefault(x => x.Id == userId);
+            Project project = _context.Projects.FirstOrDefault(x => x.Id == projectId);
+
+            if (project != null)
+            {
+                project.Members.Remove(user);
+                _context.SaveChanges();
+            }
+        }
+
         public void Update(Project project)
         {
             _context.Entry(project).State = EntityState.Modified;

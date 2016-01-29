@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ProjectManager.Domain;
 
 namespace ProjectManager.Repositories.Interfaces
@@ -11,6 +12,6 @@ namespace ProjectManager.Repositories.Interfaces
 
         IEnumerable<Category> GetCategories();
 
-        IEnumerable<User> GetUsers();
+        IEnumerable<User> GetUsers(Guid id);
     }
 }
