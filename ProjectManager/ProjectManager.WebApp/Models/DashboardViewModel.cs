@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ProjectManager.Domain;
 
 namespace ProjectManager.WebApp.Models
@@ -27,6 +28,10 @@ namespace ProjectManager.WebApp.Models
         public int TaskCount { get; set; }
         public int BugCount { get; set; }
         public int ImprovmentCount { get; set; }
+
+        public List<Tuple<string, int, int, int, int,int>> Sprints { get; set; }
+        
+        
 
     }
 }

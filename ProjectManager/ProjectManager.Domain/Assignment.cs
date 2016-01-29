@@ -16,8 +16,10 @@ namespace ProjectManager.Domain
         public DateTime? DueDate { get; set; }
 
         [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime? StartDateTime { get; set; }
         [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime? StopDateTime { get; set; }
         [DataType(DataType.Time)]
         public  TimeSpan Estimation { get; set; }

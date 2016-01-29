@@ -28,6 +28,15 @@
                     Due date
                 </th>
                 <th>
+                    Start
+                </th>
+                <th>
+                    Stop
+                </th>
+                <th>
+                    Estimation
+                </th>
+                <th>
                     Owned by
                 </th>
             </tr>
@@ -43,6 +52,15 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => modelItem.DueDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.StartDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.StopDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.Estimation)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => modelItem.Owner.UserName)

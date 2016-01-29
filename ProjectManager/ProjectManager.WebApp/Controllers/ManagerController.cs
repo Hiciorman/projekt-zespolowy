@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Web.Mvc;
+
 using Microsoft.AspNet.Identity;
 using ProjectManager.Domain;
 using ProjectManager.Services.Interfaces;
@@ -29,6 +32,29 @@ namespace ProjectManager.WebApp.Controllers
             var assigments = _assignmentService.GetAllByUserId(user.Id);
             var projects = user.Projects;
 
+            var sprintTuple = new List<Tuple<string, int, int, int, int, int>> { };//name, to do, inprogress, readyforreview, done, all
+
+            //foreach (var p in projects)
+            //{
+            //    foreach (var s in p.Sprints)
+            //    {
+            //        var todoList = s.Assignemnts.Where(x => x.Status.Type == StatusType.Todo) ?? null;
+            //        var inProgressList = s.Assignemnts.Where(x => x.Status.Type == StatusType.InProgress) ?? null;
+            //        var readyForReviewList = s.Assignemnts.Where(x => x.Status.Type == StatusType.ReadyForReview) ?? null;
+            //        var doneList = s.Assignemnts.Where(x => x.Status.Type == StatusType.Done);
+            //        int allCount = s.Assignemnts.Count();
+            //        sprintTuple.Add(new Tuple<string, int, int, int, int, int>(
+            //            s.Name,
+            //            todoList == null ? 0 : todoList.Count(),
+            //            inProgressList == null ? 0 : inProgressList.Count(),
+            //            readyForReviewList == null ? 0 : readyForReviewList.Count(),
+            //            doneList == null ? 0 : doneList.Count(),
+            //            allCount
+            //            ));
+            //    }
+            //}
+
+
             var model = new DashboardViewModel
             {
                 Assignments = assigments,
@@ -49,6 +75,7 @@ namespace ProjectManager.WebApp.Controllers
                 TaskCount = assigments.Count(x => x.Category.Type == CategoryType.Task),
                 BugCount = assigments.Count(x => x.Category.Type == CategoryType.Bug),
                 ImprovmentCount = assigments.Count(x => x.Category.Type == CategoryType.Improvment),
+                Sprints = sprintTuple,
                 Projects = projects
 
             };
