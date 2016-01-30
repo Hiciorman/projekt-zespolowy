@@ -46,6 +46,15 @@
                                         Date
                                     </th>
                                     <th>
+                                        Start
+                                    </th>
+                                    <th>
+                                        Stop
+                                    </th>
+                                    <th>
+                                        Estimation
+                                    </th>
+                                    <th>
                                         Owned by
                                     </th>
                                     <th>
@@ -73,6 +82,15 @@
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.DueDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.StartDateTime)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.StopDateTime)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Estimation)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Owner.UserName)
@@ -113,6 +131,15 @@
                                         Date
                                     </th>
                                     <th>
+                                        Start
+                                    </th>
+                                    <th>
+                                        Stop
+                                    </th>
+                                    <th>
+                                        Estimation
+                                    </th>
+                                    <th>
                                         Assigned to
                                     </th>
                                     <th>
@@ -140,6 +167,15 @@
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.DueDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.StartDateTime)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.StopDateTime)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Estimation)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.AssignedTo.UserName)

@@ -18,7 +18,15 @@
         <th>
             DueDate
         </th>
-
+        <th>
+            Start
+        </th>
+        <th>
+            Stop
+        </th>
+        <th>
+            Estimation
+        </th>
         <th>
             Category
         </th>
@@ -51,6 +59,15 @@
 
         <td>
             @Html.DisplayFor(modelItem => item.DueDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartDateTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StopDateTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Estimation)
         </td>
 
         <td>

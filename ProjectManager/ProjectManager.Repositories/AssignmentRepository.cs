@@ -65,6 +65,7 @@ namespace ProjectManager.Repositories
             _context.Entry(assignment).Reference(b => b.Status).Load();
             _context.Entry(assignment).Reference(b => b.Project).Load();
             _context.Entry(assignment).Reference(b => b.Sprint).Load();
+
             return assignment;
         }
 
