@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ProjectManager.Domain;
 
 namespace ProjectManager.Services.Interfaces
@@ -9,5 +10,7 @@ namespace ProjectManager.Services.Interfaces
         void Update(Sprint sprint);
         bool Remove(Guid sprintId);
         Sprint FindById(Guid sprintId);
+        Guid? GetNewestSprintId(Guid? projectId);
+        IList<Sprint> SprintsInProject(Guid? projectId);
     }
 }

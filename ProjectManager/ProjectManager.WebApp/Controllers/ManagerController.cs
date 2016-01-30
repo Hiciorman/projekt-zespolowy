@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -14,12 +15,14 @@ namespace ProjectManager.WebApp.Controllers
         private readonly ApplicationUserManager _userManager;
         private readonly IAssignmentService _assignmentService;
         private readonly IDictionaryService _dictionaryService;
+        private readonly ISprintService _sprintService;
 
-        public ManagerController(ApplicationUserManager userManager, IAssignmentService assignmentService, IDictionaryService dictionaryService)
+        public ManagerController(ApplicationUserManager userManager, IAssignmentService assignmentService, IDictionaryService dictionaryService, ISprintService sprintService)
         {
             this._userManager = userManager;
             this._assignmentService = assignmentService;
             this._dictionaryService = dictionaryService;
+            this._sprintService = sprintService;
         }
 
         [HttpGet]
@@ -56,7 +59,7 @@ namespace ProjectManager.WebApp.Controllers
         }
 
         [HttpGet]
-        public ActionResult KanbanBoard()
+        public ActionResult KanbanBoard(KanbanBoardViewModel kanbanModel)
         {
             var user = _userManager.FindById(User.Identity.GetUserId());
 
@@ -64,17 +67,39 @@ namespace ProjectManager.WebApp.Controllers
                 _userManager.Users.Where(u => u.Projects.All(x => x.Id == user.ActiveProjectId));
 
             var Stasuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description");
-            var Assignments = _assignmentService.GetAllByProjectId(user.ActiveProjectId);
             var Users = usersInProject.ToList();
             var ProjectId = user.ActiveProjectId ?? Guid.Empty;
+            //var CurrentSprint = String.IsNullOrEmpty(kanbanModel.CurrentSprint) ?? _sprintService.GetNewestSprintId(user.ActiveProjectId).ToString();
+
+            string CurrentSprint;
+            if (String.IsNullOrEmpty(kanbanModel.CurrentSprint))
+                CurrentSprint = _sprintService.GetNewestSprintId(user.ActiveProjectId).ToString();
+            else CurrentSprint = kanbanModel.CurrentSprint;
+
+            var Assignments = _assignmentService.GetAllByProjectIdAndSprint(user.ActiveProjectId, new Guid(CurrentSprint));
+            var SprintsInProject = _sprintService.SprintsInProject(user.ActiveProjectId);
+
             var model = new KanbanBoardViewModel
             {
                 Stasuses = Stasuses,
                 Assignments = Assignments,
                 Users = Users,
-                ProjectId = ProjectId
-
+                ProjectId = ProjectId,
+                CurrentSprint = CurrentSprint,
+                AllSprints = new List<SelectListItem>()
             };
+
+            foreach (var sprint in SprintsInProject)
+            {
+                var item = new SelectListItem();
+                item.Text = sprint.Name;
+                item.Value = sprint.Id.ToString();
+                if (sprint.Id == new Guid(CurrentSprint))
+                {
+                    item.Selected = true;
+                }
+                model.AllSprints.Add(item);
+            }
 
             return View(model);
         }

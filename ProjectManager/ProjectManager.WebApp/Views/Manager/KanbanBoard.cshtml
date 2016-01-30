@@ -25,6 +25,14 @@
             </a>
         </div>*@
     </div>
+    <div>
+        @using (Html.BeginForm("KanbanBoard", "Manager", FormMethod.Get))
+        {
+            @Html.Label("Sprint: ")
+            @Html.DropDownListFor(m => m.CurrentSprint, Model.AllSprints, new  { onchange = "this.form.submit();" })
+
+        }
+    </div>
     <div class="row">
         @foreach (var status in Model.Stasuses.Where(status => status.Text != "Backlog"))
         {

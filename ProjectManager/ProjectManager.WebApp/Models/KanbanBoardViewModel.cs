@@ -11,5 +11,7 @@ namespace ProjectManager.WebApp.Models
         public SelectList Stasuses { get; set; }
         public IList<User> Users { get; set; } 
         public Guid ProjectId { get; set; }
+        public string CurrentSprint { get; set; }
+        public List<SelectListItem> AllSprints { get; set; } 
     }
 }

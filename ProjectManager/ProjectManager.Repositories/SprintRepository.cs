@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using ProjectManager.Domain;
@@ -49,5 +50,9 @@ namespace ProjectManager.Repositories
             return _context.Sprints.First(x => x.Id == sprintId);
         }
 
+        public IEnumerable<Sprint> GetAll()
+        {
+            return _context.Sprints;
+        }
     }
 }

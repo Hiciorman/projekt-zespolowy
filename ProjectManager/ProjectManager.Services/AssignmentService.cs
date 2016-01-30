@@ -35,6 +35,15 @@ namespace ProjectManager.Services
             return _assignmentRepository.GetAllByProjectId((Guid)id).ToList();
         }
 
+        public IList<Assignment> GetAllByProjectIdAndSprint(Guid? projectId, Guid? sprintId)
+        {
+            return
+                _assignmentRepository.GetAll()
+                    .Where(a => a.ProjectId == projectId)
+                    .Where(a => a.SprintId == sprintId)
+                    .ToList();
+        } 
+
         public IList<Assignment> GetAllByDate(int year = 0, int month = 0, int day = 0)
         {
             return _assignmentRepository.GetAllByDate(year, month, day).ToList();
