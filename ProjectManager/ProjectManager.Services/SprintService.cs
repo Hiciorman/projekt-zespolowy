@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ProjectManager.Domain;
@@ -41,13 +40,14 @@ namespace ProjectManager.Services
 
         public Guid? GetNewestSprintId(Guid? projectId)
         {
-            var list = _sprintRepository.GetAll().ToList();
+            var list = SprintsInProject(projectId);
 
             Sprint newestSprint = list.FirstOrDefault();
 
             foreach (var sprint in list)
             {
-                if (sprint.StartDate <= DateTime.Now && sprint.EndDate >= DateTime.Now) newestSprint = sprint;
+                if (sprint.StartDate <= DateTime.Now && sprint.EndDate >= DateTime.Now)
+                    newestSprint = sprint;
             }
 
             return newestSprint.Id;
@@ -55,18 +55,12 @@ namespace ProjectManager.Services
 
         public IList<Sprint> SprintsInProject(Guid? projectId)
         {
-            var assignments = _assignmentRepository.GetAll().Where(x => x.ProjectId == projectId);
-
-            List<Sprint> sprints = new List<Sprint>();
-
-            foreach (var assignment in assignments)
-            {
-                if (assignment.ProjectId == projectId)
-                    if (assignment.SprintId != null) sprints.Add(_sprintRepository.FindById(assignment.SprintId.Value));
-            }
-
-            return sprints.Distinct().ToList();
+            return _sprintRepository.SprintsInProject(projectId).ToList();
         }
 
+        public IList<Sprint> SprintsForUser(string userId)
+        {
+            return _sprintRepository.SprintsForUser(userId).ToList();
+        } 
     }
 }

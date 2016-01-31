@@ -29,9 +29,6 @@ namespace ProjectManager.WebApp.Models
         public int BugCount { get; set; }
         public int ImprovmentCount { get; set; }
 
-        public List<Tuple<string, int, int, int, int,int>> Sprints { get; set; }
-        
-        
-
+        public List<Tuple<string, float, float, float, float, float>> Sprints { get; set; }
     }
 }

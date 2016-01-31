@@ -18,7 +18,7 @@ namespace ProjectManager.Repositories
 
         public void Add(Sprint sprint, Guid projectId)
         {
-            _context.Projects.First(x=> x.Id == projectId).Sprints.Add(sprint);
+            _context.Projects.First(x => x.Id == projectId).Sprints.Add(sprint);
             _context.SaveChanges();
         }
 
@@ -50,9 +50,26 @@ namespace ProjectManager.Repositories
             return _context.Sprints.First(x => x.Id == sprintId);
         }
 
-        public IEnumerable<Sprint> GetAll()
+        public IEnumerable<Sprint> SprintsInProject(Guid? projectId)
         {
-            return _context.Sprints;
+            return _context.Projects.First(x => x.Id == projectId).Sprints;
+        }
+
+        public IEnumerable<Sprint> SprintsForUser(string userId)
+        {
+            var user = _context.Users.Include(a => a.Projects.Select(b => b.Sprints.Select(c => c.Assignemnts.Select(d => d.Status))))
+                 .First(x => x.Id == userId.ToString());
+            IList<Sprint> sprints = new List<Sprint>();
+
+            foreach (var p in user.Projects)
+            {
+                foreach (var s in p.Sprints)
+                {
+                    sprints.Add(s);
+                }
+            }
+
+            return sprints.Distinct();
         }
     }
 }

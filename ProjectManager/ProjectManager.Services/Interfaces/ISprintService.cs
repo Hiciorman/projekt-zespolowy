@@ -12,5 +12,6 @@ namespace ProjectManager.Services.Interfaces
         Sprint FindById(Guid sprintId);
         Guid? GetNewestSprintId(Guid? projectId);
         IList<Sprint> SprintsInProject(Guid? projectId);
+        IList<Sprint> SprintsForUser(string userId);
     }
 }

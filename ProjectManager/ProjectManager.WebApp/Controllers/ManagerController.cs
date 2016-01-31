@@ -32,29 +32,25 @@ namespace ProjectManager.WebApp.Controllers
         {
             var user = _userManager.FindById(User.Identity.GetUserId());
             var assigments = _assignmentService.GetAllByUserId(user.Id);
-            var projects = user.Projects;
+            var sprints = _sprintService.SprintsForUser(user.Id);
+            var sprintTuple = new List<Tuple<string, float, float, float, float, float>> { };//name, to do, inprogress, readyforreview, done, all
 
-            var sprintTuple = new List<Tuple<string, int, int, int, int, int>> { };//name, to do, inprogress, readyforreview, done, all
-
-            //foreach (var p in projects)
-            //{
-            //    foreach (var s in p.Sprints)
-            //    {
-            //        var todoList = s.Assignemnts.Where(x => x.Status.Type == StatusType.Todo) ?? null;
-            //        var inProgressList = s.Assignemnts.Where(x => x.Status.Type == StatusType.InProgress) ?? null;
-            //        var readyForReviewList = s.Assignemnts.Where(x => x.Status.Type == StatusType.ReadyForReview) ?? null;
-            //        var doneList = s.Assignemnts.Where(x => x.Status.Type == StatusType.Done);
-            //        int allCount = s.Assignemnts.Count();
-            //        sprintTuple.Add(new Tuple<string, int, int, int, int, int>(
-            //            s.Name,
-            //            todoList == null ? 0 : todoList.Count(),
-            //            inProgressList == null ? 0 : inProgressList.Count(),
-            //            readyForReviewList == null ? 0 : readyForReviewList.Count(),
-            //            doneList == null ? 0 : doneList.Count(),
-            //            allCount
-            //            ));
-            //    }
-            //}
+            foreach (var s in sprints)
+            {
+                var todoList = s.Assignemnts.Where(x => x.Status.Type == StatusType.Todo);
+                var inProgressList = s.Assignemnts.Where(x => x.Status.Type == StatusType.InProgress);
+                var readyForReviewList = s.Assignemnts.Where(x => x.Status.Type == StatusType.ReadyForReview);
+                var doneList = s.Assignemnts.Where(x => x.Status.Type == StatusType.Done);
+                var allCount = s.Assignemnts.Count(x => x.Status.Type != StatusType.Backlog);
+                sprintTuple.Add(new Tuple<string, float, float, float, float, float>(
+                    s.Name,
+                    todoList.Count(),
+                    inProgressList.Count(),
+                    readyForReviewList.Count(),
+                    doneList.Count(),
+                    allCount
+                    ));
+            }
 
 
             var model = new DashboardViewModel
@@ -78,7 +74,7 @@ namespace ProjectManager.WebApp.Controllers
                 BugCount = assigments.Count(x => x.Category.Type == CategoryType.Bug),
                 ImprovmentCount = assigments.Count(x => x.Category.Type == CategoryType.Improvment),
                 Sprints = sprintTuple,
-                Projects = projects
+                Projects = user.Projects
 
             };
             return View(model);
