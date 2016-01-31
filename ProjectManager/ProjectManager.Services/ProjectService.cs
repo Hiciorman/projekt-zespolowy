@@ -66,8 +66,8 @@ namespace ProjectManager.Services
             var output = new MemoryStream();
             var logoFont = FontFactory.GetFont("Verdana", 26, Font.BOLD);
             var projectNameFont = FontFactory.GetFont("Arial", 20, Font.BOLD);
-            var boldTableFont = FontFactory.GetFont("Arial", 12, Font.BOLD);
-            var tableFont = FontFactory.GetFont("Arial", 11, Font.NORMAL);
+            var boldTableFont = FontFactory.GetFont("Arial", 9, Font.BOLD);
+            var tableFont = FontFactory.GetFont("Arial", 9, Font.NORMAL);
             var bodyFont = FontFactory.GetFont("Arial", 12, Font.NORMAL);
             var headerFont = FontFactory.GetFont("Verdana", 16, Font.NORMAL);
 
@@ -94,117 +94,197 @@ namespace ProjectManager.Services
             descriptionParagraph.SpacingAfter = 20;
             document.Add(descriptionParagraph);
             #endregion
-            #region assignmentsTable
-
-            var assignmentsParagraph = new Paragraph("Assignments", headerFont);
-            assignmentsParagraph.PaddingTop = 20;
-            assignmentsParagraph.Alignment = Element.ALIGN_CENTER;
-            document.Add(assignmentsParagraph);
-
-
-            var asssignmentsTable = new PdfPTable(6);
-            asssignmentsTable.HorizontalAlignment = 0;
-            asssignmentsTable.SpacingBefore = 10;
-            asssignmentsTable.SpacingAfter = 10;
-            asssignmentsTable.DefaultCell.Border = 1;
-            asssignmentsTable.WidthPercentage = 100;
-            string[] properties = { "Name:", "Owner:", "Assigned to:", "Status:", "Priority:", "Category:" };
-            foreach (var property in properties)
+            #region sprintsTable
+            if (project.Sprints.Count() != 0)
             {
-                var phrase = new Phrase(property, boldTableFont);
-                var cell = new PdfPHeaderCell();
-                cell.Phrase = phrase;
-                asssignmentsTable.AddCell(cell);
-            }
-            foreach (var assignment in project.Assignemnts)
-            {
-            # region properites
-                var name = assignment.Name ?? "";
+                var sprintsParagraph = new Paragraph("Sprints", headerFont);
+                sprintsParagraph.PaddingTop = 20;
+                sprintsParagraph.Alignment = Element.ALIGN_CENTER;
+                document.Add(sprintsParagraph);
 
-                string owner;
-                if (assignment.Owner != null)
-                    owner = assignment.Owner.FirstName+" "+ assignment.Owner.LastName;
-                else
-                    owner = "";
 
-                string assignedTo;
-                if (assignment.AssignedTo != null && assignment.Owner != null)
-                    assignedTo = assignment.AssignedTo.FirstName + " " + assignment.Owner.LastName;
-                else
-                    assignedTo = "";
-
-                string status;
-                if (assignment.Status != null)
-                    status = assignment.Status.Description;
-                else
-                    status = "";
-
-                string priority;
-                if (assignment.Priority != null)
-                    priority = assignment.Priority.Description;
-                else
-                    priority = "";
-
-                string category;
-                if (assignment.Category != null)
-                    category = assignment.Category.Description;
-                else
-                    category = "";
-                string[] asignmentProps = new string[6] { name, owner, assignedTo, status, priority, category };
-                #endregion
-                foreach (var property in asignmentProps)
+                var sprintsTable = new PdfPTable(3);
+                sprintsTable.HorizontalAlignment = 0;
+                sprintsTable.SpacingBefore = 10;
+                sprintsTable.SpacingAfter = 10;
+                sprintsTable.DefaultCell.Border = 1;
+                sprintsTable.WidthPercentage = 100;
+                string[] SprintProperties = { "Name:", "Start date:", "End date:" };
+                foreach (var property in SprintProperties)
                 {
-                    var phrase = new Phrase(property, tableFont);
-                    var cell = new PdfPCell();
+                    var phrase = new Phrase(property, boldTableFont);
+                    var cell = new PdfPHeaderCell();
                     cell.Phrase = phrase;
-                    cell.PaddingBottom = 5;
+                    sprintsTable.AddCell(cell);
+                }
+                foreach (var sprint in project.Sprints)
+                {
+                    #region properites
+                    var name = sprint.Name ?? "";
+
+                    string startDate;
+                    if (sprint.StartDate != null)
+                        startDate = sprint.StartDate.ToString();
+                    else
+                        startDate = "";
+
+                    string endDate;
+                    if (sprint.EndDate != null)
+                        endDate = sprint.EndDate.ToString();
+                    else
+                        endDate = "";
+
+
+                    string[] sprintProps = new string[3] { name, startDate, endDate };
+                    #endregion
+                    foreach (var property in sprintProps)
+                    {
+                        var phrase = new Phrase(property, tableFont);
+                        var cell = new PdfPCell();
+                        cell.Phrase = phrase;
+                        cell.PaddingBottom = 5;
+                        sprintsTable.AddCell(cell);
+                    }
+                }
+                sprintsTable.SpacingAfter = 20;
+                document.Add(sprintsTable);
+            }
+            #endregion
+            #region assignmentsTable
+            if (project.Assignemnts.Count() != 0)
+            {
+                var assignmentsParagraph = new Paragraph("Assignments", headerFont);
+                assignmentsParagraph.PaddingTop = 20;
+                assignmentsParagraph.Alignment = Element.ALIGN_CENTER;
+                document.Add(assignmentsParagraph);
+
+
+                var asssignmentsTable = new PdfPTable(9);
+                asssignmentsTable.HorizontalAlignment = 0;
+                asssignmentsTable.SpacingBefore = 10;
+                asssignmentsTable.SpacingAfter = 10;
+                asssignmentsTable.DefaultCell.Border = 1;
+                asssignmentsTable.WidthPercentage = 100;
+                string[] properties = { "Name:", "Owner:", "Assigned to:", "Status:", "Priority:", "Category:", "Start:", "Stop:", "Estimation:" };
+                foreach (var property in properties)
+                {
+                    var phrase = new Phrase(property, boldTableFont);
+                    var cell = new PdfPHeaderCell();
+                    cell.Phrase = phrase;
                     asssignmentsTable.AddCell(cell);
                 }
+                foreach (var assignment in project.Assignemnts)
+                {
+                    #region properites
+                    var name = assignment.Name ?? "";
+
+                    string owner;
+                    if (assignment.Owner != null)
+                        owner = assignment.Owner.FirstName + " " + assignment.Owner.LastName;
+                    else
+                        owner = "";
+
+                    string assignedTo;
+                    if (assignment.AssignedTo != null && assignment.Owner != null)
+                        assignedTo = assignment.AssignedTo.FirstName + " " + assignment.Owner.LastName;
+                    else
+                        assignedTo = "";
+
+                    string status;
+                    if (assignment.Status != null)
+                        status = assignment.Status.Description;
+                    else
+                        status = "";
+
+                    string priority;
+                    if (assignment.Priority != null)
+                        priority = assignment.Priority.Description;
+                    else
+                        priority = "";
+
+                    string category;
+                    if (assignment.Category != null)
+                        category = assignment.Category.Description;
+                    else
+                        category = "";
+
+                    string startDateTime;
+                    if (assignment.StartDateTime != null)
+                        startDateTime = assignment.StartDateTime.ToString();
+                    else
+                        startDateTime = "";
+
+                    string stopDateTime;
+                    if (assignment.StopDateTime != null)
+                        stopDateTime = assignment.StopDateTime.ToString();
+                    else
+                        stopDateTime = "";
+
+                    string estimation;
+                    if (assignment.Estimation != null)
+                        estimation = assignment.Estimation.ToString();
+                    else
+                        estimation = "";
+
+                    string[] asignmentProps = new string[9] { name, owner, assignedTo, status, priority, category, startDateTime, stopDateTime, estimation };
+                    #endregion
+                    foreach (var property in asignmentProps)
+                    {
+                        var phrase = new Phrase(property, tableFont);
+                        var cell = new PdfPCell();
+                        cell.Phrase = phrase;
+                        cell.PaddingBottom = 5;
+                        asssignmentsTable.AddCell(cell);
+                    }
+                }
+                asssignmentsTable.SpacingAfter = 20;
+                document.Add(asssignmentsTable);
             }
-            asssignmentsTable.SpacingAfter = 20;
-            document.Add(asssignmentsTable);
             #endregion
             #region membersTable
-            var membersParagraph = new Paragraph("Members", headerFont);
-            membersParagraph.PaddingTop = 20;
-            membersParagraph.Alignment = Element.ALIGN_CENTER;
-            document.Add(membersParagraph);
-
-
-            var membersTable = new PdfPTable(3);
-            membersTable.HorizontalAlignment = 0;
-            membersTable.SpacingBefore = 10;
-            membersTable.SpacingAfter = 10;
-            membersTable.DefaultCell.Border = 1;
-            membersTable.WidthPercentage = 100;
-            string[] membersProperties = { "First name:", "Last name:","E-mail adress:" };
-            foreach (var property in membersProperties)
+            if (project.Members.Count() != 0)
             {
-                var phrase = new Phrase(property, boldTableFont);
-                var cell = new PdfPHeaderCell();
-                cell.Phrase = phrase;
-                membersTable.AddCell(cell);
-            }
+                var membersParagraph = new Paragraph("Members", headerFont);
+                membersParagraph.PaddingTop = 20;
+                membersParagraph.Alignment = Element.ALIGN_CENTER;
+                document.Add(membersParagraph);
 
-            foreach (var member in project.Members)
-            {
-                #region properites
-                var firstName = member.FirstName ?? "";
-                var lastName = member.LastName ?? "";
-                var eMail = member.Email ?? "";
-                string[] memberProps = new string[] { firstName, lastName, eMail };
-                #endregion
-                foreach (var property in memberProps)
+
+                var membersTable = new PdfPTable(3);
+                membersTable.HorizontalAlignment = 0;
+                membersTable.SpacingBefore = 10;
+                membersTable.SpacingAfter = 10;
+                membersTable.DefaultCell.Border = 1;
+                membersTable.WidthPercentage = 100;
+                string[] membersProperties = { "First name:", "Last name:", "E-mail adress:" };
+                foreach (var property in membersProperties)
                 {
-                    var phrase = new Phrase(property, tableFont);
-                    var cell = new PdfPCell();
+                    var phrase = new Phrase(property, boldTableFont);
+                    var cell = new PdfPHeaderCell();
                     cell.Phrase = phrase;
-                    cell.PaddingBottom = 5;
                     membersTable.AddCell(cell);
                 }
-            }
 
-            document.Add(membersTable);
+                foreach (var member in project.Members)
+                {
+                    #region properites
+                    var firstName = member.FirstName ?? "";
+                    var lastName = member.LastName ?? "";
+                    var eMail = member.Email ?? "";
+                    string[] memberProps = new string[] { firstName, lastName, eMail };
+                    #endregion
+                    foreach (var property in memberProps)
+                    {
+                        var phrase = new Phrase(property, tableFont);
+                        var cell = new PdfPCell();
+                        cell.Phrase = phrase;
+                        cell.PaddingBottom = 5;
+                        membersTable.AddCell(cell);
+                    }
+                }
+
+                document.Add(membersTable);
+            }
             #endregion
            
 
