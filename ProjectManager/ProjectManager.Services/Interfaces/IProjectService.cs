@@ -15,5 +15,6 @@ namespace ProjectManager.Services.Interfaces
         void Update(Project project);
         bool Remove(Guid id);
         MemoryStream GenerateReport(Project project, string serverPath);
+        IList<User> GetUsersInProject(Guid? projectId);
     }
 }

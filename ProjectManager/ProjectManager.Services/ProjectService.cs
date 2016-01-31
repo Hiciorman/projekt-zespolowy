@@ -306,5 +306,10 @@ namespace ProjectManager.Services
             footerTable.WriteSelectedRows(0, -1, document.LeftMargin, document.BottomMargin, writer.DirectContent);
    
         }
+
+        public IList<User> GetUsersInProject(Guid? projectId)
+        {
+            return _projectRepository.FindById((Guid) projectId).Members.ToList();
+        }
     }
 }

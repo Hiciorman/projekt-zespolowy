@@ -18,13 +18,15 @@ namespace ProjectManager.WebApp.Controllers
         private readonly IAssignmentService _assignmentService;
         private readonly IDictionaryService _dictionaryService;
         private readonly ISprintService _sprintService;
+        private readonly IProjectService _projectService;
 
-        public ManagerController(ApplicationUserManager userManager, IAssignmentService assignmentService, IDictionaryService dictionaryService, ISprintService sprintService)
+        public ManagerController(ApplicationUserManager userManager, IAssignmentService assignmentService, IDictionaryService dictionaryService, ISprintService sprintService, IProjectService projectService)
         {
             this._userManager = userManager;
             this._assignmentService = assignmentService;
             this._dictionaryService = dictionaryService;
             this._sprintService = sprintService;
+            this._projectService = projectService;
         }
 
         [HttpGet]
@@ -85,13 +87,9 @@ namespace ProjectManager.WebApp.Controllers
         {
             var user = _userManager.FindById(User.Identity.GetUserId());
 
-            var usersInProject =
-                _userManager.Users.Where(u => u.Projects.All(x => x.Id == user.ActiveProjectId));
-
             var Stasuses = new SelectList(_dictionaryService.GetStatuses(), "Id", "Description");
-            var Users = usersInProject.ToList();
+            var Users = _projectService.GetUsersInProject(user.ActiveProjectId);
             var ProjectId = user.ActiveProjectId ?? Guid.Empty;
-            //var CurrentSprint = String.IsNullOrEmpty(kanbanModel.CurrentSprint) ?? _sprintService.GetNewestSprintId(user.ActiveProjectId).ToString();
 
             string CurrentSprint;
             if (String.IsNullOrEmpty(kanbanModel.CurrentSprint))
