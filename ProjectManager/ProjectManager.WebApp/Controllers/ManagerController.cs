@@ -96,7 +96,7 @@ namespace ProjectManager.WebApp.Controllers
                 CurrentSprint = _sprintService.GetNewestSprintId(user.ActiveProjectId).ToString();
             else CurrentSprint = kanbanModel.CurrentSprint;
 
-            var Assignments = _assignmentService.GetAllByProjectIdAndSprint(user.ActiveProjectId, new Guid(CurrentSprint));
+            var Assignments = _assignmentService.GetAllByProjectIdAndSprint(user.ActiveProjectId, CurrentSprint == "" ? Guid.Empty  : new Guid(CurrentSprint));
             var SprintsInProject = _sprintService.SprintsInProject(user.ActiveProjectId);
 
             var model = new KanbanBoardViewModel

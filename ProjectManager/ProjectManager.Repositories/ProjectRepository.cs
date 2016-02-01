@@ -87,6 +87,12 @@ namespace ProjectManager.Repositories
             {
                 Project project = FindById(id);
 
+                _context.Assignments.RemoveRange(project.Assignemnts);
+                _context.SaveChanges();
+
+                _context.Sprints.RemoveRange(project.Sprints);
+                _context.SaveChanges();
+
                 _context.Projects.Remove(project);
                 _context.SaveChanges();
             }

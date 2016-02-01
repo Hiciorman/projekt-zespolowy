@@ -33,10 +33,10 @@ namespace ProjectManager.Domain
         public int CategoryId { get; set; }
 
         [ForeignKey("ProjectId")]
-        public Project Project { get; set; }
+        public virtual Project Project { get; set; }
 
         [ForeignKey("SprintId")]
-        public Sprint Sprint { get; set; }
+        public virtual Sprint Sprint { get; set; }
 
         [ForeignKey("OwnerId")]
         public User Owner { get; set; }

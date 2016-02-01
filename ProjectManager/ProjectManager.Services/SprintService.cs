@@ -50,11 +50,15 @@ namespace ProjectManager.Services
                     newestSprint = sprint;
             }
 
-            return newestSprint.Id;
+            return newestSprint?.Id;
         }
 
         public IList<Sprint> SprintsInProject(Guid? projectId)
         {
+            if (projectId == null)
+            {
+                 return  new List<Sprint>();
+            }
             return _sprintRepository.SprintsInProject(projectId).ToList();
         }
 

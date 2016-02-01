@@ -17,21 +17,15 @@ namespace ProjectManager.Domain
             return userIdentity;
         }
 
-        public User()
-        {
-            Projects = new HashSet<Project>();
-        }
-
+       public int I { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public byte[] Avatar { get; set; }
         public Guid? ActiveProjectId { get; set; }
 
         [ForeignKey("ActiveProjectId")]
-        public Project ActiveProject { get; set; }
+        public virtual Project ActiveProject { get; set; }
 
         public virtual ICollection<Project> Projects { get; set; }
-
-        public int asdsa { get; set; }
     }
 }

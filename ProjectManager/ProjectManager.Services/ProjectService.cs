@@ -309,6 +309,11 @@ namespace ProjectManager.Services
 
         public IList<User> GetUsersInProject(Guid? projectId)
         {
+            if (projectId == null)
+            {
+                return new List<User>();
+            }
+
             return _projectRepository.FindById((Guid) projectId).Members.ToList();
         }
     }
